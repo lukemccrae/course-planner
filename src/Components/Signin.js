@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import 'whatwg-fetch';
 import {setInStorage} from '../utils/storage';
 
-class Register extends Component {
+class Signin extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -24,7 +24,7 @@ class Register extends Component {
   }
 
   onSignIn() {
-    fetch(`/api/account/signin`, {
+    fetch(`http://localhost:3000/api/account/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -37,17 +37,8 @@ class Register extends Component {
       .then(res => res.json())
       .then(json => {
         if(json.success) {
+          this.props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })
-          this.setState({
-            signInError: json.message,
-            isLoading: false,
-            signInEmail: '',
-            signInPassword: '',
-            token: json.token,
-            timers: json.timers,
-            username: json.user,
-            groups: json.groups
-          })
         } else {
           this.setState({
             signInError: json.message,
@@ -94,4 +85,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default Signin;

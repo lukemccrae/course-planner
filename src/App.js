@@ -18,23 +18,26 @@ class App extends Component {
       showRegister: false
     }
     this.showRegister = this.showRegister.bind(this);
+    this.loggedIn = this.loggedIn.bind(this);
   }
 
   componentDidMount() {
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
+      console.log(obj);
       //verify token
-      fetch('/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
+      fetch('http://localhost:3000/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
           this.setState({token: obj.token, isLoading: false})
         } else {
           this.setState({isLoading: false})
         }
-      }).then(fetch('api/user?token=' + obj.token).then(res => res.json()).then(json => {
-        if (json.success) {
-          this.setState({timers: json.data})
-        }
-      }));
+      })
+      // .then(fetch('http://localhost:3000/api/account?token=' + obj.token).then(res => res.json()).then(json => {
+      //   if (json.success) {
+      //     this.setState({timers: json.data})
+      //   }
+      // }));
     } else {
       this.setState({isLoading: false})
     }
@@ -46,14 +49,29 @@ class App extends Component {
     })
   }
 
+  loggedIn(args) {
+    this.setState({
+      token: args.token,
+      username: args.user,
+      timers: args.timers,
+      groups: args.groups
+    })
+    console.log(this.state);
+  }
+
   render() {
-    if (this.state.showRegister === false) {
+    if(!this.state.token) {
+      if (this.state.showRegister === false) {
+        return (
+          <Signin loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Signin>
+        );
+      }
       return (
-        <Signin onSignIn={this.onSignIn} showRegister={this.showRegister}></Signin>
-      );
+        <Register showRegister={this.showRegister}></Register>
+      )
     }
     return (
-      <Register showRegister={this.showRegister}></Register>
+      <div>hi</div>
     )
   }
 }
