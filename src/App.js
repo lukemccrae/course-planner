@@ -4,6 +4,7 @@ import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
 import Register from './Components/Register';
 import Signin from './Components/Signin';
+import Dash from './Components/Dash';
 
 
 
@@ -19,6 +20,9 @@ class App extends Component {
     }
     this.showRegister = this.showRegister.bind(this);
     this.loggedIn = this.loggedIn.bind(this);
+    this.loggedOut = this.loggedOut.bind(this);
+    this.getTimers = this.getTimers.bind(this);
+    this.addModal = this.addModal.bind(this);
   }
 
   componentDidMount() {
@@ -56,11 +60,44 @@ class App extends Component {
       timers: args.timers,
       groups: args.groups
     })
-    console.log(this.state);
+  }
+
+  loggedOut() {
+    this.setState({
+      token: ''
+    })
+  }
+
+  getTimers(token) {
+    fetch(`http://localhost:3000/timer?token=${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(json => {
+      if(json.success) {
+        console.log(json);
+        this.setState({
+          timers: json.timers,
+          groups: json.groups
+        })
+      } else {
+        this.setState({
+          timerError: json.message,
+          isLoading: false
+        })
+      }
+    });
+  }
+
+  addModal() {
+    console.log('im supposed to create a modal for adding groups! help me become real :)');
   }
 
   render() {
-    if(!this.state.token) {
+    if(this.state.token === '') {
       if (this.state.showRegister === false) {
         return (
           <Signin loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Signin>
@@ -71,7 +108,14 @@ class App extends Component {
       )
     }
     return (
-      <div>hi</div>
+      <Dash
+        groups={this.state.groups}
+        timers={this.state.timers}
+        getTimers={this.getTimers}
+        loggedOut={this.loggedOut}
+        addModal={this.addModal}
+      >
+      </Dash>
     )
   }
 }

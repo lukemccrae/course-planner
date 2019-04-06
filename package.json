@@ -9,6 +9,7 @@
     "react-alert-template-basic": "^1.0.0",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.8.4",
+    "react-modal": "^3.8.1",
     "react-scripts": "2.1.8"
   },
   "scripts": {
