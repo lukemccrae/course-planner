@@ -22,7 +22,6 @@ class App extends Component {
     this.loggedIn = this.loggedIn.bind(this);
     this.loggedOut = this.loggedOut.bind(this);
     this.getTimers = this.getTimers.bind(this);
-    this.addModal = this.addModal.bind(this);
   }
 
   componentDidMount() {
@@ -92,10 +91,6 @@ class App extends Component {
     });
   }
 
-  addModal() {
-    console.log('im supposed to create a modal for adding groups! help me become real :)');
-  }
-
   render() {
     if(this.state.token === '') {
       if (this.state.showRegister === false) {
@@ -113,7 +108,6 @@ class App extends Component {
         timers={this.state.timers}
         getTimers={this.getTimers}
         loggedOut={this.loggedOut}
-        addModal={this.addModal}
       >
       </Dash>
     )
