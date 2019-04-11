@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Navbar from './Navbar';
-import AddTimer from './AddTimer';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
 import Button from 'react-bootstrap/Button';
@@ -20,7 +19,6 @@ Modal.setAppElement('#root')
 
 class Dash extends Component {
   constructor(props) {
-    console.log(props);
     super(props)
 
     this.state = {
@@ -40,6 +38,8 @@ class Dash extends Component {
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this)
     this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this)
     this.onTextboxChangeTimerLength = this.onTextboxChangeTimerLength.bind(this)
+    this.howManyTimers = this.howManyTimers.bind(this);
+    this.deleteGroup = this.deleteGroup.bind(this);
   }
 
   onTextboxChangeGroupName(event) {
@@ -78,7 +78,7 @@ class Dash extends Component {
 
   Timer(name, length) {
     this.name = name;
-    this.length = length;
+    this.length = parseInt(length);
     this.id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
   }
 
@@ -88,7 +88,7 @@ class Dash extends Component {
     tempTimers.push(newTimer)
     this.setState({
       timers: tempTimers,
-      timerName: '',
+      timerName: 'New Timer',
       timerLength: 60
     })
   }
@@ -112,7 +112,8 @@ class Dash extends Component {
       .then(json => {
         if(json.success) {
           this.setState({
-            timers: []
+            timers: [],
+            groupName: 'Group Name'
           })
           this.props.getTimers(token)
           this.closeModal()
@@ -125,18 +126,61 @@ class Dash extends Component {
       });
   }
 
+  deleteGroup(group) {
+    const token = JSON.parse(localStorage.the_main_app).token;
+
+    fetch(`http://localhost:3000/group?token=${token}&groupId=${group._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(res => res.json())
+      .then(json => {
+        if(json.success) {
+          this.setState({
+            timers: [],
+            groupName: 'Group Name'
+          })
+          this.props.getTimers(token)
+          this.closeModal()
+        } else {
+          this.setState({
+            timerError: json.message,
+            isLoading: false
+          })
+        }
+      });
+  }
+
+  howManyTimers(group) {
+    return group.timers.length;
+  }
+
+  howLongTimers(timers) {
+    let result = 0;
+    for (var i = 0; i < timers.length; i++) {
+      result += timers[i].length;
+    }
+    return result;
+  }
+
   render() {
     return (
       <div>
         <Navbar addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Navbar>
         <div>
-          <div>
+          <Container>
             {this.props.groups.map(g => {
               return (
-                <p key={g._id}>{g.name}</p>
+                  <div className="group" key={g._id}>
+                    <h3>{g.name}</h3>
+                    <p>This group has {this.howManyTimers(g)} timers. Their combined length is {this.howLongTimers(g.timers)}</p>
+                    <Button onClick={() => this.deleteGroup(g)}>Delete</Button>
+                  </div>
               )
             })}
-          </div>
+          </Container>
        <Modal
          isOpen={this.state.modalIsOpen}
          onAfterOpen={this.afterOpenModal}
@@ -166,8 +210,8 @@ class Dash extends Component {
                onChange={this.onTextboxChangeTimerName}
              />
              <input
-               type="text"
-               placeholder="Minutes"
+               type="number"
+               placeholder="Seconds"
                value={this.state.timerLength}
                onChange={this.onTextboxChangeTimerLength}
              />

@@ -27,7 +27,6 @@ class App extends Component {
   componentDidMount() {
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
-      console.log(obj);
       //verify token
       fetch('http://localhost:3000/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
@@ -77,7 +76,6 @@ class App extends Component {
     .then(res => res.json())
     .then(json => {
       if(json.success) {
-        console.log(json);
         this.setState({
           timers: json.timers,
           groups: json.groups

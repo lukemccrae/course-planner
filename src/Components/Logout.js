@@ -17,7 +17,7 @@ class Logout extends Component {
       },
     })
       .then(callback => {
-        if(callback.status == 200) {
+        if(callback.status === 200) {
           this.props.loggedOut();
         } else {
           console.log(callback);
