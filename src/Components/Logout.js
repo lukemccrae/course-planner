@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Button from 'react-bootstrap/Button';
 
 class Logout extends Component {
   constructor(props) {
@@ -27,7 +26,7 @@ class Logout extends Component {
 
   render() {
     return (
-      <Button onClick={this.onLogout}>Logout</Button>
+      <div onClick={this.onLogout}>Logout</div>
     )
   }
 

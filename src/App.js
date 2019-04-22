@@ -30,6 +30,7 @@ class App extends Component {
       //verify token
       fetch('http://localhost:3000/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
+          console.log(json);
           this.setState({token: obj.token, isLoading: false})
         } else {
           this.setState({isLoading: false})
@@ -78,7 +79,8 @@ class App extends Component {
       if(json.success) {
         this.setState({
           timers: json.timers,
-          groups: json.groups
+          groups: json.groups,
+          userName: json.username
         })
       } else {
         this.setState({
@@ -104,6 +106,7 @@ class App extends Component {
       <Dash
         groups={this.state.groups}
         timers={this.state.timers}
+        username={this.state.username}
         getTimers={this.getTimers}
         loggedOut={this.loggedOut}
       >
