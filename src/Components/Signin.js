@@ -23,7 +23,8 @@ class Signin extends Component {
     this.setState({signInPassword: event.target.value})
   }
 
-  onSignIn() {
+  onSignIn(e) {
+    e.preventDefault();
     fetch(`http://localhost:3000/api/account/signin`, {
       method: 'POST',
       headers: {
@@ -73,7 +74,7 @@ class Signin extends Component {
                   onChange={this.onTextboxChangeSignInPassword}
                 />
               </Form.Group>
-              <Button onClick={this.onSignIn} variant="primary" type="submit">
+              <Button onClick={this.onSignIn} type="submit">
                 Sign In
               </Button>
             </Form>
