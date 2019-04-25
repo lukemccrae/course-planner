@@ -2,28 +2,23 @@ import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-modal';
 import Countdown from 'react-countdown-now';
+import Completionist from './Completionist';
 
 const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-40%',
+    transform: 'translate(-50%, -50%)'
   }
 };
-
-const Completionist = (timer) => {
-  return (
-    <span> is done.</span>
-  )
-}
 
 const renderer = ({minutes, seconds, completed}) => {
   if (completed) {
     // Render a completed state
-    return <Completionist />;
+    return <Completionist></Completionist>
   } else {
     // Render a countdown
     return <span>{minutes}:{seconds}</span>;
@@ -35,14 +30,18 @@ class Start extends Component {
     super(props)
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      currentTimerIndex: 0
     }
     this.start = this.start.bind(this);
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.countdownDisplay = this.countdownDisplay.bind(this);
+    this.nextTimer = this.nextTimer.bind(this);
   }
+
+
 
   openModal() {
     this.setState({modalIsOpen: true});
@@ -61,20 +60,32 @@ class Start extends Component {
     this.openModal()
   }
 
-  countdownDisplay(t) {
+  nextTimer() {
+    console.log('next time');
+    this.setState({
+      currentTimerIndex: this.state.currentTimerIndex++
+    })
+    console.log(this.state.currentTimerIndex);
+  }
+
+  countdownDisplay(timer) {
+    console.log(timer);
 
     let countdownComponent = (
-      <Countdown renderer={renderer} name={t.name} date={Date.now() + t.length * 1000}>
-        <Completionist />
+      <Countdown date={Date.now() + timer.length * 3000}>
+        <Completionist nextTimer={this.nextTimer}></Completionist>
       </Countdown>
     )
 
     let displayComponent = (
       <div>
-        <span>{t.length}</span>
+        <p>{timer.length}</p>
       </div>
     )
-    if(false) {
+
+    if(timer.id == this.props.group.timers[this.state.currentTimerIndex].id) {
+      console.log(this.state.currentTimerIndex);
+      console.log(timer.id, this.props.group.timers[this.state.currentTimerIndex].id);
       return (
         countdownComponent
       )
@@ -83,31 +94,21 @@ class Start extends Component {
         displayComponent
       )
     }
-
   }
 
   render() {
     return (
       <div>
         <Button onClick={this.start}>Start</Button>
-        <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
+        <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={customStyles} contentLabel="Example Modal">
 
-            <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
-              {this.props.group.timers.map(t => {
-                return (
-                  <div key={t.id}>
-                    <div>{t.name} {this.countdownDisplay(t)}
-                    </div>
-                  </div>
-                )
-              })}
-          </Modal>
+          <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
+          {this.props.group.timers.map(t => {
+            return (
+              <div  className="countdownDisplay" key={t.id}>{t.name}{this.countdownDisplay(t)}</div>
+            )
+          })}
+        </Modal>
       </div>
     )
   }

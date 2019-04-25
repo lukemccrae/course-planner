@@ -21,9 +21,13 @@
 
 #dropdown-basic-button {}
 
+.countdownDisplay {
+  display: flex;
+}
+
 .groupNameParent {
   display: flex;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 @keyframes App-logo-spin {
