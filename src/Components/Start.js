@@ -14,16 +14,16 @@ const customStyles = {
     transform: 'translate(-50%, -50%)'
   }
 };
-
-const renderer = ({minutes, seconds, completed}) => {
-  if (completed) {
-    // Render a completed state
-    return <Completionist></Completionist>
-  } else {
-    // Render a countdown
-    return <span>{minutes}:{seconds}</span>;
-  }
-};
+//
+// const renderer = ({minutes, seconds, completed}) => {
+//   if (completed) {
+//     // Render a completed state
+//     return <Completionist></Completionist>
+//   } else {
+//     // Render a countdown
+//     return <span>{minutes}:{seconds}</span>;
+//   }
+// };
 
 class Start extends Component {
   constructor(props) {
@@ -61,15 +61,15 @@ class Start extends Component {
   }
 
   nextTimer() {
-    console.log('next time');
-    this.setState({
-      currentTimerIndex: this.state.currentTimerIndex++
-    })
-    console.log(this.state.currentTimerIndex);
+    let currentTimerIndex = this.state.currentTimerIndex;
+    currentTimerIndex = ++currentTimerIndex;
+    this.setState({currentTimerIndex}, () =>
+    console.log(this.state)
+    );
+    console.log(this.state)
   }
 
   countdownDisplay(timer) {
-    console.log(timer);
 
     let countdownComponent = (
       <Countdown date={Date.now() + timer.length * 3000}>
@@ -84,8 +84,8 @@ class Start extends Component {
     )
 
     if(timer.id == this.props.group.timers[this.state.currentTimerIndex].id) {
-      console.log(this.state.currentTimerIndex);
-      console.log(timer.id, this.props.group.timers[this.state.currentTimerIndex].id);
+      // console.log(this.state.currentTimerIndex);
+      // console.log(timer.id, this.props.group.timers[this.state.currentTimerIndex].id);
       return (
         countdownComponent
       )
