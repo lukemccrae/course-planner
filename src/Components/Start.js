@@ -86,7 +86,7 @@ class Start extends Component {
 
   countdownDisplay(timer) {
     let countdownComponent = (
-      <Countdown date={Date.now() + timer.length * 3000}>
+      <Countdown date={Date.now() + timer.length * 1000}>
         <Completionist nextTimer={this.nextTimer}></Completionist>
       </Countdown>
     )
