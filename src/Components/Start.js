@@ -39,7 +39,7 @@ class Start extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.countdownDisplay = this.countdownDisplay.bind(this);
     this.nextTimer = this.nextTimer.bind(this);
-    this.routineNotEnded = this.routineNotEnded.bind(this);
+    this.routineEnded = this.routineEnded.bind(this);
   }
 
 
@@ -64,20 +64,22 @@ class Start extends Component {
     this.openModal()
   }
 
-  routineNotEnded() {
-    if(this.state.currentTimerIndex <= this.props.group.timers.length) {
+  routineEnded() {
+    if(this.state.currentTimerIndex < this.props.group.timers.length - 1) {
+      return false;
+    } else {
       return true;
     }
-    this.closeModal();
   }
 
   nextTimer() {
-    if(this.routineNotEnded()) {
+    if(this.routineEnded() === false) {
       let currentTimerIndex = this.state.currentTimerIndex;
       currentTimerIndex = ++currentTimerIndex;
       this.setState({currentTimerIndex}, () =>
       console.log()
       );
+    } else {
       this.closeModal();
     }
   }
