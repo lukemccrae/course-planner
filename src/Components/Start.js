@@ -39,6 +39,7 @@ class Start extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.countdownDisplay = this.countdownDisplay.bind(this);
     this.nextTimer = this.nextTimer.bind(this);
+    this.routineNotEnded = this.routineNotEnded.bind(this);
   }
 
 
@@ -53,24 +54,35 @@ class Start extends Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({
+      modalIsOpen: false,
+      currentTimerIndex: 0
+    });
   }
 
   start() {
     this.openModal()
   }
 
+  routineNotEnded() {
+    if(this.state.currentTimerIndex <= this.props.group.timers.length) {
+      return true;
+    }
+    this.closeModal();
+  }
+
   nextTimer() {
-    let currentTimerIndex = this.state.currentTimerIndex;
-    currentTimerIndex = ++currentTimerIndex;
-    this.setState({currentTimerIndex}, () =>
-    console.log(this.state)
-    );
-    console.log(this.state)
+    if(this.routineNotEnded()) {
+      let currentTimerIndex = this.state.currentTimerIndex;
+      currentTimerIndex = ++currentTimerIndex;
+      this.setState({currentTimerIndex}, () =>
+      console.log()
+      );
+      this.closeModal();
+    }
   }
 
   countdownDisplay(timer) {
-
     let countdownComponent = (
       <Countdown date={Date.now() + timer.length * 3000}>
         <Completionist nextTimer={this.nextTimer}></Completionist>
@@ -83,16 +95,18 @@ class Start extends Component {
       </div>
     )
 
-    if(timer.id == this.props.group.timers[this.state.currentTimerIndex].id) {
-      // console.log(this.state.currentTimerIndex);
-      // console.log(timer.id, this.props.group.timers[this.state.currentTimerIndex].id);
-      return (
-        countdownComponent
-      )
-    } else {
-      return (
-        displayComponent
-      )
+    if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
+      if(timer.id === this.props.group.timers[this.state.currentTimerIndex].id) {
+        // console.log(this.state.currentTimerIndex);
+        // console.log(timer.id, this.props.group.timers[this.state.currentTimerIndex].id);
+        return (
+          countdownComponent
+        )
+      } else {
+        return (
+          displayComponent
+        )
+      }
     }
   }
 
