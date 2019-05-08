@@ -40,6 +40,7 @@ class Start extends Component {
     this.countdownDisplay = this.countdownDisplay.bind(this);
     this.nextTimer = this.nextTimer.bind(this);
     this.routineEnded = this.routineEnded.bind(this);
+    this.formatCountdown = this.formatCountdown.bind(this);
   }
 
 
@@ -84,16 +85,20 @@ class Start extends Component {
     }
   }
 
+  formatCountdown(timer) {
+    return Date.now() + timer.length * 1000;
+  }
+
   countdownDisplay(timer) {
     let countdownComponent = (
-      <Countdown date={Date.now() + timer.length * 1000}>
+      <Countdown date={this.formatCountdown(timer)}>
         <Completionist nextTimer={this.nextTimer}></Completionist>
       </Countdown>
     )
 
     let displayComponent = (
       <div>
-        <p>{timer.length}</p>
+        <p className="displayTime">{this.props.timeFormat(timer.length)}</p>
       </div>
     )
 
@@ -116,9 +121,20 @@ class Start extends Component {
     return (
       <div>
         <Button onClick={this.start}>Start</Button>
-        <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={customStyles} contentLabel="Example Modal">
-
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+          shouldCloseOnOverlayClick={false}
+        >
+        <div className="startNav">
+          <button onClick={this.closeModal} type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
+        </div>
           {this.props.group.timers.map(t => {
             return (
               <div  className="countdownDisplay" key={t.id}>{t.name}{this.countdownDisplay(t)}</div>

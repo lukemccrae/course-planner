@@ -29,9 +29,9 @@ class Dash extends Component {
       groups: [],
       modalIsOpen: false,
       timeInMins: false,
-      timeDegreeButton: 'Mins',
       timerName: 'New Timer',
-      timerLength: 5,
+      timerLengthMins: 3,
+      timerLengthSecs: 0,
       groupName: 'Group Name'
     }
     this.addModal = this.addModal.bind(this);
@@ -42,11 +42,14 @@ class Dash extends Component {
     this.saveGroup = this.saveGroup.bind(this);
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this)
     this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this)
-    this.onTextboxChangeTimerLength = this.onTextboxChangeTimerLength.bind(this)
+    this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this)
+    this.onTextboxChangeTimerLengthSecs = this.onTextboxChangeTimerLengthSecs.bind(this)
     this.howManyTimers = this.howManyTimers.bind(this);
     this.deleteGroup = this.deleteGroup.bind(this);
-    this.changeTimeDegree = this.changeTimeDegree.bind(this);
     this.calculateTime = this.calculateTime.bind(this);
+    this.timeFormat = this.timeFormat.bind(this);
+    this.groupLink = this.groupLink.bind(this);
+    this.noGroups = this.noGroups.bind(this);
   }
 
   onTextboxChangeGroupName(event) {
@@ -57,8 +60,16 @@ class Dash extends Component {
     this.setState({timerName: event.target.value})
   }
 
-  onTextboxChangeTimerLength(event) {
-    this.setState({timerLength: event.target.value})
+  onTextboxChangeTimerLengthMins(event) {
+    if(event.target.value < 60 && typeof event.target.value != 'e') {
+      this.setState({timerLengthMins: event.target.value})
+    }
+  }
+
+  onTextboxChangeTimerLengthSecs(event) {
+    if(event.target.value < 60) {
+      this.setState({timerLengthSecs: event.target.value})
+    }
   }
 
   afterOpenModal() {
@@ -67,35 +78,32 @@ class Dash extends Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false, timers: [], timerName: 'Timer Name', timerLength: 5, groupName: 'Group Name'});
+    this.setState({
+      modalIsOpen: false,
+      timers: [],
+      timerName: 'Timer Name',
+      timerLengthMins: 3,
+      timerLengthSecs: 0,
+      groupName: 'Group Name'});
   }
 
   addModal() {
     this.setState({modalIsOpen: true});
   }
 
-  Timer(name, length) {
+  Timer(name, lengthMins, lengthSecs) {
     this.name = name;
-    this.length = parseInt(length);
+    this.length = parseInt(lengthMins) + parseInt(lengthSecs);
     this.id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
   }
 
   addTimer() {
     let tempTimers = this.state.timers;
-    let newTimer = new this.Timer(this.state.timerName, this.state.timerLength)
+    let addTimeMins = this.state.timerLengthMins * 60;
+    let addTimeSecs = this.state.timerLengthSecs;
+    let newTimer = new this.Timer(this.state.timerName, addTimeMins, addTimeSecs)
     tempTimers.push(newTimer)
-    this.setState({timers: tempTimers, timerName: 'New Timer', timerLength: 5, groupName: 'Group Name'})
-  }
-
-  changeTimeDegree() {
-    if (this.state.timeDegreeButton === 'Mins') {
-      this.setState({timeDegreeButton: 'Secs'})
-    } else {
-      this.setState({timeDegreeButton: 'Mins'})
-    }
-    this.setState({
-      timeInMins: !this.state.timeInMins
-    })
+    this.setState({timers: tempTimers, timerName: 'New Timer', timerLengthMins: 3, timerLengthSecs: 0})
   }
 
   saveGroup() {
@@ -106,9 +114,16 @@ class Dash extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name: this.state.groupName, length: this.state.timerLength, timers: this.state.timers, token: token})
+      body: JSON.stringify({
+        name: this.state.groupName,
+        length: this.calculateTime(),
+        timers: this.state.timers,
+        hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
+        token: token
+      })
     }).then(res => res.json()).then(json => {
       if (json.success) {
+        console.log('hellooo');
         this.setState({timers: [], groupName: 'Group Name'})
         this.props.getTimers(token)
         this.closeModal()
@@ -137,15 +152,22 @@ class Dash extends Component {
     });
   }
 
+  timeFormat(time) {
+    var minutes = Math.floor(time / 60);
+    time -= minutes * 60;
+    var seconds = parseInt(time % 60, 10);
+
+    return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+  }
+
   calculateTime() {
-    if (this.state.timeInMins === true) {
-      return (this.state.timerLength * 60)
-    }
-    return (this.state.timerLength)
+    let mins = this.state.timerLengthMins * 60;
+    return this.state.timerLengthSecs + mins;
   }
 
   howManyTimers(group) {
-    return group.timers.length;
+    if(group.timers.length === 1) return ' ' +  group.timers.length + ' timer';
+    return ' ' +  group.timers.length + ' timers';
   }
 
   howLongTimers(timers) {
@@ -153,15 +175,32 @@ class Dash extends Component {
     for (var i = 0; i < timers.length; i++) {
       result += timers[i].length;
     }
-    return result;
+
+    return this.timeFormat(result);
+  }
+
+  groupLink(hash) {
+    return `http://localhost:3000/hash/${hash}`;
+  }
+
+  noGroups() {
+    if(this.props.groups.length == 0) {
+      return (
+        <div>
+          <h2>Welcome to Routine Timer</h2>
+          <h4>Press the Add Routine button above to create your first group of timers.</h4>
+        </div>
+      )
+    }
   }
 
   render() {
     return (
       <div>
-        <Nav addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
+        <Nav username={this.props.username} addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
         <div>
           <Container>
+            {this.noGroups()}
             {this.props.groups.map(g => {
               return (
                 <div className="group" key={g._id}>
@@ -171,10 +210,9 @@ class Dash extends Component {
                       <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
                     </DropdownButton>
                   </div>
-                  <p>This group has {this.howManyTimers(g)}
-                    timers. Their combined length is {this.howLongTimers(g.timers)}
+                  <p>This group has {this.howManyTimers(g)}. Their combined length is {this.howLongTimers(g.timers)}
                   </p>
-                  <Start group={g}></Start>
+                  <Start timeFormat={this.timeFormat} group={g}></Start>
                 </div>
               )
             })}
@@ -182,16 +220,17 @@ class Dash extends Component {
           <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={customStyles} contentLabel="Example Modal">
 
             <h2 ref={subtitle => this.subtitle = subtitle}>Create a new group of Timers</h2>
-            <input type="text" placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/> {this.state.timers.map(t => {
+            <input type="text" placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
+            {this.state.timers.map(t => {
               return (
-                <p key={t.id}>{t.name}, {t.length}</p>
+                <p key={t.id}>{t.name}, {this.timeFormat(t.length)}</p>
               )
             })}
             <div>
               <div>
                 <input type="text" placeholder="Timer Name" value={this.state.timerName} onChange={this.onTextboxChangeTimerName}/>
-                <input type="number" placeholder="Length" value={this.state.timerLength} onChange={this.onTextboxChangeTimerLength}/>
-                <Button onClick={this.changeTimeDegree}>{this.state.timeDegreeButton}</Button>
+                <input type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/> :
+                <input type="number" placeholder="Secs" value={this.state.timerLengthSecs} onChange={this.onTextboxChangeTimerLengthSecs}/>
               </div>
               <Button onClick={this.addTimer}>Add Timer</Button>
               <Button onClick={this.saveGroup}>Save</Button>

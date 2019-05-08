@@ -51,7 +51,7 @@ class Nav extends Component {
       <div>
         <Navbar bg="light">
           <Container>
-            <div>Group Timer</div>
+            <div>{this.props.username}</div>
             <AddGroup addModal={this.props.addModal}></AddGroup>
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={this.openModal}>About</NavDropdown.Item>
