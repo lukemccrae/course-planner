@@ -130,7 +130,7 @@ class Start extends Component {
           shouldCloseOnOverlayClick={false}
         >
         <div className="startNav">
-          <button onClick={this.closeModal} type="button" class="close" aria-label="Close">
+          <button onClick={this.closeModal} type="button" className="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Logout from './Logout';
-import AddGroup from './AddGroup';
 import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
@@ -52,7 +52,7 @@ class Nav extends Component {
         <Navbar bg="light">
           <Container>
             <div>{this.props.username}</div>
-            <AddGroup addModal={this.props.addModal}></AddGroup>
+            <Button onClick={this.props.addModal}>Add Group</Button>
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={this.openModal}>About</NavDropdown.Item>
               <NavDropdown.Item href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>

@@ -10,6 +10,7 @@ class Signin extends Component {
     super(props)
     this.state = {}
 
+    this.signInRef = React.createRef();
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this)
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this)
     this.onSignIn = this.onSignIn.bind(this)
@@ -21,6 +22,10 @@ class Signin extends Component {
 
   onTextboxChangeSignInPassword(event) {
     this.setState({signInPassword: event.target.value})
+  }
+
+  componentDidMount() {
+    this.signInRef.current.focus();
   }
 
   onSignIn(e) {
@@ -63,6 +68,7 @@ class Signin extends Component {
                   placeholder="Enter email"
                   value={this.signInEmail}
                   onChange={this.onTextboxChangeSignInEmail}
+                  ref={this.signInRef}
                 />
               </Form.Group>
 

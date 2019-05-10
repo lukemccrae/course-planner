@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import Nav from './Nav';
 import Start from './Start';
+import AddGroup from './AddGroup.js';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
-import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
@@ -18,6 +18,7 @@ const customStyles = {
   }
 };
 
+
 Modal.setAppElement('#root')
 
 class Dash extends Component {
@@ -29,108 +30,32 @@ class Dash extends Component {
       groups: [],
       modalIsOpen: false,
       timeInMins: false,
-      timerName: 'New Timer',
+      timerName: '',
       timerLengthMins: 3,
       timerLengthSecs: 0,
-      groupName: 'Group Name'
+      groupName: ''
     }
     this.addModal = this.addModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.addTimer = this.addTimer.bind(this);
-    this.Timer = this.Timer.bind(this);
-    this.saveGroup = this.saveGroup.bind(this);
-    this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this)
-    this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this)
-    this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this)
-    this.onTextboxChangeTimerLengthSecs = this.onTextboxChangeTimerLengthSecs.bind(this)
     this.howManyTimers = this.howManyTimers.bind(this);
     this.deleteGroup = this.deleteGroup.bind(this);
-    this.calculateTime = this.calculateTime.bind(this);
-    this.timeFormat = this.timeFormat.bind(this);
     this.groupLink = this.groupLink.bind(this);
     this.noGroups = this.noGroups.bind(this);
-  }
-
-  onTextboxChangeGroupName(event) {
-    this.setState({groupName: event.target.value})
-  }
-
-  onTextboxChangeTimerName(event) {
-    this.setState({timerName: event.target.value})
-  }
-
-  onTextboxChangeTimerLengthMins(event) {
-    if(event.target.value < 60 && typeof event.target.value != 'e') {
-      this.setState({timerLengthMins: event.target.value})
-    }
-  }
-
-  onTextboxChangeTimerLengthSecs(event) {
-    if(event.target.value < 60) {
-      this.setState({timerLengthSecs: event.target.value})
-    }
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
   }
 
   closeModal() {
     this.setState({
       modalIsOpen: false,
       timers: [],
-      timerName: 'Timer Name',
+      timerName: '',
       timerLengthMins: 3,
       timerLengthSecs: 0,
-      groupName: 'Group Name'});
+      groupName: ''});
   }
 
   addModal() {
     this.setState({modalIsOpen: true});
-  }
-
-  Timer(name, lengthMins, lengthSecs) {
-    this.name = name;
-    this.length = parseInt(lengthMins) + parseInt(lengthSecs);
-    this.id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
-  }
-
-  addTimer() {
-    let tempTimers = this.state.timers;
-    let addTimeMins = this.state.timerLengthMins * 60;
-    let addTimeSecs = this.state.timerLengthSecs;
-    let newTimer = new this.Timer(this.state.timerName, addTimeMins, addTimeSecs)
-    tempTimers.push(newTimer)
-    this.setState({timers: tempTimers, timerName: 'New Timer', timerLengthMins: 3, timerLengthSecs: 0})
-  }
-
-  saveGroup() {
-    const token = JSON.parse(localStorage.the_main_app).token;
-
-    fetch(`http://localhost:3000/group`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: this.state.groupName,
-        length: this.calculateTime(),
-        timers: this.state.timers,
-        hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
-        token: token
-      })
-    }).then(res => res.json()).then(json => {
-      if (json.success) {
-        console.log('hellooo');
-        this.setState({timers: [], groupName: 'Group Name'})
-        this.props.getTimers(token)
-        this.closeModal()
-      } else {
-        this.setState({timerError: json.message, isLoading: false})
-      }
-    });
   }
 
   deleteGroup(group) {
@@ -143,7 +68,7 @@ class Dash extends Component {
       }
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        this.setState({timers: [], groupName: 'Group Name'})
+        this.setState({timers: [], groupName: ''})
         this.props.getTimers(token)
         this.closeModal()
       } else {
@@ -158,11 +83,6 @@ class Dash extends Component {
     var seconds = parseInt(time % 60, 10);
 
     return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-  }
-
-  calculateTime() {
-    let mins = this.state.timerLengthMins * 60;
-    return this.state.timerLengthSecs + mins;
   }
 
   howManyTimers(group) {
@@ -184,7 +104,7 @@ class Dash extends Component {
   }
 
   noGroups() {
-    if(this.props.groups.length == 0) {
+    if(this.props.groups.length === 0) {
       return (
         <div>
           <h2>Welcome to Routine Timer</h2>
@@ -193,6 +113,12 @@ class Dash extends Component {
       )
     }
   }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
 
   render() {
     return (
@@ -218,23 +144,8 @@ class Dash extends Component {
             })}
           </Container>
           <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={customStyles} contentLabel="Example Modal">
-
             <h2 ref={subtitle => this.subtitle = subtitle}>Create a new group of Timers</h2>
-            <input type="text" placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
-            {this.state.timers.map(t => {
-              return (
-                <p key={t.id}>{t.name}, {this.timeFormat(t.length)}</p>
-              )
-            })}
-            <div>
-              <div>
-                <input type="text" placeholder="Timer Name" value={this.state.timerName} onChange={this.onTextboxChangeTimerName}/>
-                <input type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/> :
-                <input type="number" placeholder="Secs" value={this.state.timerLengthSecs} onChange={this.onTextboxChangeTimerLengthSecs}/>
-              </div>
-              <Button onClick={this.addTimer}>Add Timer</Button>
-              <Button onClick={this.saveGroup}>Save</Button>
-            </div>
+            <AddGroup closeModal={this.closeModal} getTimers={this.props.getTimers} timeFormat={this.timeFormat} timers={this.state.timers}></AddGroup>
           </Modal>
         </div>
       </div>
