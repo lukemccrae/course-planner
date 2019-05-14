@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
+import Sound from 'react-sound';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Modal from 'react-modal';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
+
 
 const customStyles = {
   content: {
@@ -11,7 +16,8 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-40%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    width: '70%'
   }
 };
 //
@@ -47,6 +53,16 @@ class Start extends Component {
 
   openModal() {
     this.setState({modalIsOpen: true});
+    return (
+      <Sound
+        url="ding.mp3"
+        playStatus={Sound.status.PLAYING}
+        playFromPosition={300 /* in milliseconds */}
+        onLoading={this.handleSongLoading}
+        onPlaying={this.handleSongPlaying}
+        onFinishedPlaying={this.handleSongFinishedPlaying}
+      />
+    );
   }
 
   afterOpenModal() {
@@ -104,8 +120,6 @@ class Start extends Component {
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
       if(timer.id === this.props.group.timers[this.state.currentTimerIndex].id) {
-        // console.log(this.state.currentTimerIndex);
-        // console.log(timer.id, this.props.group.timers[this.state.currentTimerIndex].id);
         return (
           countdownComponent
         )
@@ -133,13 +147,23 @@ class Start extends Component {
           <button onClick={this.closeModal} type="button" className="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
+          <Container>
+            <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
+            {this.props.group.timers.map(t => {
+              return (
+                <Row  className="countdownDisplay" key={t.id}>
+                  <Col>
+                    {t.name}
+                  </Col>
+                  <Col>
+                    {this.countdownDisplay(t)}
+                  </Col>
+                </Row>
+              )
+            })}
+          </Container>
         </div>
-          {this.props.group.timers.map(t => {
-            return (
-              <div  className="countdownDisplay" key={t.id}>{t.name}{this.countdownDisplay(t)}</div>
-            )
-          })}
+
         </Modal>
       </div>
     )

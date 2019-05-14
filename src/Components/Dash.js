@@ -42,6 +42,7 @@ class Dash extends Component {
     this.deleteGroup = this.deleteGroup.bind(this);
     this.groupLink = this.groupLink.bind(this);
     this.noGroups = this.noGroups.bind(this);
+    this.theirOrIts = this.theirOrIts.bind(this);
   }
 
   closeModal() {
@@ -90,6 +91,12 @@ class Dash extends Component {
     return ' ' +  group.timers.length + ' timers';
   }
 
+  theirOrIts(group) {
+    console.log(group);
+    if(group.timers.length == 1) return 'Its '
+    return 'Their combined '
+  }
+
   howLongTimers(timers) {
     let result = 0;
     for (var i = 0; i < timers.length; i++) {
@@ -136,7 +143,7 @@ class Dash extends Component {
                       <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
                     </DropdownButton>
                   </div>
-                  <p>This group has {this.howManyTimers(g)}. Their combined length is {this.howLongTimers(g.timers)}
+                  <p>This group has {this.howManyTimers(g)}. {this.theirOrIts(g)} length is {this.howLongTimers(g.timers)}
                   </p>
                   <Start timeFormat={this.timeFormat} group={g}></Start>
                 </div>

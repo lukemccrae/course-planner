@@ -48,9 +48,10 @@
 }
 
 .group {
-  width: 70%;
   padding: 5px;
   margin: 3px;
   border-width: 2px;
   border-style: solid;
+  border-radius: 5px;
+  border-color: grey;
 }

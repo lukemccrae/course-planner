@@ -59,8 +59,10 @@ class AddGroup extends Component {
     let addTimeMins = this.state.timerLengthMins * 60;
     let addTimeSecs = this.state.timerLengthSecs;
     let newTimer = new this.Timer(this.state.timerName, addTimeMins, addTimeSecs)
-    tempTimers.push(newTimer)
-    this.setState({timers: tempTimers, timerName: '', timerLengthMins: 3, timerLengthSecs: 0})
+    if(this.state.timerName !== '') {
+      tempTimers.push(newTimer)
+      this.setState({timers: tempTimers, timerName: '', timerLengthMins: 3, timerLengthSecs: 0})
+    }
     this.timerNameRef.current.focus();
   }
 
