@@ -78,7 +78,7 @@ class Register extends Component {
     return (
       <div className="vertical-center">
         <div className="container">
-          <h3>Routine Timer</h3>
+          <h3>Group Timer</h3>
               <Row>
                 <Col>
                   <Form.Group controlId="firstName">

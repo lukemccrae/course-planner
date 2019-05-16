@@ -114,8 +114,8 @@ class Dash extends Component {
     if(this.props.groups.length === 0) {
       return (
         <div>
-          <h2>Welcome to Routine Timer</h2>
-          <h4>Press the Add Routine button above to create your first group of timers.</h4>
+          <h2>Welcome to Group Timer</h2>
+          <h4>Press the Add Group button above to create your first group.</h4>
         </div>
       )
     }

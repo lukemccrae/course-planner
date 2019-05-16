@@ -60,7 +60,7 @@ class Signin extends Component {
         <header className="App-header"></header>
         <div className="vertical-center">
           <div className="container">
-            <h3>Routine Timer</h3>
+            <h3>Group Timer</h3>
             <Form>
               <Form.Group controlId="formBasicEmail">
                 <Form.Control
