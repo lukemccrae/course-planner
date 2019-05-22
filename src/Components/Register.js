@@ -42,7 +42,7 @@ class Register extends Component {
   }
 
   onSignUp() {
-    fetch(`http://localhost:3000/api/account/signup`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

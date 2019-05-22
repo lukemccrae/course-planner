@@ -92,7 +92,6 @@ class Dash extends Component {
   }
 
   theirOrIts(group) {
-    console.log(group);
     if(group.timers.length == 1) return 'Its '
     return 'Their combined '
   }
