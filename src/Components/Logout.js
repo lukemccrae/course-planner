@@ -9,7 +9,7 @@ class Logout extends Component {
   }
 
   onLogout() {
-    fetch(`http://localhost:3000/api/account/logout?token=${this.props.token}`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/logout?token=${this.props.token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

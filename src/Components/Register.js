@@ -42,6 +42,7 @@ class Register extends Component {
   }
 
   onSignUp() {
+    console.log('onSignUp');
     fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
       method: 'POST',
       headers: {
@@ -57,6 +58,7 @@ class Register extends Component {
       .then(res => res.json())
       .then(json => {
         if(json.success) {
+          console.log(json);
           this.setState({
             signUpError: json.message,
             isLoading: false,
@@ -67,6 +69,7 @@ class Register extends Component {
           })
           this.props.showRegister()
         } else {
+          console.log('failed');
           this.setState({
             signUpError: json.message,
             isLoading: false
