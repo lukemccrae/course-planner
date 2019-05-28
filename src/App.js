@@ -28,7 +28,7 @@ class App extends Component {
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token) {
       //verify token
-      fetch('http://localhost:3000/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
+      fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
           console.log(json);
           this.setState({token: obj.token, isLoading: false})
@@ -68,7 +68,7 @@ class App extends Component {
   }
 
   getTimers(token) {
-    fetch(`http://localhost:3000/timer?token=${token}`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

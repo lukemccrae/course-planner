@@ -62,7 +62,7 @@ class Dash extends Component {
   deleteGroup(group) {
     const token = JSON.parse(localStorage.the_main_app).token;
 
-    fetch(`http://localhost:3000/group?token=${token}&groupId=${group._id}`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/group?token=${token}&groupId=${group._id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -106,7 +106,7 @@ class Dash extends Component {
   }
 
   groupLink(hash) {
-    return `http://localhost:3000/hash/${hash}`;
+    return `https://banana-crumble-42815.herokuapp.com/hash/${hash}`;
   }
 
   noGroups() {

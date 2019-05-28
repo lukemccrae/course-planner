@@ -75,7 +75,7 @@ class AddGroup extends Component {
   saveGroup() {
     const token = JSON.parse(localStorage.the_main_app).token;
 
-    fetch(`http://localhost:3000/group`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
