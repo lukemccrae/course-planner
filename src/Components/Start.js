@@ -53,16 +53,6 @@ class Start extends Component {
 
   openModal() {
     this.setState({modalIsOpen: true});
-    return (
-      <Sound
-        url="ding.mp3"
-        playStatus={Sound.status.PLAYING}
-        playFromPosition={300 /* in milliseconds */}
-        onLoading={this.handleSongLoading}
-        onPlaying={this.handleSongPlaying}
-        onFinishedPlaying={this.handleSongFinishedPlaying}
-      />
-    );
   }
 
   afterOpenModal() {
