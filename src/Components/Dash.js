@@ -92,7 +92,7 @@ class Dash extends Component {
   }
 
   theirOrIts(group) {
-    if(group.timers.length == 1) return 'Its '
+    if(group.timers.length === 1) return 'Its '
     return 'Their combined '
   }
 

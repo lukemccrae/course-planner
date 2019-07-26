@@ -8,6 +8,7 @@
     "react-alert": "^5.4.0",
     "react-alert-template-basic": "^1.0.0",
     "react-bootstrap": "^1.0.0-beta.8",
+    "react-component-countdown-timer": "^0.1.1",
     "react-countdown-now": "^2.1.0",
     "react-dom": "^16.8.4",
     "react-modal": "^3.8.1",

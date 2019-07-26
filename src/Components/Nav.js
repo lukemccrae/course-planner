@@ -13,7 +13,8 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    width                 : '50%'
   }
 };
 
@@ -71,7 +72,9 @@ class Nav extends Component {
           contentLabel="Example Modal"
         >
 
-          <h2 ref={subtitle => this.subtitle = subtitle}>About me</h2>
+          <h2 ref={subtitle => this.subtitle = subtitle}>Welcome to Group Timer</h2>
+          <h4>I created Group Timer to streamline my daily routines. The idea came after I found success practicing Hal Elrod’s <a href="https://halelrod.com/6-minute-miracle-morning/">Six Minute Miracle Morning</a>. I often find that the key to having a productive day is establishing microroutines for the essentials of daily life. I hope this tool can help you establish a deeper connection to the meaningful activities of your life. </h4>
+
         </Modal>
       </div>
     )
