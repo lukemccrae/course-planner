@@ -8,7 +8,10 @@ import {setInStorage} from '../utils/storage';
 class Signin extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      signInEmail: 'l@l.com',
+      signInPassword: 'eeee'
+    }
 
     this.signInRef = React.createRef();
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this)
@@ -26,10 +29,14 @@ class Signin extends Component {
 
   componentDidMount() {
     this.signInRef.current.focus();
+
+    //remove this when pushing
+    this.onSignIn()
   }
 
   onSignIn(e) {
-    e.preventDefault();
+    //turn this on when pushing
+    // e.preventDefault();
     fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signin`, {
       method: 'POST',
       headers: {
@@ -53,6 +60,7 @@ class Signin extends Component {
         }
       });
   }
+
 
   render(props) {
     return (

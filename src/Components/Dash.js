@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Nav from './Nav';
 import Start from './Start';
 import AddGroup from './AddGroup.js';
+import EditGroup from './EditGroup.js';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -28,16 +29,19 @@ class Dash extends Component {
     this.state = {
       timers: [],
       groups: [],
-      modalIsOpen: false,
+      editModalIsOpen: false,
+      addModalIsOpen: false,
       timeInMins: false,
       timerName: '',
       timerLengthMins: 3,
       timerLengthSecs: 0,
-      groupName: ''
+      groupName: '',
+      groupToEdit: {}
     }
     this.addModal = this.addModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.closeEditModal = this.closeEditModal.bind(this);
     this.howManyTimers = this.howManyTimers.bind(this);
     this.deleteGroup = this.deleteGroup.bind(this);
     this.groupLink = this.groupLink.bind(this);
@@ -45,9 +49,15 @@ class Dash extends Component {
     this.theirOrIts = this.theirOrIts.bind(this);
   }
 
+  closeEditModal() {
+    this.setState({
+      editModalIsOpen: false
+    })
+  }
+
   closeModal() {
     this.setState({
-      modalIsOpen: false,
+      addModalIsOpen: false,
       timers: [],
       timerName: '',
       timerLengthMins: 3,
@@ -56,7 +66,14 @@ class Dash extends Component {
   }
 
   addModal() {
-    this.setState({modalIsOpen: true});
+    this.setState({addModalIsOpen: true});
+  }
+
+  editGroup(g) {
+    this.setState({
+      editModalIsOpen: true,
+      groupToEdit: g
+    })
   }
 
   deleteGroup(group) {
@@ -120,6 +137,10 @@ class Dash extends Component {
     }
   }
 
+  selectedGroup(g) {
+
+  }
+
   afterOpenModal() {
     // references are now sync'd and can be accessed.
     this.subtitle.style.color = '#f00';
@@ -140,6 +161,7 @@ class Dash extends Component {
                     <h3>{g.name}</h3>
                     <DropdownButton id="dropdown-basic-button" title="">
                       <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
+                      <Dropdown.Item onClick={() => this.editGroup(g)}>Edit</Dropdown.Item>
                     </DropdownButton>
                   </div>
                   <p>This group has {this.howManyTimers(g)}. {this.theirOrIts(g)} length is {this.howLongTimers(g.timers)}
@@ -149,9 +171,25 @@ class Dash extends Component {
               )
             })}
           </Container>
-          <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={customStyles} contentLabel="Example Modal">
-            <h2 ref={subtitle => this.subtitle = subtitle}>Create a new group of Timers</h2>
-            <AddGroup closeModal={this.closeModal} getTimers={this.props.getTimers} timeFormat={this.timeFormat} timers={this.state.timers}></AddGroup>
+          <Modal
+            isOpen={this.state.editModalIsOpen}
+            onAfterOpen={this.afterOpenModal}
+            onRequestClose={this.closeEditModal}
+            style={customStyles}
+            contentLabel="Example Modal">
+
+            <h2 ref={subtitle => this.subtitle = subtitle}></h2>
+            <EditGroup closeEditModal={this.closeEditModal} group={this.state.groupToEdit} getTimers={this.props.getTimers} timeFormat={this.timeFormat} timers={this.state.timers}></EditGroup>
+          </Modal>
+          <Modal
+            isOpen={this.state.addModalIsOpen}
+            onAfterOpen={this.afterOpenModal}
+            onRequestClose={this.closeModal}
+            style={customStyles}
+            contentLabel="Example Modal">
+
+            <h2 ref={subtitle => this.subtitle = subtitle}></h2>
+            <AddGroup closeModal={this.closeModal} getTimers={this.props.getTimers} timeFormat={this.timeFormat}></AddGroup>
           </Modal>
         </div>
       </div>
