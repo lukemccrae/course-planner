@@ -5,13 +5,14 @@ import Button from 'react-bootstrap/Button';
 
 class EditGroup extends Component {
   constructor(props) {
-    console.log(props);
     super(props)
 
     this.state = {
       modalIsOpen: false,
       timers: [],
-      groupName: ''
+      groupName: '',
+      timerLengthMins: 3,
+      timerLengthSecs: 0
     }
 
     this.addModal = this.addModal.bind(this);
@@ -19,7 +20,6 @@ class EditGroup extends Component {
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
     this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this);
     this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this);
-    this.onTextboxChangeTimerLengthSecs = this.onTextboxChangeTimerLengthSecs.bind(this);
   }
 
   componentDidMount() {
@@ -37,7 +37,7 @@ class EditGroup extends Component {
   onTextboxChangeTimerName(event, t) {
     let timers = cloneDeep(this.state.timers)
     for (var i = 0; i < timers.length; i++) {
-      if(timers[i].name == t.name) {
+      if(timers[i].id == t.id) {
         timers[i].name = event.target.value
       }
     }
@@ -46,15 +46,17 @@ class EditGroup extends Component {
     })
   }
 
-  onTextboxChangeTimerLengthMins(event) {
+  onTextboxChangeTimerLengthMins(event, t) {
     if(event.target.value < 60 && event.target.value !== 'e') {
-      this.setState({timerLengthMins: event.target.value})
-    }
-  }
-
-  onTextboxChangeTimerLengthSecs(event) {
-    if(event.target.value < 60) {
-      this.setState({timerLengthSecs: event.target.value})
+      let timers = cloneDeep(this.state.timers)
+      for (var i = 0; i < timers.length; i++) {
+        if(timers[i].id == t.id) {
+          timers[i].length = event.target.value * 60
+        }
+      }
+      this.setState({
+        timers: timers
+      })
     }
   }
 
@@ -65,7 +67,7 @@ class EditGroup extends Component {
     saveGroup(group) {
       const token = JSON.parse(localStorage.the_main_app).token;
 
-      fetch(`http://localhost:3000/group?groupId=${this.state.id}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${this.state.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -98,8 +100,7 @@ class EditGroup extends Component {
               return (
                 <div key={t.id}>
                   <input type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
-                  <input type="number" placeholder="Mins" value={t.length} onChange={this.onTextboxChangeTimerLengthMins}/> :
-                  <input type="number" placeholder="Secs" value={t.length} onChange={this.onTextboxChangeTimerLengthSecs}/>
+                  <input type="number" placeholder="Mins" value={this.props.timeFormat(t.length, 'num')[0]} onChange={(e) => this.onTextboxChangeTimerLengthMins(e, t)}/>
                 </div>
               )
             })}

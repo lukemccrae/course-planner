@@ -103,7 +103,7 @@ class Start extends Component {
 
     let displayComponent = (
       <div>
-        <p className="displayTime">{this.props.timeFormat(timer.length)}</p>
+        <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
       </div>
     )
 

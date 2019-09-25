@@ -95,10 +95,14 @@ class Dash extends Component {
     });
   }
 
-  timeFormat(time) {
+  timeFormat(time, str) {
     var minutes = Math.floor(time / 60);
     time -= minutes * 60;
     var seconds = parseInt(time % 60, 10);
+
+    if(str == 'str') return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    if(str == 'num') return [minutes, seconds];
+    return null;
 
     return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   }
@@ -118,8 +122,7 @@ class Dash extends Component {
     for (var i = 0; i < timers.length; i++) {
       result += timers[i].length;
     }
-
-    return this.timeFormat(result);
+    return this.timeFormat(result, 'str');
   }
 
   groupLink(hash) {
@@ -135,10 +138,6 @@ class Dash extends Component {
         </div>
       )
     }
-  }
-
-  selectedGroup(g) {
-
   }
 
   afterOpenModal() {
@@ -179,7 +178,12 @@ class Dash extends Component {
             contentLabel="Example Modal">
 
             <h2 ref={subtitle => this.subtitle = subtitle}></h2>
-            <EditGroup closeEditModal={this.closeEditModal} group={this.state.groupToEdit} getTimers={this.props.getTimers} timeFormat={this.timeFormat} timers={this.state.timers}></EditGroup>
+            <EditGroup
+              closeEditModal={this.closeEditModal}
+              group={this.state.groupToEdit}
+              getTimers={this.props.getTimers}
+              timeFormat={this.timeFormat}
+              timers={this.state.timers}></EditGroup>
           </Modal>
           <Modal
             isOpen={this.state.addModalIsOpen}
@@ -189,7 +193,10 @@ class Dash extends Component {
             contentLabel="Example Modal">
 
             <h2 ref={subtitle => this.subtitle = subtitle}></h2>
-            <AddGroup closeModal={this.closeModal} getTimers={this.props.getTimers} timeFormat={this.timeFormat}></AddGroup>
+            <AddGroup
+              closeModal={this.closeModal}
+              getTimers={this.props.getTimers}
+              timeFormat={this.timeFormat}></AddGroup>
           </Modal>
         </div>
       </div>

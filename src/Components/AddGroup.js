@@ -22,7 +22,6 @@ class AddGroup extends Component {
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
     this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this);
     this.onTextboxChangeTimerLengthSecs = this.onTextboxChangeTimerLengthSecs.bind(this);
-
   }
 
   onTextboxChangeTimerName(event) {
@@ -106,14 +105,13 @@ class AddGroup extends Component {
         <input type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
         {this.state.timers.map(t => {
           return (
-            <p key={t.id}>{t.name}, {this.props.timeFormat(t.length)}</p>
+            <p key={t.id}>{t.name}, {this.props.timeFormat(t.length, 'str')}</p>
           )
         })}
         <div>
           <div>
             <input type="text" ref={this.timerNameRef} placeholder="Timer Name" value={this.state.timerName} onChange={this.onTextboxChangeTimerName}/>
-            <input type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/> :
-            <input type="number" placeholder="Secs" value={this.state.timerLengthSecs} onChange={this.onTextboxChangeTimerLengthSecs}/>
+            <input type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/>
           </div>
           <Button onClick={this.addTimer}>Add Timer</Button>
           <Button onClick={this.saveGroup}>Save</Button>
