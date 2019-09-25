@@ -1,25 +1,20 @@
 import React, {Component} from 'react';
-import Ding from '../Ding.mp3'
+import Ding from '../Ding.mp3';
+import Button from 'react-bootstrap/Button';
 
 class Completionist extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      update: false
-    }
-  }
-
-  componentDidMount(props) {
-    console.log(this.props);
-    setTimeout(() => {
-      this.props.nextTimer();
-    }, 1000);
+    this.state = {}
   }
 
   render(props) {
     return (
-      <audio ref={this.myRef} src={Ding} autoPlay/>
+      <div>
+        <Button onClick={this.props.nextTimer}>Next</Button>
+        <audio loop ref={this.myRef} src={Ding} autoPlay/>
+      </div>
     )
   }
 

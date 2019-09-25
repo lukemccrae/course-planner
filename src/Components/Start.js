@@ -19,16 +19,6 @@ const customStyles = {
     width: '70%'
   }
 };
-//
-// const renderer = ({minutes, seconds, completed}) => {
-//   if (completed) {
-//     // Render a completed state
-//     return <Completionist></Completionist>
-//   } else {
-//     // Render a countdown
-//     return <span>{minutes}:{seconds}</span>;
-//   }
-// };
 
 class Start extends Component {
   constructor(props) {
@@ -36,6 +26,7 @@ class Start extends Component {
 
     this.state = {
       modalIsOpen: false,
+      promptModalIsOpen: false,
       currentTimerIndex: 0
     }
     this.start = this.start.bind(this);
@@ -152,7 +143,6 @@ class Start extends Component {
             })}
           </Container>
         </div>
-
         </Modal>
       </div>
     )
