@@ -29,11 +29,14 @@ class Signin extends Component {
 
   componentDidMount() {
     this.signInRef.current.focus();
+
+    //remove this when pushing
+    // this.onSignIn()
   }
 
   onSignIn(e) {
     //turn this on when pushing
-    // e.preventDefault();
+    e.preventDefault();
     fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signin`, {
       method: 'POST',
       headers: {
