@@ -78,12 +78,8 @@ class EditGroup extends Component {
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          this.props.closeEditModal();
-          this.setState({
-            timers: [],
-            groupName: ''
-          })
           this.props.getTimers(token)
+          this.props.closeEditModal();
         } else {
           this.setState({timerError: json.message, isLoading: false})
         }
