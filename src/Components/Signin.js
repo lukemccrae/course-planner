@@ -9,8 +9,8 @@ class Signin extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      signInEmail: 'l@l.com',
-      signInPassword: 'eeee'
+      signInEmail: '',
+      signInPassword: ''
     }
 
     this.signInRef = React.createRef();
@@ -29,9 +29,6 @@ class Signin extends Component {
 
   componentDidMount() {
     this.signInRef.current.focus();
-
-    //remove this when pushing
-    this.onSignIn()
   }
 
   onSignIn(e) {
