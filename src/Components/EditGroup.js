@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import TimeSum from './TimeSum.js';
 import cloneDeep from 'lodash.clonedeep'
 import Modal from 'react-modal';
 import Button from 'react-bootstrap/Button';
@@ -101,6 +102,7 @@ class EditGroup extends Component {
               )
             })}
           </div>
+          <TimeSum timers={this.state.timers}></TimeSum>
           <Button onClick={this.saveGroup}>Save</Button>
         </div>
       </div>

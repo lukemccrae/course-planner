@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 
 class AddGroup extends Component {
@@ -113,6 +114,7 @@ class AddGroup extends Component {
             <input type="text" ref={this.timerNameRef} placeholder="Timer Name" value={this.state.timerName} onChange={this.onTextboxChangeTimerName}/>
             <input type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/>
           </div>
+          <TimeSum timers={this.state.timers}></TimeSum>
           <Button onClick={this.addTimer}>Add Timer</Button>
           <Button onClick={this.saveGroup}>Save</Button>
         </div>
