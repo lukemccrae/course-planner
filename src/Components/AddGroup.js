@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
+
+const AddList = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
 class AddGroup extends Component {
   constructor(props) {
@@ -72,6 +78,18 @@ class AddGroup extends Component {
     this.id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8);
   }
 
+  delItem(item) {
+    function isTimer(element) {
+      if(element.id === item.id) return element;
+    }
+    let index = this.state.timers.findIndex(isTimer);
+    this.state.timers.splice(index, 1);
+    let timers = this.state.timers;
+    this.setState({
+      timers: timers
+    })
+  }
+
   saveGroup() {
     const token = JSON.parse(localStorage.the_main_app).token;
 
@@ -106,7 +124,10 @@ class AddGroup extends Component {
         <input type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
         {this.state.timers.map(t => {
           return (
-            <p key={t.id}>{t.name}, {this.props.timeFormat(t.length, 'str')}</p>
+            <AddList key={t.id}>
+              <p>{t.name}, {this.props.timeFormat(t.length, 'str')}</p>
+              <Button disabled={this.state.timers.length < 2} onClick={() => {this.delItem(t)}}>Del</Button>
+            </AddList>
           )
         })}
         <div>

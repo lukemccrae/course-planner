@@ -15,7 +15,8 @@
     "react-dom": "^16.8.4",
     "react-modal": "^3.8.1",
     "react-scripts": "2.1.8",
-    "react-sound": "^1.2.0"
+    "react-sound": "^1.2.0",
+    "styled-components": "^4.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

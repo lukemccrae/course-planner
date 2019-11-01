@@ -65,9 +65,20 @@ class EditGroup extends Component {
       this.setState({modalIsOpen: true});
     }
 
+    delItem(item) {
+      function isTimer(element) {
+        if(element.id === item.id) return element;
+      }
+      let index = this.state.timers.findIndex(isTimer);
+      this.state.timers.splice(index, 1);
+      let timers = this.state.timers;
+      this.setState({
+        timers: timers
+      })
+    }
+
     saveGroup(group) {
       const token = JSON.parse(localStorage.the_main_app).token;
-
       fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${this.state.id}`, {
         method: 'PATCH',
         headers: {
@@ -98,6 +109,7 @@ class EditGroup extends Component {
                 <div key={t.id}>
                   <input type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
                   <input type="number" placeholder="Mins" value={this.props.timeFormat(t.length, 'num')[0]} onChange={(e) => this.onTextboxChangeTimerLengthMins(e, t)}/>
+                  <Button disabled={this.state.timers.length < 2} onClick={()=>{this.delItem(t)}}>Del</Button>
                 </div>
               )
             })}
