@@ -7,6 +7,26 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import TimeSum from './TimeSum.js';
+import styled from 'styled-components';
+
+const TimerListBox = styled.div`
+  display: flex;
+  align-items: space-between;
+`
+
+const TimerList = styled.ul`
+`
+
+const ListedTimer = styled.li`
+  list-style-type: none;
+`
+
+const TimeTotal = styled.div`
+  display: flex;
+  margin: 0 0 10px 0;
+  padding: 0 0 0 20px;
+`
 
 const customStyles = {
   content: {
@@ -163,8 +183,18 @@ class Dash extends Component {
                       <Dropdown.Item onClick={() => this.editGroup(g)}>Edit</Dropdown.Item>
                     </DropdownButton>
                   </div>
-                  <p>This group has {this.howManyTimers(g)}. {this.theirOrIts(g)} length is {this.howLongTimers(g.timers)}
-                  </p>
+                  <TimerList>
+                    {g.timers.map(t => {
+                      return (
+                        <TimerListBox>
+                          <ListedTimer key={t.id}>{t.name}</ListedTimer>
+                          <TimeSum timers={[t]}></TimeSum>
+                        </TimerListBox>
+                      )
+                      })
+                    }
+                  </TimerList>
+                  <TimeTotal>Total:  <TimeSum timers={g.timers}></TimeSum>. If you start this now you will be finished at {Date.now()}</TimeTotal>
                   <Start timeFormat={this.timeFormat} group={g}></Start>
                 </div>
               )
