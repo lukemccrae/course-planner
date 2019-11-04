@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import TimeSum from './TimeSum.js';
+import TimeFinished from './TimeFinished.js';
 import styled from 'styled-components';
 
 const TimerListBox = styled.div`
@@ -67,6 +68,7 @@ class Dash extends Component {
     this.groupLink = this.groupLink.bind(this);
     this.noGroups = this.noGroups.bind(this);
     this.theirOrIts = this.theirOrIts.bind(this);
+    
   }
 
   closeEditModal() {
@@ -120,8 +122,8 @@ class Dash extends Component {
     time -= minutes * 60;
     var seconds = parseInt(time % 60, 10);
 
-    if(str == 'str') return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-    if(str == 'num') return [minutes, seconds];
+    if(str === 'str') return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    if(str === 'num') return [minutes, seconds];
     return null;
 
     return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
@@ -186,15 +188,24 @@ class Dash extends Component {
                   <TimerList>
                     {g.timers.map(t => {
                       return (
-                        <TimerListBox>
-                          <ListedTimer key={t.id}>{t.name}</ListedTimer>
+                        <TimerListBox key={t.id}>
+                          <ListedTimer>{t.name}</ListedTimer>
+                          <div>&nbsp;</div>
                           <TimeSum timers={[t]}></TimeSum>
                         </TimerListBox>
                       )
                       })
                     }
                   </TimerList>
-                  <TimeTotal>Total:  <TimeSum timers={g.timers}></TimeSum>. If you start this now you will be finished at {Date.now()}</TimeTotal>
+                  <TimeTotal>
+                    Total:
+                    <div>&nbsp;</div>
+                    <TimeSum timers={g.timers}></TimeSum> 
+                    <div>&nbsp;</div>
+                    Start now and finish at
+                    <div>&nbsp;</div>
+                    <TimeFinished group={g}></TimeFinished>.
+                  </TimeTotal>
                   <Start timeFormat={this.timeFormat} group={g}></Start>
                 </div>
               )

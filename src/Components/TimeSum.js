@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class TimeSum extends Component {
   constructor(props) {
     super(props)
-
+  
     this.state = {}
 
     this.secondsToHms = this.secondsToHms.bind(this);
