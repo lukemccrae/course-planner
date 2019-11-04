@@ -13,13 +13,17 @@ class EditGroup extends Component {
       timers: [],
       groupName: '',
       timerLengthMins: 3,
-      timerLengthSecs: 0
+      timerLengthSecs: 0,
+      newTimerName: '',
+      newTimerLength: ''
     }
 
     this.addModal = this.addModal.bind(this);
     this.saveGroup = this.saveGroup.bind(this);
+    this.addItem = this.addItem.bind(this);
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
     this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this);
+    this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
     this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this);
   }
 
@@ -33,6 +37,20 @@ class EditGroup extends Component {
 
   onTextboxChangeGroupName(event) {
     this.setState({groupName: event.target.value})
+  }
+
+  onTextboxChangeNewTimerName(event) {
+    this.setState({
+      newTimerName: event.target.value
+    })
+  }
+
+  onTextboxChangeNewTimerLength(event) {
+    if(event.target.value < 60 && event.target.value !== 'e') {
+      this.setState({
+        newTimerLength: event.target.value
+      })
+    }
   }
 
   onTextboxChangeTimerName(event, t) {
@@ -77,6 +95,21 @@ class EditGroup extends Component {
       })
     }
 
+    addItem() {
+      let timers = this.state.timers;
+      let newTimer = {
+        name: this.state.newTimerName,
+        length: this.state.newTimerLength * 60,
+        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+      }
+      timers.push(newTimer)
+      this.setState({
+        timers: timers,
+        newTimerName: '',
+        newTimerLength: ''
+      })
+    }
+
     saveGroup(group) {
       const token = JSON.parse(localStorage.the_main_app).token;
       fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${this.state.id}`, {
@@ -113,6 +146,9 @@ class EditGroup extends Component {
                 </div>
               )
             })}
+              <input type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
+              <input type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/>
+              <Button disabled={this.state.timers.length < 2} onClick={this.addItem}>Add</Button>
           </div>
           <TimeSum timers={this.state.timers}></TimeSum>
           <Button onClick={this.saveGroup}>Save</Button>
