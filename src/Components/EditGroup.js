@@ -14,7 +14,7 @@ class EditGroup extends Component {
       groupName: '',
       timerLengthMins: 3,
       timerLengthSecs: 0,
-      newTimerName: '',
+      newTimerName: 'New Timer',
       newTimerLength: ''
     }
 
@@ -24,6 +24,7 @@ class EditGroup extends Component {
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
     this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this);
     this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
+    this.onTextboxChangeNewTimerLength = this.onTextboxChangeNewTimerLength.bind(this);
     this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this);
   }
 
@@ -47,6 +48,8 @@ class EditGroup extends Component {
 
   onTextboxChangeNewTimerLength(event) {
     if(event.target.value < 60 && event.target.value !== 'e') {
+      console.log('hi');
+      
       this.setState({
         newTimerLength: event.target.value
       })
@@ -148,7 +151,7 @@ class EditGroup extends Component {
             })}
               <input type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
               <input type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/>
-              <Button disabled={this.state.timers.length < 2} onClick={this.addItem}>Add</Button>
+              <Button disabled={this.state.newTimerLength == ''} onClick={this.addItem}>Add</Button>
           </div>
           <TimeSum timers={this.state.timers}></TimeSum>
           <Button onClick={this.saveGroup}>Save</Button>
