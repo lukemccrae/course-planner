@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import soundfile from '../Ding.mp3';
 import Button from 'react-bootstrap/Button';
 import Sound from 'react-sound';
 
@@ -17,7 +18,7 @@ class Completionist extends Component {
       <div>
         <Button onClick={this.props.nextTimer}>Next</Button>
         <Sound
-          url="https://vocaroo.com/media_command.php?media=s0sWsqzU0AIU&command=download_mp3"
+          url={soundfile}
           playStatus={Sound.status.PLAYING}
           onLoading={this.handleSongLoading}
           onPlaying={this.handleSongPlaying}
