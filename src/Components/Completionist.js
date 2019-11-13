@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import Ding from '../Ding.mp3';
 import Button from 'react-bootstrap/Button';
+import Sound from 'react-sound';
+
+
 
 class Completionist extends Component {
   constructor(props) {
@@ -11,9 +13,18 @@ class Completionist extends Component {
 
   render(props) {
     return (
+      
       <div>
         <Button onClick={this.props.nextTimer}>Next</Button>
-        <audio loop ref={this.myRef} src={Ding} autoPlay/>
+        <Sound
+          url="https://vocaroo.com/media_command.php?media=s0sWsqzU0AIU&command=download_mp3"
+          playStatus={Sound.status.PLAYING}
+          onLoading={this.handleSongLoading}
+          onPlaying={this.handleSongPlaying}
+          onFinishedPlaying={this.handleSongFinishedPlaying}
+          loop={true}
+          ignoreMobileRestrictions={true}
+      />
       </div>
     )
   }

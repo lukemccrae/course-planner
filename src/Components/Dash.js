@@ -25,8 +25,6 @@ const ListedTimer = styled.li`
 
 const TimeTotal = styled.div`
   display: flex;
-  margin: 0 0 10px 0;
-  padding: 0 0 0 20px;
 `
 
 const customStyles = {
@@ -198,12 +196,9 @@ class Dash extends Component {
                     }
                   </TimerList>
                   <TimeTotal>
-                    Total:
-                    <div>&nbsp;</div>
+                    Total:&nbsp;
                     <TimeSum timers={g.timers}></TimeSum> 
-                    <div>&nbsp;</div>
-                    Start now and finish at
-                    <div>&nbsp;</div>
+                    Start now and finish at&nbsp;
                     <TimeFinished group={g}></TimeFinished>.
                   </TimeTotal>
                   <Start timeFormat={this.timeFormat} group={g}></Start>
