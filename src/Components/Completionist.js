@@ -25,6 +25,7 @@ class Completionist extends Component {
           onFinishedPlaying={this.handleSongFinishedPlaying}
           loop={true}
           ignoreMobileRestrictions={true}
+          volume={30}
       />
       </div>
     )
