@@ -50,6 +50,7 @@ class Signin extends Component {
       .then(res => res.json())
       .then(json => {
         if(json.success) {
+          console.log(json)
           this.props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })
         } else {

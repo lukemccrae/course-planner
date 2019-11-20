@@ -88,7 +88,7 @@ class Start extends Component {
   countdownDisplay(timer) {
     let countdownComponent = (
       <Countdown date={this.formatCountdown(timer)}>
-        <Completionist nextTimer={this.nextTimer}></Completionist>
+        <Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
       </Countdown>
     )
 

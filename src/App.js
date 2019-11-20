@@ -16,6 +16,7 @@ class App extends Component {
       token: '',
       timers: [],
       username: '',
+      log: [],
       showRegister: false
     }
     this.showRegister = this.showRegister.bind(this);
@@ -57,7 +58,8 @@ class App extends Component {
       token: args.token,
       username: args.user,
       timers: args.timers,
-      groups: args.groups
+      groups: args.groups,
+      log: args.log
     })
   }
 
@@ -68,6 +70,8 @@ class App extends Component {
   }
 
   getTimers(token) {
+    console.log('get timers');
+    
     fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
       headers: {
@@ -80,7 +84,8 @@ class App extends Component {
         this.setState({
           timers: json.timers,
           groups: json.groups,
-          userName: json.username
+          userName: json.username,
+          log: json.log
         })
       } else {
         this.setState({
@@ -109,6 +114,7 @@ class App extends Component {
         username={this.state.username}
         getTimers={this.getTimers}
         loggedOut={this.loggedOut}
+        log={this.state.log}
       >
       </Dash>
     )

@@ -82,7 +82,8 @@ class Dash extends Component {
       timerName: '',
       timerLengthMins: 3,
       timerLengthSecs: 0,
-      groupName: ''});
+      groupName: ''
+    });
   }
 
   addModal() {
@@ -169,7 +170,7 @@ class Dash extends Component {
   render() {
     return (
       <div>
-        <Nav username={this.props.username} addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
+        <Nav log={this.props.log} username={this.props.username} addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
         <div>
           <Container>
             {this.noGroups()}
@@ -201,7 +202,7 @@ class Dash extends Component {
                     Start now and finish at&nbsp;
                     <TimeFinished group={g}></TimeFinished>.
                   </TimeTotal>
-                  <Start timeFormat={this.timeFormat} group={g}></Start>
+                  <Start getTimers={this.props.getTimers} timeFormat={this.timeFormat} group={g}></Start>
                 </div>
               )
             })}
