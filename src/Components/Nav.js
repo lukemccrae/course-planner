@@ -22,8 +22,6 @@ const customStyles = {
 class Nav extends Component {
   constructor(props) {
     super(props)
-    console.log(props);
-    
 
     this.state = {
       modalIsOpen: false,
@@ -95,7 +93,7 @@ class Nav extends Component {
           contentLabel="Example Modal"
         >
           <h2 ref={subtitle => this.subtitle = subtitle}>Stats</h2>
-          <Stats log={this.props.log}></Stats>
+          <Stats getTimers={this.props.getTimers} log={this.props.log}></Stats>
         </Modal>
       </div>
     )

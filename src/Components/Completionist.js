@@ -19,7 +19,8 @@ class Completionist extends Component {
     fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify({
         name: this.props.currentTimer.name,
@@ -30,7 +31,7 @@ class Completionist extends Component {
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        this.props.getTimers();
+        this.props.getTimers(token);
         this.props.nextTimer();
       } else {
         this.setState({timerError: json.message, isLoading: false})

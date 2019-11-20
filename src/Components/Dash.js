@@ -42,8 +42,16 @@ const customStyles = {
 Modal.setAppElement('#root')
 
 class Dash extends Component {
+  static getDerivedStateFromProps(props, state) {
+    if (props.log !== state.log) {
+      return { log: props.log };
+    }
+    return null;
+  }
   constructor(props) {
     super(props)
+    console.log(props);
+    
 
     this.state = {
       timers: [],
