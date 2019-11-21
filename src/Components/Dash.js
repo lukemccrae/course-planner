@@ -77,6 +77,10 @@ class Dash extends Component {
     
   }
 
+  componentDidMount() {
+    this.props.getTimers(JSON.parse(localStorage.the_main_app).token);
+  }
+
   closeEditModal() {
     this.setState({
       editModalIsOpen: false

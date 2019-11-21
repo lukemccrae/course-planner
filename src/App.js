@@ -68,9 +68,9 @@ class App extends Component {
       token: ''
     })
   }
-  // https://banana-crumble-42815.herokuapp.com
+  
   getTimers(token) {
-    fetch(`http://localhost:3000/timer?token=${token}`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
