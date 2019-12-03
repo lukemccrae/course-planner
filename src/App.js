@@ -79,16 +79,12 @@ class App extends Component {
     .then(res => res.json())
     .then(json => {
       if(json.success) {
-        console.log(json);
-        
         this.setState({
           timers: json.timers,
           groups: json.groups,
           userName: json.username,
           log: json.log
         })
-        console.log(this.state);
-        
       } else {
         this.setState({
           timerError: json.message,

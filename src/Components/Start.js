@@ -6,6 +6,12 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-modal';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
+import styled from 'styled-components';
+
+const TimeBox = styled.div`
+display: flex;
+justify-content: space-between;
+`
 
 
 const customStyles = {
@@ -27,7 +33,7 @@ class Start extends Component {
     this.state = {
       modalIsOpen: false,
       promptModalIsOpen: false,
-      currentTimerIndex: 0
+      currentTimerIndex: 0,
     }
     this.start = this.start.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -37,6 +43,8 @@ class Start extends Component {
     this.nextTimer = this.nextTimer.bind(this);
     this.routineEnded = this.routineEnded.bind(this);
     this.formatCountdown = this.formatCountdown.bind(this);
+    this.pause = this.pause.bind(this);
+    this.unPause = this.unPause.bind(this);
   }
 
 
@@ -85,17 +93,56 @@ class Start extends Component {
     return Date.now() + timer.length * 1000;
   }
 
+  pause() {
+    console.log('pause');
+    this.setState({
+      paused: !this.state.paused
+    })
+  }
+
+  unPause() {
+    console.log('unpause');
+    this.setState({
+      paused: !this.state.paused
+    })
+  }
+
   countdownDisplay(timer) {
-    let countdownComponent = (
-      <Countdown date={this.formatCountdown(timer)}>
-        <Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
-      </Countdown>
-    )
+    let renderer = ({ minutes, seconds, completed }) => {
+      //not sure if this will cause problems later.... if I leave seconds as a number it won't show two zeros
+      if(minutes === 0) minutes = '00';
+      if(seconds === 0) seconds = '00';
+      if (completed) {
+        // Render a completed state
+        return (<Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>)
+      } else {
+        // Render a countdown
+        return (
+          <div>
+          <TimeBox>
+            <span>{minutes}:{seconds}</span>
+          </TimeBox>
+          </div>
+        );
+      }
+    };
+
+      let countdownComponent = (
+        <Countdown controlled={false} renderer={renderer} date={this.formatCountdown(timer)}>
+          <Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
+        </Countdown>
+      )
 
     let displayComponent = (
       <div>
         <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
       </div>
+    )
+
+    let pausedComponent = (
+      <div>
+      <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
+    </div>
     )
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {

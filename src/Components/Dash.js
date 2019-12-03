@@ -50,8 +50,6 @@ class Dash extends Component {
   }
   constructor(props) {
     super(props)
-    console.log(props);
-    
 
     this.state = {
       timers: [],
