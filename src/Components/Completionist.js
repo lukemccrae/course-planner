@@ -6,15 +6,15 @@ import Sound from 'react-sound';
 class Completionist extends Component {
   constructor(props) {
     super(props)
-    console.log(props);
-    
 
-
-    this.state = {}
+    this.state = {
+      logging: false
+    }
     this.next = this.next.bind(this);
   }
   // https://banana-crumble-42815.herokuapp.com/log
   next() {
+    this.setState({logging: true})
     const token = JSON.parse(localStorage.the_main_app).token;
     fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
       method: 'POST',
@@ -30,6 +30,7 @@ class Completionist extends Component {
         date: Date.now()
       })
     }).then(res => res.json()).then(json => {
+      this.setState({logging: false})
       if (json.success) {
         this.props.getTimers(token);
         this.props.nextTimer();
@@ -42,7 +43,7 @@ class Completionist extends Component {
   render(props) {
     return (
       <div>
-        <Button onClick={this.next}>Next</Button>
+        <Button disabled={this.state.logging} onClick={this.next}>Next</Button>
         <Sound
           url={soundfile}
           playStatus={Sound.status.PLAYING}

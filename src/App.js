@@ -68,7 +68,6 @@ class App extends Component {
       token: ''
     })
   }
-  
   getTimers(token) {
     fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
@@ -79,6 +78,8 @@ class App extends Component {
     .then(res => res.json())
     .then(json => {
       if(json.success) {
+        console.log(json.log);
+        
         this.setState({
           timers: json.timers,
           groups: json.groups,
