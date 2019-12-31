@@ -112,7 +112,7 @@ class Start extends Component {
       //not sure if this will cause problems later.... if I leave seconds as a number it won't show two zeros
       if(minutes === 0) minutes = '00';
       if(seconds === 0) seconds = '00';
-      if(10 % seconds < 1) seconds = '0' + seconds;
+      if(seconds < 10) seconds = '0' + seconds;
       if (completed) {
         // Render a completed state
         return (<Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>)

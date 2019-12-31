@@ -16,7 +16,7 @@ class Completionist extends Component {
   next() {
     this.setState({logging: true})
     const token = JSON.parse(localStorage.the_main_app).token;
-    fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
+    fetch(`https://me5hvm8691.execute-api.us-west-2.amazonaws.com/default/logHandler`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ class Completionist extends Component {
         name: this.props.currentTimer.name,
         length: this.props.currentTimer.length,
         id: this.props.currentTimer.id,
-        token: token,
+        // token: token,
         date: Date.now()
       })
     }).then(res => res.json()).then(json => {

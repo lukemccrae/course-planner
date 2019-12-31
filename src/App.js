@@ -59,7 +59,8 @@ class App extends Component {
       username: args.user,
       timers: args.timers,
       groups: args.groups,
-      log: args.log
+      log: args.log,
+      userId: args.id
     })
   }
 
@@ -114,6 +115,7 @@ class App extends Component {
         getTimers={this.getTimers}
         loggedOut={this.loggedOut}
         log={this.state.log}
+        id={this.state.id}
       >
       </Dash>
     )
