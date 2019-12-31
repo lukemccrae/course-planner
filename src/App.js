@@ -115,7 +115,7 @@ class App extends Component {
         getTimers={this.getTimers}
         loggedOut={this.loggedOut}
         log={this.state.log}
-        id={this.state.id}
+        userId={this.state.userId}
       >
       </Dash>
     )

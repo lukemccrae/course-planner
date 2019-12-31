@@ -115,7 +115,7 @@ class Start extends Component {
       if(seconds < 10) seconds = '0' + seconds;
       if (completed) {
         // Render a completed state
-        return (<Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>)
+        return (<Completionist userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>)
       } else {
         // Render a countdown
         return (

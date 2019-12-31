@@ -50,7 +50,7 @@ class Dash extends Component {
   }
   constructor(props) {
     super(props)
-
+    
     this.state = {
       timers: [],
       groups: [],
@@ -212,7 +212,7 @@ class Dash extends Component {
                     Start now and finish at&nbsp;
                     <TimeFinished group={g}></TimeFinished>.
                   </TimeTotal>
-                  <Start getTimers={this.props.getTimers} timeFormat={this.timeFormat} group={g}></Start>
+                  <Start userId={this.props.userId} getTimers={this.props.getTimers} timeFormat={this.timeFormat} group={g}></Start>
                 </div>
               )
             })}

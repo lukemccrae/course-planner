@@ -37,7 +37,7 @@ class Signin extends Component {
   onSignIn(e) {
     //turn this on when pushing
     e.preventDefault();
-    fetch(`http://localhost:3000/api/account/signin`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -50,7 +50,6 @@ class Signin extends Component {
       .then(res => res.json())
       .then(json => {
         if(json.success) {
-          console.log(json)
           this.props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })
         } else {

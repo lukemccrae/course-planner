@@ -5,7 +5,7 @@ import Sound from 'react-sound';
 
 class Completionist extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       logging: false
@@ -16,7 +16,7 @@ class Completionist extends Component {
   next() {
     this.setState({logging: true})
     const token = JSON.parse(localStorage.the_main_app).token;
-    fetch(`https://me5hvm8691.execute-api.us-west-2.amazonaws.com/default/logHandler`, {
+    fetch(`http://localhost:3000/default/logHandler`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,8 +26,9 @@ class Completionist extends Component {
         name: this.props.currentTimer.name,
         length: this.props.currentTimer.length,
         id: this.props.currentTimer.id,
-        // token: token,
-        date: Date.now()
+        token: token,
+        date: Date.now(),
+        userId: this.props.userId
       })
     }).then(res => res.json()).then(json => {
       this.setState({logging: false})
