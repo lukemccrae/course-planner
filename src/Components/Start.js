@@ -109,8 +109,11 @@ class Start extends Component {
 
   countdownDisplay(timer) {
     let renderer = ({ minutes, seconds, completed }) => {
+      console.log(seconds);
+      
       //not sure if this will cause problems later.... if I leave seconds as a number it won't show two zeros
       if(minutes === 0) minutes = '00';
+      if(minutes < 10) minutes = '0' + minutes;
       if(seconds === 0) seconds = '00';
       if(seconds < 10 && seconds > 0) seconds = '0' + seconds;
       if (completed) {

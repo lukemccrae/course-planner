@@ -16,7 +16,7 @@ class Completionist extends Component {
   next() {
     this.setState({logging: true})
     const token = JSON.parse(localStorage.the_main_app).token;
-    fetch(`http://localhost:3000/default/logHandler`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
