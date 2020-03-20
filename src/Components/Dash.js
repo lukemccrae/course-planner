@@ -76,7 +76,8 @@ class Dash extends Component {
   }
 
   componentDidMount() {
-    this.props.getTimers(JSON.parse(localStorage.the_main_app).token);
+    // this was calling with old token so i turned it off
+    // this.props.getTimers(JSON.parse(localStorage.the_main_app).token);
   }
 
   closeEditModal() {
