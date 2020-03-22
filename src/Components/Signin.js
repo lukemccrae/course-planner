@@ -18,6 +18,7 @@ class Signin extends Component {
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this)
     this.onSignIn = this.onSignIn.bind(this)
   }
+  
 
   onTextboxChangeSignInEmail(event) {
     this.setState({signInEmail: event.target.value})
@@ -49,6 +50,8 @@ class Signin extends Component {
     })
       .then(res => res.json())
       .then(json => {
+        console.log(json);
+        
         if(json.success) {
           this.props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })

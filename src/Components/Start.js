@@ -109,7 +109,6 @@ class Start extends Component {
 
   countdownDisplay(timer) {
     let renderer = ({ minutes, seconds, completed }) => {
-      console.log(seconds);
       
       //not sure if this will cause problems later.... if I leave seconds as a number it won't show two zeros
       if(minutes === 0) minutes = '00';
@@ -141,12 +140,6 @@ class Start extends Component {
       <div>
         <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
       </div>
-    )
-
-    let pausedComponent = (
-      <div>
-      <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
-    </div>
     )
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {

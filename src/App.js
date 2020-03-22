@@ -31,8 +31,7 @@ class App extends Component {
       //verify token
       fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
-          console.log(json);
-          this.setState({token: obj.token, timers: [], isLoading: false})
+          this.setState({token: obj.token, groups: json.groups, log: json.log, username: json.email, isLoading: false})
         } else {
           this.setState({isLoading: false})
         }

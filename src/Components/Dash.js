@@ -136,7 +136,7 @@ class Dash extends Component {
     if(str === 'num') return [minutes, seconds];
     return null;
 
-    return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    // return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   }
 
   howManyTimers(group) {

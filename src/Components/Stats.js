@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import TimeSum from './TimeSum';
 import styled from 'styled-components';
 

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import TimeSum from './TimeSum.js';
 import cloneDeep from 'lodash.clonedeep'
-import Modal from 'react-modal';
 import Button from 'react-bootstrap/Button';
 
 class EditGroup extends Component {
@@ -59,7 +58,7 @@ class EditGroup extends Component {
   onTextboxChangeTimerName(event, t) {
     let timers = cloneDeep(this.state.timers)
     for (var i = 0; i < timers.length; i++) {
-      if(timers[i].id == t.id) {
+      if(timers[i].id === t.id) {
         timers[i].name = event.target.value
       }
     }
@@ -72,7 +71,7 @@ class EditGroup extends Component {
     if(event.target.value < 60 && event.target.value !== 'e') {
       let timers = cloneDeep(this.state.timers)
       for (var i = 0; i < timers.length; i++) {
-        if(timers[i].id == t.id) {
+        if(timers[i].id === t.id) {
           timers[i].length = event.target.value * 60
         }
       }
@@ -151,7 +150,7 @@ class EditGroup extends Component {
             })}
               <input type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
               <input type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/>
-              <Button disabled={this.state.newTimerLength == ''} onClick={this.addItem}>Add</Button>
+              <Button disabled={this.state.newTimerLength === ''} onClick={this.addItem}>Add</Button>
           </div>
           <TimeSum timers={this.state.timers}></TimeSum>
           <Button onClick={this.saveGroup}>Save</Button>
