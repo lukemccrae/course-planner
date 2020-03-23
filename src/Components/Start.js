@@ -145,9 +145,6 @@ class Start extends Component {
       }
     };
 
-    console.log(percentDone)
-    
-
       let countdownComponent = (
         <Row>
             <Col>

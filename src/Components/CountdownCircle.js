@@ -28,7 +28,6 @@ const InnerCircle = styled.div`
 
 
 const CountdownCircle = ({group, percent}) => {
-    console.log(percent);
     let firstCalculatedPercent = 270;
     let secondCalculatedPercent = 90 + percent * 3.6;
     let firstGradientColor = 'white';
