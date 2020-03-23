@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-modal';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
+import CountdownCircle from './CountdownCircle';
 import styled from 'styled-components';
 
 const TimeBox = styled.div`
@@ -13,6 +14,9 @@ display: flex;
 justify-content: space-between;
 `
 
+const DisplayStyled = styled.div`
+
+`
 
 const customStyles = {
   content: {
@@ -34,6 +38,9 @@ class Start extends Component {
       modalIsOpen: false,
       promptModalIsOpen: false,
       currentTimerIndex: 0,
+      percentDone: 0,
+      minutes: 0,
+      seconds: 0
     }
     this.start = this.start.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -46,9 +53,7 @@ class Start extends Component {
     this.pause = this.pause.bind(this);
     this.unPause = this.unPause.bind(this);
   }
-
-
-
+  
   openModal() {
     this.setState({modalIsOpen: true});
   }
@@ -108,8 +113,9 @@ class Start extends Component {
   }
 
   countdownDisplay(timer) {
+    let percentDone;
     let renderer = ({ minutes, seconds, completed }) => {
-      
+
       //not sure if this will cause problems later.... if I leave seconds as a number it won't show two zeros
       if(minutes === 0) minutes = '00';
       if(minutes < 10 && minutes > 0) minutes = '0' + minutes;
@@ -120,26 +126,44 @@ class Start extends Component {
         return (<Completionist userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>)
       } else {
         // Render a countdown
+        let totalSeconds = timer.length;
+        let completedSeconds = parseInt(seconds) + minutes * 60;
+        percentDone = completedSeconds / totalSeconds;
         return (
-          <div>
-          <TimeBox>
-            <span>{minutes}:{seconds}</span>
-          </TimeBox>
-          </div>
+          <Row>
+            <Col>
+              <TimeBox>
+                <span>{minutes}:{seconds}</span>
+              </TimeBox>
+            </Col>
+            <Col>
+              <CountdownCircle group={this.props.group} percent={100 - percentDone * 100}></CountdownCircle>
+            </Col>
+          </Row>
+
         );
       }
     };
 
+    console.log(percentDone)
+    
+
       let countdownComponent = (
-        <Countdown controlled={false} renderer={renderer} date={this.formatCountdown(timer)}>
-          <Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
-        </Countdown>
+        <Row>
+            <Col>
+              <Countdown controlled={false} renderer={renderer} date={this.formatCountdown(timer)}>
+                <Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
+              </Countdown>
+            </Col>
+        </Row>
       )
 
+
+
     let displayComponent = (
-      <div>
+      <DisplayStyled>
         <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
-      </div>
+      </DisplayStyled>
     )
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
@@ -173,6 +197,8 @@ class Start extends Component {
           </button>
           <Container>
             <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
+            <Row>
+              <Col>
             {this.props.group.timers.map(t => {
               return (
                 <Row  className="countdownDisplay" key={t.id}>
@@ -185,6 +211,9 @@ class Start extends Component {
                 </Row>
               )
             })}
+              </Col>
+            </Row>
+
           </Container>
         </div>
         </Modal>
