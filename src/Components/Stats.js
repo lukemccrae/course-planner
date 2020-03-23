@@ -1,13 +1,9 @@
 import React from 'react';
 import TimeSum from './TimeSum';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import styled from 'styled-components';
-
-const StatBox = styled.div`
-    display: flex;
-    width: 50%;
-    align-items: center;
-    justify-content: space-between;
-`
 
 const Stats = ({log}) => {
     let counter = [];
@@ -44,10 +40,17 @@ const Stats = ({log}) => {
     return (
         <div>{counter.map(l => {
             return (
-                <StatBox key={l.key}>
-                    <div>{l.name}</div>
-                    <TimeSum timers={[l]}></TimeSum>
-                </StatBox>
+                <Container>
+                    <Row>
+                        <Col>
+                            <div>{l.name}</div>
+                        </Col>
+                        <Col>
+                            <TimeSum timers={[l]}></TimeSum>
+                        </Col>
+                    </Row>
+                </Container>
+
             )
         })}</div>
     )
