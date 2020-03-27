@@ -1,10 +1,21 @@
 import React, {Component} from 'react';
 import soundfile from '../Ding.mp3';
+import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import Sound from 'react-sound';
 
+const StyledButton = styled.button`
+  width: 95px;
+  height: 95px;
+  border-radius: 100%;
+  background-color: #007bff;
+  color: white;
+`
+
 class Completionist extends Component {
   constructor(props) {
+    console.log(props);
+    
     super(props);
 
     this.state = {
@@ -31,6 +42,8 @@ class Completionist extends Component {
         userId: this.props.userId
       })
     }).then(res => res.json()).then(json => {
+      console.log(json);
+      
       this.setState({logging: false})
       if (json.success) {
         this.props.getTimers(token);
@@ -44,7 +57,7 @@ class Completionist extends Component {
   render(props) {
     return (
       <div>
-        <Button disabled={this.state.logging} onClick={this.next}>Next</Button>
+        <StyledButton disabled={this.state.logging} onClick={this.next}>Next</StyledButton>
         <Sound
           url={soundfile}
           playStatus={Sound.status.PLAYING}

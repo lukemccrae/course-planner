@@ -9,13 +9,9 @@ import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
 import styled from 'styled-components';
 
-const TimeBox = styled.div`
-display: flex;
-justify-content: space-between;
-`
-
 const DisplayStyled = styled.div`
-
+  margin: auto;
+  width: fit-content;
 `
 
 const customStyles = {
@@ -121,28 +117,34 @@ class Start extends Component {
       if(minutes < 10 && minutes > 0) minutes = '0' + minutes;
       if(seconds === 0) seconds = '00';
       if(seconds < 10 && seconds > 0) seconds = '0' + seconds;
-      if (completed) {
+      // if (completed) {
         // Render a completed state
-        return (<Completionist userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>)
-      } else {
+        // return ()
+      // } else {
         // Render a countdown
         let totalSeconds = timer.length;
         let completedSeconds = parseInt(seconds) + minutes * 60;
         percentDone = completedSeconds / totalSeconds;
+        console.log(timer)
         return (
           <Row>
             <Col>
-              <TimeBox>
-                <span>{minutes}:{seconds}</span>
-              </TimeBox>
-            </Col>
-            <Col>
-              <CountdownCircle group={this.props.group} percent={100 - percentDone * 100}></CountdownCircle>
+              <CountdownCircle 
+              completed={completed} 
+              timer={timer} 
+              minutes={minutes} 
+              seconds={seconds}
+              currentTimer={timer}
+              getTimers={this.props.getTimers}
+              nextTimer={this.nextTimer}
+              userId={this.props.userId}
+              percent={100 - percentDone * 100}>
+              </CountdownCircle>
             </Col>
           </Row>
 
         );
-      }
+      // }
     };
 
       let countdownComponent = (
@@ -158,9 +160,13 @@ class Start extends Component {
 
 
     let displayComponent = (
-      <DisplayStyled>
-        <p className="displayTime">{this.props.timeFormat(timer.length, 'str')}</p>
-      </DisplayStyled>
+      <Row>
+        <Col>
+          <DisplayStyled>
+            {this.props.timeFormat(timer.length, 'str')}
+          </DisplayStyled>
+        </Col>
+      </Row>
     )
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {

@@ -1,5 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
+import Completionist from './Completionist';
+
+const TimeBox = styled.div`
+display: flex;
+justify-content: space-between;
+`
 
 
 const Circle = styled.div`
@@ -14,6 +20,7 @@ const Circle = styled.div`
         linear-gradient(${(props) => props.secondPercent + 'deg'}, black 50%, transparent 50%);
     align-items: center;
     justify-content: center;
+    margin: auto;
     display: flex;
 `
 
@@ -29,28 +36,44 @@ const InnerCircle = styled.div`
 `
 
 
-const CountdownCircle = ({group, percent}) => {
-    let firstCalculatedPercent = 270;
-    let secondCalculatedPercent = 90 + percent * 3.6;
-    let firstGradientColor = 'white';
-
-    if(secondCalculatedPercent >= 270) {
-        secondCalculatedPercent = 270;
-        firstGradientColor = 'black';
-        firstCalculatedPercent = 270 + percent * 3.6;
-    }
+class CountdownCircle extends Component {
+    constructor(props) {
+        super(props)
     
-    return (
-        <Circle 
-            firstPercent={firstCalculatedPercent}
-            secondPercent={secondCalculatedPercent}
-            firstGradientColor={firstGradientColor}
-        >
-            <InnerCircle>
-                <div>{Math.round(percent)}%</div>
-            </InnerCircle>
-        </Circle>
-    )
+        this.state = {
+        }
+      }
+
+    
+    render() {
+        let firstCalculatedPercent = 270;
+        let secondCalculatedPercent = 90 + this.props.percent * 3.6;
+        let firstGradientColor = 'white';
+    
+        if(secondCalculatedPercent >= 270) {
+            secondCalculatedPercent = 270;
+            firstGradientColor = 'black';
+            firstCalculatedPercent = 270 + this.props.percent * 3.6;
+        }    
+        return (
+            <Circle 
+                firstPercent={firstCalculatedPercent}
+                secondPercent={secondCalculatedPercent}
+                firstGradientColor={firstGradientColor}
+            >
+                <InnerCircle>
+                    {
+                        this.props.completed ? 
+                        <Completionist userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
+                    :
+                        <TimeBox>
+                            <span>{this.props.minutes}:{this.props.seconds}</span>
+                        </TimeBox>
+                    }
+                </InnerCircle>
+            </Circle>
+        )
+    }
 }
 
 export default CountdownCircle;
