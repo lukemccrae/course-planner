@@ -29,7 +29,8 @@ class Signin extends Component {
   }
 
   componentDidMount() {
-    this.signInRef.current.focus();
+      this.signInRef.current.focus();
+    
 
     //remove this when pushing
     // this.onSignIn()

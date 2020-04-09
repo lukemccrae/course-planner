@@ -5,7 +5,16 @@ import {getFromStorage} from './utils/storage';
 import Register from './Components/Register';
 import Signin from './Components/Signin';
 import Dash from './Components/Dash';
+import { css } from "@emotion/core";
+import ClockLoader from "react-spinners/ClockLoader";
 
+const override = css`
+  display: flex;
+  margin: 0 auto;
+  border-color: red;
+  display: flex;
+  align-items: center;
+`;
 
 
 class App extends Component {
@@ -64,6 +73,7 @@ class App extends Component {
   }
 
   loggedOut() {
+    localStorage.clear();
     this.setState({
       token: ''
     })
@@ -94,6 +104,31 @@ class App extends Component {
   }
 
   render() {
+    if(this.state.token !== '') {
+      return (
+        <Dash
+          groups={this.state.groups}
+          timers={this.state.timers}
+          username={this.state.username}
+          getTimers={this.getTimers}
+          loggedOut={this.loggedOut}
+          log={this.state.log}
+          userId={this.state.userId}
+        >
+        </Dash>
+      )
+    }
+
+    if(getFromStorage('the_main_app') !== null) {
+      return (
+        <ClockLoader
+        css={override}
+        size={150}
+        color={"#007bff"}
+        loading={this.state.loading}
+      />
+      )
+    }
     if(this.state.token === '') {
       if (this.state.showRegister === false) {
         return (
@@ -104,18 +139,6 @@ class App extends Component {
         <Register showRegister={this.showRegister}></Register>
       )
     }
-    return (
-      <Dash
-        groups={this.state.groups}
-        timers={this.state.timers}
-        username={this.state.username}
-        getTimers={this.getTimers}
-        loggedOut={this.loggedOut}
-        log={this.state.log}
-        userId={this.state.userId}
-      >
-      </Dash>
-    )
   }
 }
 
