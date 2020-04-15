@@ -6,14 +6,13 @@ import Register from './Components/Register';
 import Signin from './Components/Signin';
 import Dash from './Components/Dash';
 import { css } from "@emotion/core";
+import Container from 'react-bootstrap/Container';
 import ClockLoader from "react-spinners/ClockLoader";
 
 const override = css`
   display: flex;
   margin: 0 auto;
   border-color: red;
-  display: flex;
-  align-items: center;
 `;
 
 
@@ -121,12 +120,17 @@ class App extends Component {
 
     if(getFromStorage('the_main_app') !== null) {
       return (
-        <ClockLoader
-        css={override}
-        size={150}
-        color={"#007bff"}
-        loading={this.state.loading}
-      />
+        <div
+        className="vertical-center">
+          <Container>
+            <ClockLoader
+            css={override}
+            size={150}
+            color={"#007bff"}
+            loading={this.state.loading}
+          />
+          </Container>
+        </div>
       )
     }
     if(this.state.token === '') {
