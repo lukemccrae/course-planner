@@ -78,7 +78,7 @@ class App extends Component {
     })
   }
   getTimers(token) {
-    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${this.state.token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

@@ -213,7 +213,7 @@ class Dash extends Component {
                     Start now and finish at&nbsp;
                     <TimeFinished group={g}></TimeFinished>.
                   </TimeTotal>
-                  <Start userId={this.props.userId} getTimers={this.props.getTimers} timeFormat={this.timeFormat} group={g}></Start>
+                  <Start boxContents={g.box} userId={this.props.userId} getTimers={this.props.getTimers} timeFormat={this.timeFormat} group={g}></Start>
                 </div>
               )
             })}

@@ -7,7 +7,9 @@ import Modal from 'react-modal';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
+import ForgetBox from './ForgetBox';
 import styled from 'styled-components';
+
 
 const DisplayStyled = styled.div`
   margin: auto;
@@ -36,7 +38,9 @@ class Start extends Component {
       currentTimerIndex: 0,
       percentDone: 0,
       minutes: 0,
-      seconds: 0
+      seconds: 0,
+      forgetBox: [],
+      lastUpdated: Date.now()
     }
     this.start = this.start.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -46,8 +50,6 @@ class Start extends Component {
     this.nextTimer = this.nextTimer.bind(this);
     this.routineEnded = this.routineEnded.bind(this);
     this.formatCountdown = this.formatCountdown.bind(this);
-    this.pause = this.pause.bind(this);
-    this.unPause = this.unPause.bind(this);
   }
   
   openModal() {
@@ -60,6 +62,7 @@ class Start extends Component {
   }
 
   closeModal() {
+    this.props.getTimers()
     this.setState({
       modalIsOpen: false,
       currentTimerIndex: 0
@@ -94,20 +97,6 @@ class Start extends Component {
     return Date.now() + timer.length * 1000;
   }
 
-  pause() {
-    console.log('pause');
-    this.setState({
-      paused: !this.state.paused
-    })
-  }
-
-  unPause() {
-    console.log('unpause');
-    this.setState({
-      paused: !this.state.paused
-    })
-  }
-
   countdownDisplay(timer) {
     let percentDone;
     let renderer = ({ minutes, seconds, completed }) => {
@@ -125,7 +114,6 @@ class Start extends Component {
         let totalSeconds = timer.length;
         let completedSeconds = parseInt(seconds) + minutes * 60;
         percentDone = completedSeconds / totalSeconds;
-        console.log(timer)
         return (
           <Row>
             <Col>
@@ -203,6 +191,7 @@ class Start extends Component {
             <Row>
               <Col>
             {this.props.group.timers.map(t => {
+              
               return (
                 <Row  className="countdownDisplay" key={t.id}>
                   <Col>
@@ -216,14 +205,13 @@ class Start extends Component {
             })}
               </Col>
             </Row>
-
           </Container>
+          <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
         </div>
         </Modal>
       </div>
     )
   }
-
 }
 
 export default Start;
