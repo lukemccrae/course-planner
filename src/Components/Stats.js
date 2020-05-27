@@ -1,9 +1,11 @@
 import React from 'react';
 import TimeSum from './TimeSum';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {Grid, Row, Col} from './Grid';
 import styled from 'styled-components';
+
+const GreyBox = styled.div`
+    background-color: ${(props) => props.color};
+`
 
 const Stats = ({log}) => {
     let counter = [];
@@ -35,24 +37,24 @@ const Stats = ({log}) => {
     //sort logs
     counter.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
 
-    
+    // counter.indexOf(l) % 2
     
     return (
-        <div>{counter.map(l => {
+        <Grid>{counter.map(l => {
             return (
-                <Container>
-                    <Row>
-                        <Col>
-                            <div>{l.name}</div>
-                        </Col>
-                        <Col>
-                            <TimeSum timers={[l]}></TimeSum>
-                        </Col>
-                    </Row>
-                </Container>
-
+            <GreyBox color={counter.indexOf(l) % 2 === 0 ? '#D3D3D3' : 'white'} key={l.name}>
+                 <Row>
+                    <Col size={.5}></Col>
+                    <Col size={5}>
+                        <div>{l.name}</div>
+                    </Col>
+                    <Col size={2}>
+                        <TimeSum timers={[l]}></TimeSum>
+                    </Col>
+            </Row>
+            </GreyBox>
             )
-        })}</div>
+        })}</Grid>
     )
 }
 

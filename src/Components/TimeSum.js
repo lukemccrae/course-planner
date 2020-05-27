@@ -17,9 +17,9 @@ class TimeSum extends Component {
     var m = Math.floor(d % 3600 / 60);
     var s = Math.floor(d % 3600 % 60);
 
-    var hDisplay = h > 0 ? h + (h === 1 ? " hour" : " hours") : "";
-    var mDisplay = m > 0 ? m + (m === 1 ? " minute" : " minutes") : "";
-    var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+    var hDisplay = h > 0 ? h + (h === 1 ? "h" : "h") : "";
+    var mDisplay = m > 0 ? m + (m === 1 ? "m" : "m") : "";
+    var sDisplay = s > 0 ? s + (s === 1 ? "s" : "s") : "";
     return hDisplay + mDisplay + sDisplay; 
   }
 
@@ -28,13 +28,15 @@ class TimeSum extends Component {
       for (let i = 0; i < this.props.timers.length; i++) {
           result = result + this.props.timers[i].length      
       }
+      
       return result;
   }
 
 
+
   render() {
     return (
-      <div>{this.secondsToHms(this.totalTime())}.&nbsp;</div>
+    <div>{this.secondsToHms(this.totalTime())}</div>
     )
   }
 

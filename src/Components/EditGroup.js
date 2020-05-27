@@ -1,7 +1,40 @@
 import React, {Component} from 'react';
 import TimeSum from './TimeSum.js';
-import cloneDeep from 'lodash.clonedeep'
+import cloneDeep from 'lodash.clonedeep';
 import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
+import {Grid, Row, Col, Centered} from './Grid';
+
+const GroupInput = styled.input`
+  font-size: 25px;
+  margin: 0px 5px 40px 5px;
+  background-color: #D3D3D3;
+  width: 100%;
+  outline: 0;
+  border-width: 0 0 1px;
+  border-color: #007bff;
+`
+
+const TimerInput = styled.input`
+  font-size: 20px;
+  margin: 0px 5px 30px 5px;
+  background-color: #D3D3D3;
+  width: 100%;
+  outline: 0;
+  border-width: 0 0 1px;
+  border-color: #007bff;
+`
+
+const Divider = styled.div`
+  border-top: 2px solid #D3D3D3;
+  margin-bottom: 30px
+`
+
+const CloseButton = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 15px 0;
+`
 
 class EditGroup extends Component {
   constructor(props) {
@@ -136,25 +169,39 @@ class EditGroup extends Component {
   render() {
     return (
       <div>
-        <input type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
+        <Centered>
+          <CloseButton>
+            <button onClick={this.props.closeEditModal} type="button" className="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </CloseButton>
+        <GroupInput type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
         <div>
-          <div>
+          <Grid>
             {this.state.timers.map(t => {
               return (
-                <div key={t.id}>
-                  <input type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
-                  <input type="number" placeholder="Mins" value={this.props.timeFormat(t.length, 'num')[0]} onChange={(e) => this.onTextboxChangeTimerLengthMins(e, t)}/>
-                  <Button disabled={this.state.timers.length < 2} onClick={()=>{this.delItem(t)}}>Del</Button>
-                </div>
+                <Row key={t.id}>
+                  <Col size={5}><TimerInput type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/></Col>
+                  <Col size={.2}></Col>
+                  <Col size={1}><TimerInput type="number" placeholder="Mins" value={this.props.timeFormat(t.length, 'num')[0]} onChange={(e) => this.onTextboxChangeTimerLengthMins(e, t)}/></Col>
+                  <Col size={.2}></Col>
+                  <Col size={1}><Button disabled={this.state.timers.length < 2} onClick={()=>{this.delItem(t)}}>Del</Button></Col>
+                </Row>
               )
             })}
-              <input type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
-              <input type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/>
-              <Button disabled={this.state.newTimerLength === ''} onClick={this.addItem}>Add</Button>
-          </div>
+            <Divider></Divider>
+            <Row>
+              <Col size={5}><TimerInput  type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/></Col>
+              <Col size={.2}></Col>
+              <Col size={1}><TimerInput  type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/></Col>
+              <Col size={.2}></Col>
+              <Col size={1}><Button disabled={this.state.newTimerLength === ''} onClick={this.addItem}>Add</Button></Col>
+            </Row>
+          </Grid>
           <TimeSum timers={this.state.timers}></TimeSum>
           <Button onClick={this.saveGroup}>Save</Button>
         </div>
+        </Centered>
       </div>
     )
   }

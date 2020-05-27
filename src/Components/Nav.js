@@ -34,6 +34,7 @@ class Nav extends Component {
     this.openModal = this.openModal.bind(this);
     this.openStatsModal = this.openStatsModal.bind(this);
   }
+  
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.

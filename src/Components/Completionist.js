@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import soundfile from '../Ding.mp3';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
 import Sound from 'react-sound';
 
 const StyledButton = styled.button`
-  width: 95px;
-  height: 95px;
+  width: 230px;
+  height: 230px;
   border-radius: 100%;
   background-color: #007bff;
   color: white;
@@ -14,9 +13,10 @@ const StyledButton = styled.button`
 
 class Completionist extends Component {
   constructor(props) {
-    console.log(props);
     
     super(props);
+    console.log(props.group._id);
+    
 
     this.state = {
       logging: false
@@ -34,7 +34,8 @@ class Completionist extends Component {
         'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify({
-        name: this.props.currentTimer.name,
+        name: this.props.group.name,
+        groupId: this.props.group._id,
         length: this.props.currentTimer.length,
         id: this.props.currentTimer.id,
         token: token,

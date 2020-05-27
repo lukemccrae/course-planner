@@ -3,16 +3,15 @@ import styled from 'styled-components';
 import Completionist from './Completionist';
 
 const TimeBox = styled.div`
-display: flex;
+display: block;
 justify-content: space-between;
 `
-
 
 const Circle = styled.div`
     position: relative;
     text-align: center;
-    width: 110px;
-    height: 110px;
+    width: 250px;
+    height: 250px;
     border-radius: 100%;
     background-color: white;
     background-image:
@@ -28,10 +27,9 @@ const InnerCircle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid white;
     border-radius: 100%;
-    width: 100px;
-    height: 100px;
+    width: 230px;
+    height: 230px;
     background-color: white;
 `
 
@@ -39,7 +37,6 @@ const InnerCircle = styled.div`
 class CountdownCircle extends Component {
     constructor(props) {
         super(props)
-    
         this.state = {
         }
       }
@@ -64,9 +61,10 @@ class CountdownCircle extends Component {
                 <InnerCircle>
                     {
                         this.props.completed ? 
-                        <Completionist userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
+                        <Completionist group={this.props.group} userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
                     :
                         <TimeBox>
+                            <h5>{this.props.timer.name}</h5>
                             <span>{this.props.minutes}:{this.props.seconds}</span>
                         </TimeBox>
                     }

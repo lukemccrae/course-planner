@@ -6,15 +6,14 @@ const Box = styled.textarea`
   margin-top: 50px;
   resize: none;
   font-size: 16px;
-  height: 100px;
-  width: 70%;
+  height: 150px;
+  width: 100%;
 `
 
 
 class ForgetBox extends Component {
   constructor(props) {
     super(props)
-    console.log(props);
     
     this.state = {
         forgetBox: [],
@@ -28,7 +27,6 @@ class ForgetBox extends Component {
 
   UNSAFE_componentWillMount(props) {
     let contents = this.props.boxContents
-    console.log(contents);
     this.setState({
       forgetBox: contents
     })
@@ -77,14 +75,10 @@ class ForgetBox extends Component {
 
   render(props) {
     return (
-        <div>
-            <Box value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
-            {this.state.saved ? <div>saved</div> : <div>not saved</div>}
-        </div>
-
-        
-            
-
+      <div>
+        <Box value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
+        {this.state.saved ? <div>saved</div> : <div>not saved</div>}
+      </div>
     )
   }
 }

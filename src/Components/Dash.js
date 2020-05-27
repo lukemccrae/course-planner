@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import TimeSum from './TimeSum.js';
+import Button from 'react-bootstrap/Button';
 import TimeFinished from './TimeFinished.js';
 import styled from 'styled-components';
 
@@ -33,8 +34,10 @@ const customStyles = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
+    height: '100%',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    width: '100%'
   }
 };
 
@@ -56,14 +59,17 @@ class Dash extends Component {
       groups: [],
       editModalIsOpen: false,
       addModalIsOpen: false,
+      startModalIsOpen: false,
       timeInMins: false,
       timerName: '',
       timerLengthMins: 3,
       timerLengthSecs: 0,
       groupName: '',
-      groupToEdit: {}
+      groupToEdit: {},
+      startedGroup: {}
     }
     this.addModal = this.addModal.bind(this);
+    this.startModal = this.startModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.closeEditModal = this.closeEditModal.bind(this);
@@ -72,9 +78,7 @@ class Dash extends Component {
     this.groupLink = this.groupLink.bind(this);
     this.noGroups = this.noGroups.bind(this);
     this.theirOrIts = this.theirOrIts.bind(this);
-    
   }
-
   componentDidMount() {
     // this was calling with old token so i turned it off
     // this.props.getTimers(JSON.parse(localStorage.the_main_app).token);
@@ -89,6 +93,7 @@ class Dash extends Component {
   closeModal() {
     this.setState({
       addModalIsOpen: false,
+      startModalIsOpen: false,
       timers: [],
       timerName: '',
       timerLengthMins: 3,
@@ -99,6 +104,9 @@ class Dash extends Component {
 
   addModal() {
     this.setState({addModalIsOpen: true});
+  }
+  startModal(g) {
+    this.setState({startModalIsOpen: true, startedGroup: g});
   }
 
   editGroup(g) {
@@ -174,7 +182,7 @@ class Dash extends Component {
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    // this.subtitle.style.color = '#f00';
   }
 
 
@@ -213,7 +221,7 @@ class Dash extends Component {
                     Start now and finish at&nbsp;
                     <TimeFinished group={g}></TimeFinished>.
                   </TimeTotal>
-                  <Start boxContents={g.box} userId={this.props.userId} getTimers={this.props.getTimers} timeFormat={this.timeFormat} group={g}></Start>
+                  <Button onClick={() => this.startModal(g)}>Start</Button>
                 </div>
               )
             })}
@@ -225,7 +233,6 @@ class Dash extends Component {
             style={customStyles}
             contentLabel="Example Modal">
 
-            <h2 ref={subtitle => this.subtitle = subtitle}></h2>
             <EditGroup
               closeEditModal={this.closeEditModal}
               group={this.state.groupToEdit}
@@ -240,11 +247,20 @@ class Dash extends Component {
             style={customStyles}
             contentLabel="Example Modal">
 
-            <h2 ref={subtitle => this.subtitle = subtitle}></h2>
             <AddGroup
               closeModal={this.closeModal}
               getTimers={this.props.getTimers}
               timeFormat={this.timeFormat}></AddGroup>
+          </Modal>
+          <Modal
+          isOpen={this.state.startModalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+          shouldCloseOnOverlayClick={false}
+        >
+          <Start boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.startedGroup}></Start>
           </Modal>
         </div>
       </div>

@@ -2,10 +2,37 @@ import React, {Component} from 'react';
 import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import {Grid, Row, Col, Centered} from './Grid';
 
 const AddList = styled.div`
   display: flex;
   justify-content: space-between;
+`
+
+const NewGroupInput = styled.input`
+  font-size: 30px;
+  margin: 5px 5px 40px 5px;
+  background-color: #cccccc;
+  width: 100%;
+  outline: 0;
+  border-width: 0 0 1px;
+  border-color: #007bff;
+`
+
+const NewTimerInput = styled.input`
+  font-size: 30px;
+  margin: 5px 5px 30px 5px;
+  background-color: #cccccc;
+  width: 100%;
+  outline: 0;
+  border-width: 0 0 1px;
+  border-color: #007bff;
+
+`
+
+const CloseButton = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 class AddGroup extends Component {
@@ -121,24 +148,44 @@ class AddGroup extends Component {
   render() {
     return (
       <div>
-        <input type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
-        {this.state.timers.map(t => {
-          return (
-            <AddList key={t.id}>
-              <p>{t.name}, {this.props.timeFormat(t.length, 'str')}</p>
-              <Button disabled={this.state.timers.length < 2} onClick={() => {this.delItem(t)}}>Del</Button>
-            </AddList>
-          )
-        })}
-        <div>
-          <div>
-            <input type="text" ref={this.timerNameRef} placeholder="Timer Name" value={this.state.timerName} onChange={this.onTextboxChangeTimerName}/>
-            <input type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/>
-          </div>
-          <TimeSum timers={this.state.timers}></TimeSum>
-          <Button onClick={this.addTimer}>Add Timer</Button>
-          <Button onClick={this.saveGroup}>Save</Button>
-        </div>
+        <Centered>
+          <CloseButton>
+            <button onClick={this.props.closeModal} type="button" className="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </CloseButton>
+            <NewGroupInput type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
+          {this.state.timers.map(t => {
+            return (
+              <AddList key={t.id}>
+                <p>{t.name}, {this.props.timeFormat(t.length, 'str')}</p>
+                <Button disabled={this.state.timers.length < 2} onClick={() => {this.delItem(t)}}>Del</Button>
+              </AddList>
+            )
+          })}
+          <Grid>
+            <Row>
+              <Col size={6}>
+                <NewTimerInput type="text" ref={this.timerNameRef} placeholder="Timer Name" value={this.state.timerName} onChange={this.onTextboxChangeTimerName}/>
+              </Col>
+              <Col size={.5}></Col>
+              <Col size={1}>
+                <NewTimerInput type="number" placeholder="Mins" value={this.state.timerLengthMins} onChange={this.onTextboxChangeTimerLengthMins}/>
+              </Col>
+            </Row>
+            <Row>
+              <TimeSum timers={this.state.timers}></TimeSum>
+            </Row>
+            <Row>
+              <Col size={2}>
+                <Button onClick={this.addTimer}>Add Timer</Button></Col>
+              <Col size={2}>
+                <Button onClick={this.saveGroup}>Save</Button>
+              </Col>
+              <Col size={1}></Col>
+            </Row>
+          </Grid>
+          </Centered>
       </div>
     )
   }
