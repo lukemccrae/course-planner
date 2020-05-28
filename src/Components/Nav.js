@@ -25,27 +25,34 @@ class Nav extends Component {
 
     this.state = {
       modalIsOpen: false,
-      statsModalIsOpen: false
+      statsModalIsOpen: false,
+      statPeriod: 'Week'
 
     }
-
-    this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.openStatsModal = this.openStatsModal.bind(this);
+    this.changePeriod = this.changePeriod.bind(this);
   }
-  
 
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = 'black';
+  changePeriod(period) {
+    if(this.state.statPeriod === 'Week') {
+      this.setState({
+        statPeriod: 'Day'
+      })
+    } else {
+      this.setState({
+        statPeriod: 'Week'
+      })
+    }
   }
 
   closeModal() {
     this.setState({
       modalIsOpen: false,
       statsModalIsOpen: false,
-      timers: []
+      timers: [],
+      statPeriod: 'Week'
     });
   }
 
@@ -93,8 +100,7 @@ class Nav extends Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <h2 ref={subtitle => this.subtitle = subtitle}>Stats</h2>
-          <Stats getTimers={this.props.getTimers} log={this.props.log}></Stats>
+          <Stats statPeriod={this.state.statPeriod} changePeriod={this.changePeriod} log={this.props.log}></Stats>
         </Modal>
       </div>
     )
