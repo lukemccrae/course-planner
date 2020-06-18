@@ -48,6 +48,7 @@ class ForgetBox extends Component {
           saved: true,
           forgetBox: json.box
         })
+        this.props.getTimers();
       } else {
         console.log('failed');
         
