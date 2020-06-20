@@ -91,6 +91,7 @@ class Dash extends Component {
   }
 
   closeModal() {
+    this.props.getTimers();
     this.setState({
       addModalIsOpen: false,
       startModalIsOpen: false,
