@@ -82,7 +82,8 @@ const Stats = ({log, statPeriod, changePeriod}) => {
                 <Dropdown options={options} onChange={changePeriod}  value={defaultOption} placeholder="Select an option" />
                 </Col>
             </Row>
-            {selectedStats.map(l => {
+            {(selectedStats[0] != undefined) ? 
+            selectedStats.map(l => {
             return (
             <GreyBox color={selectedStats.indexOf(l) % 2 === 0 ? '#D3D3D3' : 'white'} key={l.name}>
                  <Row>
@@ -93,10 +94,13 @@ const Stats = ({log, statPeriod, changePeriod}) => {
                     <Col size={2}>
                         <TimeSum timers={[l]}></TimeSum>
                     </Col>
-            </Row>
+                </Row>
             </GreyBox>
             )
-        })}</StatBox>
+        })
+        :
+        <div>You have no recent activities.</div>}
+        </StatBox>
     )
 }
 
