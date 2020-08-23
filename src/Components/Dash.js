@@ -3,12 +3,12 @@ import Nav from './Nav';
 import Start from './Start';
 import AddGroup from './AddGroup.js';
 import EditGroup from './EditGroup.js';
-import Container from 'react-bootstrap/Container';
+import {Grid, Row, Col} from './Grid';
 import Modal from 'react-modal';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import TimeSum from './TimeSum.js';
-import Button from 'react-bootstrap/Button';
 import TimeFinished from './TimeFinished.js';
 import styled from 'styled-components';
 
@@ -18,6 +18,17 @@ const TimerListBox = styled.div`
 `
 
 const TimerList = styled.ul`
+`
+
+const PlusButton = styled.button`
+  border: none;
+  background-color: white;
+`
+
+const Group = styled.div`
+  width: 250px;
+  height: 190px;
+  display: inline-table;
 `
 
 const ListedTimer = styled.li`
@@ -191,42 +202,44 @@ class Dash extends Component {
     return (
       <div>
         <Nav log={this.props.log} username={this.props.username} addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
-        <div>
-          <Container>
+        <Grid>
+            <Row>
             {this.noGroups()}
-            {this.props.groups.map(g => {
-              return (
-                <div className="group" key={g._id}>
-                  <div className="groupNameParent">
-                    <h3>{g.name}</h3>
-                    <DropdownButton id="dropdown-basic-button" title="">
-                      <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
-                      <Dropdown.Item onClick={() => this.editGroup(g)}>Edit</Dropdown.Item>
-                    </DropdownButton>
-                  </div>
-                  <TimerList>
-                    {g.timers.map(t => {
-                      return (
-                        <TimerListBox key={t.id}>
-                          <ListedTimer>{t.name}</ListedTimer>
-                          <div>&nbsp;</div>
-                          <TimeSum timers={[t]}></TimeSum>
-                        </TimerListBox>
-                      )
-                      })
-                    }
-                  </TimerList>
-                  <TimeTotal>
-                    Total:&nbsp;
-                    <TimeSum timers={g.timers}></TimeSum> 
-                    Start now and finish at&nbsp;
-                    <TimeFinished group={g}></TimeFinished>.
-                  </TimeTotal>
-                  <Button onClick={() => this.startModal(g)}>Start</Button>
-                </div>
-              )
-            })}
-          </Container>
+            <Col>
+              {this.props.groups.map(g => {
+                return (
+                  <Group className="group" key={g._id}>
+                    <div className="groupNameParent">
+                      <h3>{g.name}</h3>
+                      <div>
+                        <Button onClick={() => this.startModal(g)}>Start</Button>
+                        <DropdownButton id="dropdown-basic-button" title="">
+                          <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
+                          <Dropdown.Item onClick={() => this.editGroup(g)}>Edit</Dropdown.Item>
+                        </DropdownButton>
+                      </div>
+                    </div>
+                    <TimerList>
+                      {g.timers.map(t => {
+                        return (
+                          <TimerListBox key={t.id}>
+                            <ListedTimer>{t.name}</ListedTimer>
+                            <div>&nbsp;</div>
+                            <TimeSum timers={[t]}></TimeSum>
+                          </TimerListBox>
+                        )
+                        })
+                      }
+                    </TimerList>
+                    <TimeTotal>
+                      {/* Total:&nbsp; */}
+                      {/* <TimeSum timers={g.timers}></TimeSum>  */}
+                    </TimeTotal>
+                  </Group>
+                )
+              })}
+            </Col>
+            </Row>
           <Modal
             isOpen={this.state.editModalIsOpen}
             onAfterOpen={this.afterOpenModal}
@@ -263,7 +276,7 @@ class Dash extends Component {
         >
           <Start boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.startedGroup}></Start>
           </Modal>
-        </div>
+        </Grid>
       </div>
     )
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 export const Grid = styled.div`
-
+  margin: 0 10% 0 10%;
 `;
 
 export const Row = styled.div`

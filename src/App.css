@@ -19,7 +19,14 @@
   color: #61dafb;
 }
 
-#dropdown-basic-button {}
+.dropdown {
+  display: inline;
+}
+
+#dropdown-basic-button {
+  display: inline;
+  margin-left: 3px;
+}
 
 .countdownDisplay {
   display: flex;
