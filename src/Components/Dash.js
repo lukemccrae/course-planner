@@ -17,7 +17,14 @@ const TimerListBox = styled.div`
   align-items: space-between;
 `
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  margin-left: 20px;
+  
+`
+
 const TimerList = styled.ul`
+  padding: 0 0 0 15px;
 `
 
 const PlusButton = styled.button`
@@ -26,13 +33,14 @@ const PlusButton = styled.button`
 `
 
 const Group = styled.div`
-  width: 250px;
-  height: 190px;
+  width: 10px;
+  height: 19px;
   display: inline-table;
 `
 
 const ListedTimer = styled.li`
   list-style-type: none;
+  white-space: nowrap;
 `
 
 const TimeTotal = styled.div`
@@ -211,13 +219,13 @@ class Dash extends Component {
                   <Group className="group" key={g._id}>
                     <div className="groupNameParent">
                       <h3>{g.name}</h3>
-                      <div>
-                        <Button onClick={() => this.startModal(g)}>Start</Button>
+                      <ButtonWrapper>
+                        <Button onClick={() => this.startModal(g)}>&#9658;</Button>
                         <DropdownButton id="dropdown-basic-button" title="">
                           <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
                           <Dropdown.Item onClick={() => this.editGroup(g)}>Edit</Dropdown.Item>
                         </DropdownButton>
-                      </div>
+                      </ButtonWrapper>
                     </div>
                     <TimerList>
                       {g.timers.map(t => {

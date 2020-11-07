@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import Button from 'react-bootstrap/Button';
 
 const Box = styled.textarea`
   border: solid 1px black;
@@ -8,6 +9,15 @@ const Box = styled.textarea`
   font-size: 16px;
   height: 150px;
   width: 100%;
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+`
+
+const ClearButton = styled.div`
+  margin-left:auto; 
+  margin-right:0;
 `
 
 
@@ -23,6 +33,7 @@ class ForgetBox extends Component {
 
     this.updateForgetBox = this.updateForgetBox.bind(this);
     this.updateBox = this.updateBox.bind(this);
+    this.clearBox = this.clearBox.bind(this);
   }
 
   UNSAFE_componentWillMount(props) {
@@ -32,7 +43,11 @@ class ForgetBox extends Component {
     })
   }
 
-  updateBox() {
+  clearBox() {
+    this.updateBox(" ");
+  }
+
+  updateBox(forgetBox) {
     fetch(`https://banana-crumble-42815.herokuapp.com/box`, {
       method: 'POST',
       headers: {
@@ -40,7 +55,7 @@ class ForgetBox extends Component {
       },
       body: JSON.stringify({
         group: this.props.group._id,
-        box: this.state.forgetBox
+        box: forgetBox
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
@@ -68,7 +83,7 @@ class ForgetBox extends Component {
       //after the timeout length, the Date.now() value is equal to what it was WHEN THE SET TIMEOUT FUNCTION WAS INVOKED
       //i think thats how it works at least.
       if(Date.now() - this.state.lastUpdated - 3000 < 50 && Date.now() - this.state.lastUpdated - 3000 > -50) {
-        this.updateBox()
+        this.updateBox(this.state.forgetBox)
       }
     }, 3000);
   }
@@ -77,7 +92,12 @@ class ForgetBox extends Component {
     return (
       <div>
         <Box value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
-        {this.state.saved ? <div>saved</div> : <div>not saved</div>}
+        <ButtonWrapper>
+          {this.state.saved ? <div>saved</div> : <div>not saved</div>}
+          <ClearButton>
+            <Button onClick={() => this.clearBox()}>clear</Button>
+          </ClearButton>
+        </ButtonWrapper>
       </div>
     )
   }
