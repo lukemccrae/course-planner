@@ -7,11 +7,21 @@ display: block;
 justify-content: space-between;
 `
 
+const Name = styled.h5`
+    font-weight: 250;
+    
+`
+
+const Time = styled.span`
+    font-size: 40px;
+    font-weight: 90;
+`
+
 const Circle = styled.div`
     position: relative;
     text-align: center;
-    width: 250px;
-    height: 250px;
+    width: 140px;
+    height: 140px;
     border-radius: 100%;
     background-color: white;
     background-image:
@@ -28,8 +38,8 @@ const InnerCircle = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 100%;
-    width: 230px;
-    height: 230px;
+    width: 130px;
+    height: 130px;
     background-color: white;
 `
 
@@ -38,6 +48,7 @@ class CountdownCircle extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            
         }
       }
 
@@ -63,10 +74,14 @@ class CountdownCircle extends Component {
                         this.props.completed ? 
                         <Completionist group={this.props.group} userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
                     :
+                    <div>
                         <TimeBox>
-                            <h5>{this.props.timer.name}</h5>
-                            <span>{this.props.minutes}:{this.props.seconds}</span>
+                            <Name>{this.props.timer.name}</Name>
+                            <Time>{this.props.minutes}:{this.props.seconds}</Time>
                         </TimeBox>
+                        
+                    </div>
+                    
                     }
                 </InnerCircle>
             </Circle>

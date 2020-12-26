@@ -24,7 +24,7 @@ const ButtonWrapper = styled.div`
 `
 
 const TimerList = styled.ul`
-  padding: 0 0 0 15px;
+  padding: 0 0 0 0;
 `
 
 const PlusButton = styled.button`
@@ -33,7 +33,7 @@ const PlusButton = styled.button`
 `
 
 const Group = styled.div`
-  width: 10px;
+  width: 100%;
   height: 19px;
   display: inline-table;
 `
@@ -129,13 +129,6 @@ class Dash extends Component {
     this.setState({startModalIsOpen: true, startedGroup: g});
   }
 
-  editGroup(g) {
-    this.setState({
-      editModalIsOpen: true,
-      groupToEdit: g
-    })
-  }
-
   deleteGroup(group) {
     const token = JSON.parse(localStorage.the_main_app).token;
 
@@ -220,25 +213,31 @@ class Dash extends Component {
                     <div className="groupNameParent">
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
-                        <Button onClick={() => this.startModal(g)}>&#9658;</Button>
-                        <DropdownButton id="dropdown-basic-button" title="">
-                          <Dropdown.Item onClick={() => this.deleteGroup(g)}>Delete</Dropdown.Item>
-                          <Dropdown.Item onClick={() => this.editGroup(g)}>Edit</Dropdown.Item>
-                        </DropdownButton>
+                        <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
+
+                        {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
+                        {g.editOpen === true ? (
+                          <Button onClick={() => this.props.editGroup(g)}>&#8963;</Button>
+                        ) : (
+                          <Button id="dropdown-basic-button" onClick={() => this.props.editGroup(g)}>&#8963;</Button>
+                        )}
+
                       </ButtonWrapper>
                     </div>
-                    <TimerList>
-                      {g.timers.map(t => {
-                        return (
-                          <TimerListBox key={t.id}>
-                            <ListedTimer>{t.name}</ListedTimer>
-                            <div>&nbsp;</div>
-                            <TimeSum timers={[t]}></TimeSum>
-                          </TimerListBox>
-                        )
-                        })
-                      }
-                    </TimerList>
+                    {g.editOpen == true ? (
+                        <EditGroup
+                        closeEditModal={this.closeEditModal}
+                        group={g}
+                        getTimers={this.props.getTimers}
+                        deleteGroup={this.deleteGroup}
+                        timeFormat={this.timeFormat}
+                        timers={this.state.timers}>
+                      </EditGroup>
+                    ) : (
+                      <TimeSum timers={g.timers}></TimeSum>
+                    )}
+
+
                     <TimeTotal>
                       {/* Total:&nbsp; */}
                       {/* <TimeSum timers={g.timers}></TimeSum>  */}
@@ -248,20 +247,6 @@ class Dash extends Component {
               })}
             </Col>
             </Row>
-          <Modal
-            isOpen={this.state.editModalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeEditModal}
-            style={customStyles}
-            contentLabel="Example Modal">
-
-            <EditGroup
-              closeEditModal={this.closeEditModal}
-              group={this.state.groupToEdit}
-              getTimers={this.props.getTimers}
-              timeFormat={this.timeFormat}
-              timers={this.state.timers}></EditGroup>
-          </Modal>
           <Modal
             isOpen={this.state.addModalIsOpen}
             onAfterOpen={this.afterOpenModal}

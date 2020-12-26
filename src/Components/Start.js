@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 const CountdownBox = styled.div`
   display: flex;
+  font-size: 15px;
 `
 
 const CloseButton = styled.div`
@@ -166,17 +167,13 @@ class Start extends Component {
             </button>
           </CloseButton>
           <Row>
-            <Col size={4}></Col>
             {this.props.group.timers.map(t => {
               return (
                 <CountdownBox key={t.id}>
-                  <Col size={8}>
                     {this.countdownDisplay(t)}
-                  </Col>
                 </CountdownBox>
               )
             })} 
-            <Col size={4}></Col>
           </Row>
             <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
         </Grid>

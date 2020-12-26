@@ -25,7 +25,11 @@
 
 #dropdown-basic-button {
   display: inline;
-  margin-left: 3px;
+  transform: rotate(180deg);
+}
+
+.five-px-margin-right {
+  margin-right: 5px;
 }
 
 .countdownDisplay {

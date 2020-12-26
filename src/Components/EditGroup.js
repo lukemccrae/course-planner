@@ -7,9 +7,9 @@ import {Grid, Row, Col, Centered} from './Grid';
 
 const GroupInput = styled.input`
   font-size: 25px;
-  margin: 0px 5px 40px 5px;
-  background-color: #D3D3D3;
-  width: 100%;
+  margin: 0px 5px 10px 5px;
+  // background-color: #D3D3D3;
+  width: 50%;
   outline: 0;
   border-width: 0 0 1px;
   border-color: #007bff;
@@ -17,9 +17,9 @@ const GroupInput = styled.input`
 
 const TimerInput = styled.input`
   font-size: 20px;
-  margin: 0px 5px 30px 5px;
-  background-color: #D3D3D3;
-  width: 100%;
+  margin: 0px 5px 10px 5px;
+  // background-color: #D3D3D3;
+  width: 90%;
   outline: 0;
   border-width: 0 0 1px;
   border-color: #007bff;
@@ -27,7 +27,7 @@ const TimerInput = styled.input`
 
 const Divider = styled.div`
   border-top: 2px solid #D3D3D3;
-  margin-bottom: 30px
+  margin: 10px 0 10px 0;
 `
 
 const CloseButton = styled.div`
@@ -47,7 +47,7 @@ class EditGroup extends Component {
       timerLengthMins: 3,
       timerLengthSecs: 0,
       newTimerName: 'New Timer',
-      newTimerLength: ''
+      newTimerLength: 3
     }
 
     this.addModal = this.addModal.bind(this);
@@ -169,12 +169,12 @@ class EditGroup extends Component {
   render() {
     return (
       <div>
-        <Centered>
-          <CloseButton>
+
+          {/* <CloseButton>
             <button onClick={this.props.closeEditModal} type="button" className="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </CloseButton>
+          </CloseButton> */}
         <GroupInput type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>
         <div>
           <Grid>
@@ -199,9 +199,10 @@ class EditGroup extends Component {
             </Row>
           </Grid>
           <TimeSum timers={this.state.timers}></TimeSum>
-          <Button onClick={this.saveGroup}>Save</Button>
+          <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>
+          <Button onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>
         </div>
-        </Centered>
+
       </div>
     )
   }

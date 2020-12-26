@@ -31,6 +31,7 @@ class App extends Component {
     this.loggedIn = this.loggedIn.bind(this);
     this.loggedOut = this.loggedOut.bind(this);
     this.getTimers = this.getTimers.bind(this);
+    this.editGroup = this.editGroup.bind(this);
   }
 
   componentDidMount() {
@@ -102,6 +103,21 @@ class App extends Component {
     });
   }
 
+  editGroup(g) {
+    let currentGroups = this.state.groups;
+    for (let i = 0; i < currentGroups.length; i++) {
+      if(g.hash === currentGroups[i].hash) {
+        currentGroups[i].editOpen = !currentGroups[i].editOpen;
+      } else {
+        currentGroups[i].editOpen = false;
+      }
+    }
+
+    this.setState({
+      groups: currentGroups
+    })
+  }
+
   render() {
     if(this.state.token !== '') {
       return (
@@ -113,6 +129,7 @@ class App extends Component {
           loggedOut={this.loggedOut}
           log={this.state.log}
           userId={this.state.userId}
+          editGroup={this.editGroup}
         >
         </Dash>
       )
