@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 const Box = styled.textarea`
   border: solid 1px black;
-  margin-top: 50px;
+  margin-top: 10px;
   resize: none;
   font-size: 16px;
   height: 150px;

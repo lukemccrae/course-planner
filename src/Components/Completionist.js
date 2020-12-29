@@ -3,20 +3,30 @@ import soundfile from '../Ding.mp3';
 import styled from 'styled-components';
 import Sound from 'react-sound';
 
-const StyledButton = styled.button`
-  width: 230px;
-  height: 230px;
+const CompleteButton = styled.button`
+  width: ${(props) => 145 - props.timers.indexOf(props.currentTimer) * 10 + "px"};
+  height: ${(props) => 145 - props.timers.indexOf(props.currentTimer) * 10 + "px"};
   border-radius: 100%;
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  font-size: 40px;
+  font-weight: 90;
+  color: black;
+  padding: 0;
+  border: none;
+  &:focus {
+    outline: 0;
+    background-color: #D3D3D3;
+}
+&:hover {
+  background-color: grey;
+}
 `
+
 
 class Completionist extends Component {
   constructor(props) {
     
     super(props);
-    console.log(props.group._id);
-    
 
     this.state = {
       logging: false
@@ -43,8 +53,6 @@ class Completionist extends Component {
         userId: this.props.userId
       })
     }).then(res => res.json()).then(json => {
-      console.log(json);
-      
       this.setState({logging: false})
       if (json.success) {
         this.props.getTimers(token);
@@ -58,7 +66,7 @@ class Completionist extends Component {
   render(props) {
     return (
       <div>
-        <StyledButton disabled={this.state.logging} onClick={this.next}>Next</StyledButton>
+        <CompleteButton currentColor={this.props.currentColor} currentTimer={this.props.currentTimer} timers={this.props.group.timers} disabled={this.state.logging} onClick={this.next}>Next</CompleteButton>
         <Sound
           url={soundfile}
           playStatus={Sound.status.PLAYING}

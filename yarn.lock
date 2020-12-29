@@ -2722,6 +2722,11 @@ clone-deep@^2.0.1:
     kind-of "^6.0.0"
     shallow-clone "^1.0.0"
 
+clsx@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -8633,6 +8638,14 @@ react-scripts@2.1.8:
     workbox-webpack-plugin "3.6.3"
   optionalDependencies:
     fsevents "1.2.4"
+
+react-shimmer@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-shimmer/-/react-shimmer-3.1.1.tgz#b54149bff603872559ffea6c2c5c938db0652052"
+  integrity sha512-K6yqDMqJjLs/CDn8i/s/ftKuVXerzLWxlzdy7fClvDMcLeYYlafjrW8UfgteT5Q1+xLiQg1hcbb5C7SmBr472A==
+  dependencies:
+    clsx "^1.1.0"
+    prop-types "^15.7.2"
 
 react-sound@^1.2.0:
   version "1.2.0"

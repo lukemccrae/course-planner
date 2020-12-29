@@ -11,6 +11,7 @@ import styled from 'styled-components';
 const CountdownBox = styled.div`
   display: flex;
   font-size: 15px;
+  height: 70px;
 `
 
 const CloseButton = styled.div`
@@ -31,6 +32,7 @@ class Start extends Component {
       forgetBox: [],
       lastUpdated: Date.now()
     }
+    
     this.start = this.start.bind(this);
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -105,16 +107,16 @@ class Start extends Component {
         percentDone = completedSeconds / totalSeconds;
           return (
           <CountdownCircle 
-          completed={completed} 
-          timer={timer} 
-          minutes={minutes} 
-          seconds={seconds}
-          currentTimer={timer}
-          getTimers={this.props.getTimers}
-          nextTimer={this.nextTimer}
-          userId={this.props.userId}
-          percent={100 - percentDone * 100}
-          group={this.props.group}
+            completed={completed} 
+            timer={timer} 
+            minutes={minutes} 
+            seconds={seconds}
+            currentTimer={timer}
+            getTimers={this.props.getTimers}
+            nextTimer={this.nextTimer}
+            userId={this.props.userId}
+            percent={100 - percentDone * 100}
+            group={this.props.group}
           >
           </CountdownCircle>
         );
@@ -124,21 +126,10 @@ class Start extends Component {
 
       let countdownComponent = (
         <Countdown controlled={false} renderer={renderer} date={this.formatCountdown(timer)}>
-          <Completionist getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
+          <Completionist currentColor={this.state.currentColor} getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
         </Countdown>
       )
 
-
-
-    // let displayComponent = (
-    //   <Row>
-    //     <Col>
-    //       <DisplayStyled>
-    //         {this.props.timeFormat(timer.length, 'str')}
-    //       </DisplayStyled>
-    //     </Col>
-    //   </Row>
-    // )
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
       if(timer.id === this.props.group.timers[this.state.currentTimerIndex].id) {
@@ -147,19 +138,14 @@ class Start extends Component {
           countdownComponent
         )
        }
-      // } 
-      // else {
-      //   return (
-      //     displayComponent
-      //   )
       }
   }
 
   render() {
     return (
       <div>
-      <Centered>
       <Grid>
+      <Centered>
         <CloseButton>
             <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
             <button onClick={this.props.closeModal} type="button" className="close" aria-label="Close">
@@ -175,9 +161,10 @@ class Start extends Component {
               )
             })} 
           </Row>
-            <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
+          <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
+          </Centered>
         </Grid>
-      </Centered>
+      
       </div>
     )
   }
