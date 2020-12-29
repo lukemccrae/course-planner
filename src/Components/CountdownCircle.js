@@ -123,6 +123,7 @@ class CountdownCircle extends Component {
             firstGradientColor = 'white';
             firstCalculatedPercent = 270 + this.props.percent * 3.6;
         }
+        console.log(secondCalculatedPercent, firstCalculatedPercent)
         return (
             <div>
                 {this.props.group.timers.map(t => {
