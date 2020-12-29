@@ -66,8 +66,12 @@ const InnerCircle = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 100%;
-    width: ${(props) => 145 + props.children._owner.stateNode.props.group.timers.length * 5 + props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 10 + "px"};
-    height: ${(props) => 145 + props.children._owner.stateNode.props.group.timers.length * 5 + props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 10 + "px"};
+
+    //height and width are functions of how many timers there are
+    //  decrease circle by 10px for each timer
+    width: ${(props) => 205 - props.children._owner.stateNode.props.group.timers.length * 10 - 2.4 * props.children._owner.stateNode.props.group.timers.length + "px"};
+    height: ${(props) => 205 - props.children._owner.stateNode.props.group.timers.length * 10 - 2.4 * props.children._owner.stateNode.props.group.timers.length   + "px"};
+    color: ${(props) => console.log()};
     background-color: white;
 `
 
