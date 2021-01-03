@@ -25,7 +25,8 @@ class App extends Component {
       timers: [],
       username: '',
       log: [],
-      showRegister: false
+      showRegister: false,
+      groups: []
     }
     this.showRegister = this.showRegister.bind(this);
     this.loggedIn = this.loggedIn.bind(this);
@@ -87,6 +88,24 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(json => {
+
+      //add object for creating more groups
+      //displays at the end of the groups list in Dash
+      let addGroup = {
+        box: [""],
+        editOpen: false,
+        hash: "newgroup",
+        name: "New Group",
+        timers: [
+          {
+            name: "New Timer",
+            length: 3,
+          }
+        ],
+        user: "current user"
+      }
+      json.groups.push(addGroup);
+
       if(json.success) {
         this.setState({
           timers: json.timers,

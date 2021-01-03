@@ -72,6 +72,7 @@ class Dash extends Component {
   }
   constructor(props) {
     super(props)
+    console.log(props)
     
     this.state = {
       timers: [],
@@ -85,7 +86,7 @@ class Dash extends Component {
       timerLengthSecs: 0,
       groupName: '',
       groupToEdit: {},
-      startedGroup: {}
+      startedGroup: {},
     }
     this.addModal = this.addModal.bind(this);
     this.startModal = this.startModal.bind(this);
@@ -102,6 +103,34 @@ class Dash extends Component {
     // this was calling with old token so i turned it off
     // this.props.getTimers(JSON.parse(localStorage.the_main_app).token);
     // this.startModal(this.props.groups[1]);
+    let prevGroups = this.props.groups;
+    
+    let addGroup = {
+      box: [""],
+      editOpen: false,
+      hash: "newgroup",
+      name: "New Group",
+      timers: [
+        {
+          name: "New Timer",
+          length: 3,
+        }
+      ],
+      user: "current user"
+    }
+    prevGroups.push(addGroup);
+
+    //this is for the new way to add groups
+    //currently being overwritten when a timer is finished
+    //make this add a group by passing into the group list the save group functionality fro the addGroup component
+      //we can delete the addgroup component after this is working
+    //make the Add button different than the Save button
+    //and make the start button not show up for the New Group box
+
+    this.setState({
+      groups: prevGroups
+    })
+
   }
 
   closeEditModal() {
@@ -215,7 +244,12 @@ class Dash extends Component {
                     <div className="groupNameParent">
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
-                        <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
+                        {/* dont display start button if its new timer box */}
+                        {g.hash == 'newgroup' ? 
+                          null
+                          :
+                          <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
+                        }
 
                         {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
                         {g.editOpen === true ? (
@@ -234,10 +268,11 @@ class Dash extends Component {
                         deleteGroup={this.deleteGroup}
                         timeFormat={this.timeFormat}
                         timers={this.state.timers}>
+                        addGroup={this.state.addGroup}
                       </EditGroup>
-                    ) : (
-                      <TimeSum timers={g.timers}></TimeSum>
-                    )}
+                    ) :
+                      g.hash == 'newgroup' ? <div>Use dropdown to add new Group</div> : <TimeSum timers={g.timers}></TimeSum>
+                    }
 
 
                     <TimeTotal>

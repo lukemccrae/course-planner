@@ -52,7 +52,9 @@ class EditGroup extends Component {
 
     this.addModal = this.addModal.bind(this);
     this.saveGroup = this.saveGroup.bind(this);
+    this.addGroup = this.addGroup.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.calculateTime = this.calculateTime.bind(this);
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
     this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this);
     this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
@@ -112,6 +114,35 @@ class EditGroup extends Component {
         timers: timers
       })
     }
+  }
+
+  calculateTime() {
+    let mins = this.state.timerLengthMins * 60;
+    return this.state.timerLengthSecs + mins;
+  }
+
+  addGroup() {
+    const token = JSON.parse(localStorage.the_main_app).token;
+    fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: this.state.groupName,
+        length: this.calculateTime(),
+        timers: this.state.timers,
+        hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
+        token: token
+      })
+    }).then(res => res.json()).then(json => {
+      if (json.success) {
+        this.setState({timers: [], groupName: ''})
+        this.props.getTimers(token)
+      } else {
+        this.setState({timerError: json.message, isLoading: false})
+      }
+    });
   }
 
     addModal() {
@@ -199,8 +230,16 @@ class EditGroup extends Component {
             </Row>
           </Grid>
           <TimeSum timers={this.state.timers}></TimeSum>
-          <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>
-          <Button onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>
+
+          {/* show add group button if its new group box, save button if save box */}
+          {this.props.group.hash == 'newgroup' ? 
+          <Button className="five-px-margin-right" onClick={this.addGroup}>Add</Button>
+          :
+          <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>}
+          
+
+          {/* dont show button if its add group box */}
+          {this.props.group.hash == 'newgroup' ? null : <Button onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>}
         </div>
 
       </div>

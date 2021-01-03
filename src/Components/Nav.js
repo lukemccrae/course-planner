@@ -70,7 +70,7 @@ class Nav extends Component {
         <Navbar bg="light">
           <Container>
             <div>{this.props.username}</div>
-            <Button onClick={this.props.addModal}>Add Group</Button>
+            {/* <Button onClick={this.props.addModal}>Add Group</Button> */}
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={this.openStatsModal}>Stats</NavDropdown.Item>
               <NavDropdown.Item href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
