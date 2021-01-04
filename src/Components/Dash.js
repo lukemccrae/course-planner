@@ -5,17 +5,9 @@ import AddGroup from './AddGroup.js';
 import EditGroup from './EditGroup.js';
 import {Grid, Row, Col} from './Grid';
 import Modal from 'react-modal';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import TimeSum from './TimeSum.js';
-import TimeFinished from './TimeFinished.js';
 import styled from 'styled-components';
-
-const TimerListBox = styled.div`
-  display: flex;
-  align-items: space-between;
-`
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -23,24 +15,10 @@ const ButtonWrapper = styled.div`
   
 `
 
-const TimerList = styled.ul`
-  padding: 0 0 0 0;
-`
-
-const PlusButton = styled.button`
-  border: none;
-  background-color: white;
-`
-
 const Group = styled.div`
   width: 100%;
   height: 19px;
   display: inline-table;
-`
-
-const ListedTimer = styled.li`
-  list-style-type: none;
-  white-space: nowrap;
 `
 
 const TimeTotal = styled.div`
@@ -245,7 +223,7 @@ class Dash extends Component {
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
                         {/* dont display start button if its new timer box */}
-                        {g.hash == 'newgroup' ? 
+                        {g.hash === 'newgroup' ? 
                           null
                           :
                           <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
@@ -260,7 +238,7 @@ class Dash extends Component {
 
                       </ButtonWrapper>
                     </div>
-                    {g.editOpen == true ? (
+                    {g.editOpen === true ? (
                         <EditGroup
                         closeEditModal={this.closeEditModal}
                         group={g}
@@ -271,7 +249,7 @@ class Dash extends Component {
                         addGroup={this.state.addGroup}
                       </EditGroup>
                     ) :
-                      g.hash == 'newgroup' ? <div>Use dropdown to add new Group</div> : <TimeSum timers={g.timers}></TimeSum>
+                      g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : <TimeSum timers={g.timers}></TimeSum>
                     }
 
 

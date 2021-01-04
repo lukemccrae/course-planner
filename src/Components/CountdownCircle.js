@@ -45,8 +45,8 @@ const Circle = styled.div`
         //to ensure that only one circle counts down at once, the degree passed to linear gradient needs to either be the correct one or 270 / 90, which will keep it unmoving
         //if (parent).props.currentTimer is props.timer, give it the right percent. otherwise give it 270 / 90
 
-        linear-gradient(${(props) => (props.timer == props.children._owner.stateNode.props.currentTimer ? props.firstPercent : 270) + 'deg'}, transparent 50%, ${(props) => props.firstGradientColor} 50%),
-        linear-gradient(${(props) => (props.timer == props.children._owner.stateNode.props.currentTimer ? props.secondPercent : 90) + 'deg'}, white 50%, transparent 50%);
+        linear-gradient(${(props) => (props.timer === props.children._owner.stateNode.props.currentTimer ? props.firstPercent : 270) + 'deg'}, transparent 50%, ${(props) => props.firstGradientColor} 50%),
+        linear-gradient(${(props) => (props.timer === props.children._owner.stateNode.props.currentTimer ? props.secondPercent : 90) + 'deg'}, white 50%, transparent 50%);
 
     align-items: center;
     justify-content: center;
@@ -124,7 +124,7 @@ class CountdownCircle extends Component {
 
             let index = this.props.group.timers.indexOf(this.props.currentTimer);
             for (let i = 0; i < index + 1; i++) {
-                if(this.state.colors[i] != "white") {
+                if(this.state.colors[i] !== "white") {
                     colorsDoneBecomeWhite[i] = "white";
                     this.setState({
                         colors: colorsDoneBecomeWhite
@@ -158,7 +158,7 @@ class CountdownCircle extends Component {
         let index = this.props.group.timers.indexOf(this.props.currentTimer);
 
         for (let i = 0; i < index; i++) {
-            if(this.state.colors[i] != "white") {
+            if(this.state.colors[i] !== "white") {
                 colorsDoneBecomeWhite[i] = "white";
                 this.setState({
                     colors: colorsDoneBecomeWhite,
@@ -171,7 +171,6 @@ class CountdownCircle extends Component {
     render() {
         //white gradient on the left
         let firstCalculatedPercent = 270;
-        let firstGradientColor = 'black';
 
         //white gradient on the right, moves first
         let secondCalculatedPercent = 90 + this.state.currentPercent * 3.6;
@@ -179,7 +178,6 @@ class CountdownCircle extends Component {
         //once spinner is halfway done, colors switch
         if(secondCalculatedPercent >= 270) {
             secondCalculatedPercent = 270;
-            firstGradientColor = 'white';
             firstCalculatedPercent = 270 + this.state.currentPercent * 3.6;
         }
         return (
@@ -193,7 +191,7 @@ class CountdownCircle extends Component {
                             //if the spinner is over halfway, only make the spinning color change to white
                             firstGradientColor={secondCalculatedPercent >= 270 ? 
                                 //if timer is spinning timer, make it white after halfway
-                                (this.props.currentTimer == t ? "white" : this.state.colors[this.props.group.timers.indexOf(t)]) : this.state.colors[this.props.group.timers.indexOf(t)]}
+                                (this.props.currentTimer === t ? "white" : this.state.colors[this.props.group.timers.indexOf(t)]) : this.state.colors[this.props.group.timers.indexOf(t)]}
                             timer={t}
                             colors={this.state.colors}
                         >

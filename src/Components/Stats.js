@@ -1,6 +1,6 @@
 import React from 'react';
 import TimeSum from './TimeSum';
-import {Grid, Row, Col} from './Grid';
+import {Row, Col} from './Grid';
 import styled from 'styled-components';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
@@ -82,7 +82,7 @@ const Stats = ({log, statPeriod, changePeriod}) => {
                 <Dropdown options={options} onChange={changePeriod}  value={defaultOption} placeholder="Select an option" />
                 </Col>
             </Row>
-            {(selectedStats[0] != undefined) ? 
+            {(selectedStats[0] !== undefined) ? 
             selectedStats.map(l => {
             return (
             <GreyBox color={selectedStats.indexOf(l) % 2 === 0 ? '#D3D3D3' : 'white'} key={l.name}>

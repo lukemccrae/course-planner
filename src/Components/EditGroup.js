@@ -3,7 +3,7 @@ import TimeSum from './TimeSum.js';
 import cloneDeep from 'lodash.clonedeep';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-import {Grid, Row, Col, Centered} from './Grid';
+import {Grid, Row, Col} from './Grid';
 
 const GroupInput = styled.input`
   font-size: 25px;
@@ -28,12 +28,6 @@ const TimerInput = styled.input`
 const Divider = styled.div`
   border-top: 2px solid #D3D3D3;
   margin: 10px 0 10px 0;
-`
-
-const CloseButton = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: 0 0 15px 0;
 `
 
 class EditGroup extends Component {
@@ -232,14 +226,14 @@ class EditGroup extends Component {
           <TimeSum timers={this.state.timers}></TimeSum>
 
           {/* show add group button if its new group box, save button if save box */}
-          {this.props.group.hash == 'newgroup' ? 
+          {this.props.group.hash === 'newgroup' ? 
           <Button className="five-px-margin-right" onClick={this.addGroup}>Add</Button>
           :
           <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>}
           
 
           {/* dont show button if its add group box */}
-          {this.props.group.hash == 'newgroup' ? null : <Button onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>}
+          {this.props.group.hash === 'newgroup' ? null : <Button onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>}
         </div>
 
       </div>

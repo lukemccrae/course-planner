@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
-import {Grid, Row, Col, Centered} from './Grid';
+import {Grid, Row, Centered} from './Grid';
 import ForgetBox from './ForgetBox';
 
 import styled from 'styled-components';
