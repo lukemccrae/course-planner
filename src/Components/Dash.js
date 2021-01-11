@@ -5,6 +5,7 @@ import AddGroup from './AddGroup.js';
 import EditGroup from './EditGroup.js';
 import {Grid, Row, Col} from './Grid';
 import Modal from 'react-modal';
+import {getFromStorage} from '../utils/storage';
 import Button from 'react-bootstrap/Button';
 import TimeSum from './TimeSum.js';
 import styled from 'styled-components';
@@ -50,7 +51,6 @@ class Dash extends Component {
   }
   constructor(props) {
     super(props)
-    console.log(props)
     
     this.state = {
       timers: [],
@@ -91,7 +91,7 @@ class Dash extends Component {
       timers: [
         {
           name: "New Timer",
-          length: 3,
+          length: 900,
         }
       ],
       user: "current user"
@@ -157,18 +157,6 @@ class Dash extends Component {
     });
   }
 
-  timeFormat(time, str) {
-    var minutes = Math.floor(time / 60);
-    time -= minutes * 60;
-    var seconds = parseInt(time % 60, 10);
-
-    if(str === 'str') return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-    if(str === 'num') return [minutes, seconds];
-    return null;
-
-    // return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-  }
-
   howManyTimers(group) {
     if(group.timers.length === 1) return ' ' +  group.timers.length + ' timer';
     return ' ' +  group.timers.length + ' timers';
@@ -184,7 +172,7 @@ class Dash extends Component {
     for (var i = 0; i < timers.length; i++) {
       result += timers[i].length;
     }
-    return this.timeFormat(result, 'str');
+    return this.props.timeFormat(result, 'str');
   }
 
   groupLink(hash) {
@@ -211,7 +199,7 @@ class Dash extends Component {
   render() {
     return (
       <div>
-        <Nav log={this.props.log} username={this.props.username} addModal={this.addModal} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
+        <Nav log={this.props.log} username={this.props.username} getTimers={this.props.getTimers} loggedOut={this.props.loggedOut}></Nav>
         <Grid>
             <Row>
             {this.noGroups()}
@@ -244,7 +232,7 @@ class Dash extends Component {
                         group={g}
                         getTimers={this.props.getTimers}
                         deleteGroup={this.deleteGroup}
-                        timeFormat={this.timeFormat}
+                        timeFormat={this.props.timeFormat}
                         timers={this.state.timers}>
                         addGroup={this.state.addGroup}
                       </EditGroup>
@@ -272,7 +260,7 @@ class Dash extends Component {
             <AddGroup
               closeModal={this.closeModal}
               getTimers={this.props.getTimers}
-              timeFormat={this.timeFormat}></AddGroup>
+              timeFormat={this.props.timeFormat}></AddGroup>
           </Modal>
           <Modal
           isOpen={this.state.startModalIsOpen}
@@ -282,7 +270,7 @@ class Dash extends Component {
           contentLabel="Example Modal"
           shouldCloseOnOverlayClick={false}
         >
-          <Start boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.startedGroup}></Start>
+          <Start timerStart={true} boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.props.timeFormat} group={this.state.startedGroup}></Start>
           </Modal>
         </Grid>
       </div>

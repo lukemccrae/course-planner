@@ -3,9 +3,16 @@ import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
 import {Grid, Row, Centered} from './Grid';
+import {getFromStorage} from '../utils/storage';
 import ForgetBox from './ForgetBox';
 
 import styled from 'styled-components';
+
+const Footer = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 80%;
+`
 
 
 const CountdownBox = styled.div`
@@ -97,19 +104,17 @@ class Start extends Component {
       if(minutes < 10 && minutes > 0) minutes = '0' + minutes;
       if(seconds === 0) seconds = '00';
       if(seconds < 10 && seconds > 0) seconds = '0' + seconds;
-      // if (completed) {
-        // Render a completed state
-        // return ()
-      // } else {
+
         // Render a countdown
         let totalSeconds = timer.length;
         let completedSeconds = parseInt(seconds) + minutes * 60;
         percentDone = completedSeconds / totalSeconds;
           return (
           <CountdownCircle 
-            completed={completed} 
+            completed={completed}
+            timerStart={this.props.timerStart}
             timer={timer} 
-            minutes={minutes} 
+            minutes={minutes}
             seconds={seconds}
             currentTimer={timer}
             getTimers={this.props.getTimers}
@@ -145,25 +150,48 @@ class Start extends Component {
     return (
       <div>
       <Grid>
-      <Centered>
+      {/* <Centered> */}
+      {getFromStorage('the_main_app') ?
         <CloseButton>
-            <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
+         <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
             <button onClick={this.props.closeModal} type="button" className="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </CloseButton>
+          : null }
           <Row>
             {this.props.group.timers.map(t => {
               return (
                 <CountdownBox key={t.id}>
-                    {this.countdownDisplay(t)}
+                    {this.props.timerStart ? this.countdownDisplay(t) : 
+                        <CountdownCircle 
+                        completed={false}
+                        timerStart={this.props.timerStart}
+                        //passing only length and not a name causes the countdown to not start
+                        timer={{length: 100}} 
+                        minutes={"1"}
+                        seconds={"1"}
+                        currentTimer={t}
+                        getTimers={this.props.getTimers}
+                        nextTimer={this.nextTimer}
+                        userId={this.props.userId}
+                        percent={5}
+                        group={this.props.group}
+                      >
+                      </CountdownCircle>}
                 </CountdownBox>
               )
             })} 
           </Row>
-          <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
-          </Centered>
-        </Grid>
+          {getFromStorage('the_main_app') ? 
+            <Footer>
+              <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
+            </Footer> 
+          : 
+            null
+          }
+        {/* </Centered> */}
+      </Grid>
       
       </div>
     )

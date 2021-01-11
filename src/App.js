@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
-import Register from './Components/Register';
-import Signin from './Components/Signin';
+import Front from './Components/Front';
 import Dash from './Components/Dash';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
@@ -26,13 +25,13 @@ class App extends Component {
       username: '',
       log: [],
       showRegister: false,
-      groups: []
+      groups: [],
     }
-    this.showRegister = this.showRegister.bind(this);
     this.loggedIn = this.loggedIn.bind(this);
     this.loggedOut = this.loggedOut.bind(this);
     this.getTimers = this.getTimers.bind(this);
     this.editGroup = this.editGroup.bind(this);
+    this.timeFormat = this.timeFormat.bind(this);
   }
 
   componentDidMount() {
@@ -56,12 +55,6 @@ class App extends Component {
     }
   }
 
-  showRegister() {
-    this.setState({
-      showRegister: !this.state.showRegister
-    })
-  }
-
   loggedIn(args) {
     this.setState({
       token: args.token,
@@ -69,7 +62,7 @@ class App extends Component {
       timers: args.timers,
       groups: args.groups,
       log: args.log,
-      userId: args.id
+      userId: args.id,
     })
   }
 
@@ -137,10 +130,25 @@ class App extends Component {
     })
   }
 
+  timeFormat(time, str) {
+    var minutes = Math.floor(time / 60);
+    time -= minutes * 60;
+    var seconds = parseInt(time % 60, 10);
+
+    if(str === 'str') return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    if(str === 'num') return [minutes, seconds];
+    return null;
+
+    // return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+  }
+
   render() {
-    if(this.state.token !== '') {
-      return (
-        <Dash
+    //if token, return dash, and show spinner
+    //
+    return (
+      <div>
+        {this.state.token ? 
+          <Dash
           groups={this.state.groups}
           timers={this.state.timers}
           username={this.state.username}
@@ -149,36 +157,30 @@ class App extends Component {
           log={this.state.log}
           userId={this.state.userId}
           editGroup={this.editGroup}
+          timeFormat={this.timeFormat}
         >
         </Dash>
-      )
-    }
-
-    if(getFromStorage('the_main_app') !== null) {
-      return (
-        <div
-        className="vertical-center">
-          <Container>
-            <ClockLoader
-            css={override}
-            size={150}
-            color={"#007bff"}
-            loading={this.state.loading}
-          />
-          </Container>
+        :
+        <div>
+          {getFromStorage('the_main_app') ? 
+          <div
+          className="vertical-center">
+            <Container>
+              <ClockLoader
+              css={override}
+              size={150}
+              color={"#007bff"}
+              loading={this.state.loading}
+            />
+            </Container>
+          </div>
+          : 
+          <Front timeFormat={this.timeFormat} loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Front>
+         }
         </div>
-      )
-    }
-    if(this.state.token === '') {
-      if (this.state.showRegister === false) {
-        return (
-          <Signin loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Signin>
-        );
       }
-      return (
-        <Register showRegister={this.showRegister}></Register>
-      )
-    }
+      </div>
+    )
   }
 }
 

@@ -21,7 +21,8 @@ const TimeBox = styled.div`
 `
 
 const Name = styled.h5`
-    font-weight: 250;   
+    font-weight: 250;
+    margin: 0;
 `
 
 const Time = styled.span`
@@ -105,6 +106,9 @@ class CountdownCircle extends Component {
 
         //set up amount to move spinner each second
         let currentIncrement = 100 / this.props.timer.length / numberTicks;
+        
+        //make currentIncrement 0 if timer name is undefined
+        if(this.props.timer.name === undefined) currentIncrement = 0;
 
         //if spinner isnt complete, or wont be complete after this tick,
         if (this.state.currentPercent + currentIncrement < 100) {
@@ -180,11 +184,14 @@ class CountdownCircle extends Component {
             secondCalculatedPercent = 270;
             firstCalculatedPercent = 270 + this.state.currentPercent * 3.6;
         }
+
         return (
             <div>
                 {this.props.group.timers.map(t => {
                     return (
                         <Circle 
+
+                        //only give the updated percent if the timerStart boolean is on
                             firstPercent={firstCalculatedPercent}
                             secondPercent={secondCalculatedPercent}
 
@@ -204,10 +211,10 @@ class CountdownCircle extends Component {
                             <Completionist currentColor={this.state.colors[this.props.group.timers.indexOf(this.props.currentTimer)]} group={this.props.group} userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
                         :
                         <div>
-                            <TimeBox>
+                            {this.props.timerStart ? <TimeBox>
                                 <Name>{this.props.timer.name}</Name>
                                 <Time>{this.props.minutes}:{this.props.seconds}</Time>
-                            </TimeBox>
+                            </TimeBox> : null}
                             
                         </div>
                         

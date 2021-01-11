@@ -1025,6 +1025,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.9.2":
+  version "7.12.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
+  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.2.2", "@babel/template@^7.8.3", "@babel/template@^7.8.6":
   version "7.8.6"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.8.6.tgz#86b22af15f828dfb086474f964dcc3e39c43ce2b"
@@ -1072,6 +1079,18 @@
     "@emotion/stylis" "0.8.5"
     "@emotion/utils" "0.11.3"
     "@emotion/weak-memoize" "0.2.5"
+
+"@emotion/core@^10.0.14":
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/@emotion/core/-/core-10.1.1.tgz#c956c1365f2f2481960064bcb8c4732e5fb612c3"
+  integrity sha512-ZMLG6qpXR8x031NXD8HJqugy/AZSkAuMxxqB46pmAR7ze47MhNJ56cdoX243QPZdGctrdfo+s08yZTiwaUcRKA==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    "@emotion/cache" "^10.0.27"
+    "@emotion/css" "^10.0.27"
+    "@emotion/serialize" "^0.11.15"
+    "@emotion/sheet" "0.9.4"
+    "@emotion/utils" "0.11.3"
 
 "@emotion/core@^10.0.15":
   version "10.0.28"
@@ -8547,6 +8566,14 @@ react-error-overlay@^5.1.4:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
   integrity sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==
 
+react-input-slider@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-input-slider/-/react-input-slider-6.0.0.tgz#4de0a5a9635b57ce6bfb34a3f72cfe1c60267efb"
+  integrity sha512-/8VEnReKz1zsgEaQOzaXF+hphltM7lh18+HgnOnkgXPIBL32AJQIagGzsPRlOX0na1G2w6juMy2lS4LsQAsZ7g==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@emotion/core" "^10.0.14"
+
 react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -8646,6 +8673,11 @@ react-shimmer@^3.1.1:
   dependencies:
     clsx "^1.1.0"
     prop-types "^15.7.2"
+
+react-slider@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-slider/-/react-slider-1.1.2.tgz#d059f801615ef2cb3f6e226c232b2a4cbee0e615"
+  integrity sha512-rPz4K7IhMg4Jj1vvEywv8/ePhAQ9mfh4BKQl8DxB7AN6v1UD7fp0og6BnoH8MfBH1AwtvxKRELbSGl443EuczQ==
 
 react-sound@^1.2.0:
   version "1.2.0"

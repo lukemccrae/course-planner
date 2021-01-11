@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {getFromStorage} from '../utils/storage';
 
 class Logout extends Component {
   constructor(props) {
@@ -25,9 +26,10 @@ class Logout extends Component {
   }
 
   render() {
-    return (
-      <div onClick={this.onLogout}>Logout</div>
-    )
+    return ( 
+    <div>
+      {getFromStorage("the_main_app") ? <div onClick={this.onLogout}>Logout</div> : <div onClick={this.props.openLoginModal}>Login</div>}
+    </div> )
   }
 
 }

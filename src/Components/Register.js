@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import ShowRegister from './showRegister';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -67,7 +66,7 @@ class Register extends Component {
             signUpFirstName: '',
             signUpLastName: ''
           })
-          this.props.showRegister()
+          this.props.showRegister();
         } else {
           console.log('failed');
           this.setState({
@@ -79,9 +78,7 @@ class Register extends Component {
   }
   render(props) {
     return (
-      <div className="vertical-center">
         <div className="container">
-          <h3>Group Timer</h3>
               <Row>
                 <Col>
                   <Form.Group controlId="firstName">
@@ -122,9 +119,7 @@ class Register extends Component {
             <Button onClick={this.onSignUp} variant="primary" type="submit">
               Register
             </Button>
-          <ShowRegister value="Already have an account?" showRegister={this.props.showRegister}></ShowRegister>
         </div>
-      </div>
 
     )
   }

@@ -4,7 +4,6 @@ import Start from './Start';
 import EditGroup from './EditGroup';
 import {Grid, Row, Centered, Col} from './Grid';
 import 'whatwg-fetch';
-import cloneDeep from 'lodash.clonedeep';
 import styled from 'styled-components';
 
 const StartBox = styled.div`
@@ -23,9 +22,10 @@ class Signin extends Component {
       group: {
         name: "Test Group",
         timers: [{
-          name: "New Timer",
+          name: "Task",
           length: 300,
-        }],
+        }
+    ],
         hash: "newgroup",
         timerGoing: false
       },
@@ -39,7 +39,7 @@ class Signin extends Component {
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this)
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this)
     this.closeModal = this.closeModal.bind(this);
-    this.timerStart = this.timerStart.bind(this);
+    this.startTimer = this.startTimer.bind(this);
   }
   
   onTextboxChangeSignInEmail(event) {
@@ -56,9 +56,9 @@ class Signin extends Component {
     });
   }
 
-  timerStart() {
+  startTimer() {
     this.setState({
-      timerStart: !this.state.timerState
+      timerStart: !this.state.timerStart
     })
   }
 
@@ -70,10 +70,13 @@ class Signin extends Component {
           <Row>
           <Col>
           <StartBox>
-            <Start timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
+            <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
           </StartBox>
-            <EditGroup 
+          <div style={{marginTop: 15}}></div>
+            <EditGroup
             timeFormat={this.props.timeFormat} 
+            timerStart={this.state.timerStart}
+            startTimer={this.startTimer}
             group={this.state.group}
             onTextboxChangeTimerName={this.onTextboxChangeTimerName}
             onTextboxChangeNewTimerName={this.onTextboxChangeNewTimerName}

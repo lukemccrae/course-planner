@@ -3,6 +3,7 @@ import TimeSum from './TimeSum';
 import {Row, Col} from './Grid';
 import styled from 'styled-components';
 import Dropdown from 'react-dropdown';
+import {getFromStorage} from '../utils/storage';
 import 'react-dropdown/style.css';
 
 const StatBox = styled.div`
@@ -99,7 +100,9 @@ const Stats = ({log, statPeriod, changePeriod}) => {
             )
         })
         :
-        <div>You have no recent activities.</div>}
+        <div>
+        {getFromStorage("the_main_app") ? <div>You have no recent activities.</div> : <div>Create an account to track your progress.</div>}
+        </div>}
         </StatBox>
     )
 }

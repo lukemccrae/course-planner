@@ -91,7 +91,7 @@ class ForgetBox extends Component {
   render(props) {
     return (
       <div>
-        <Box value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
+        <Box placeholder={"Distracted?\nHave an idea?\nWrite your thoughts here."} value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
         <ButtonWrapper>
           {this.state.saved ? <div>saved</div> : <div>not saved</div>}
           <ClearButton>
