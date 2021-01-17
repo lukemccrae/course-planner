@@ -78,7 +78,7 @@ class Register extends Component {
   }
   render(props) {
     return (
-        <div className="container">
+        <div>
               <Row>
                 <Col>
                   <Form.Group controlId="firstName">
@@ -89,7 +89,7 @@ class Register extends Component {
                     />
                   </Form.Group>
                 </Col>
-                <Col>
+                {/* <Col>
                   <Form.Group controlId="lastName">
                     <Form.Control
                       placeholder="Last name"
@@ -97,7 +97,7 @@ class Register extends Component {
                       onChange={this.onTextboxChangeSignUpLastName}
                     />
                   </Form.Group>
-                </Col>
+                </Col> */}
               </Row>
             <Form.Group controlId="formBasicEmail">
               <Form.Control

@@ -203,7 +203,8 @@ class Dash extends Component {
         <Grid>
             <Row>
             {this.noGroups()}
-            <Col>
+            <Col size={1.5}></Col>
+            <Col size={3}>
               {this.props.groups.map(g => {
                 return (
                   <Group className="group" key={g._id}>
@@ -249,6 +250,7 @@ class Dash extends Component {
                 )
               })}
             </Col>
+            <Col size={1.5}></Col>
             </Row>
           <Modal
             isOpen={this.state.addModalIsOpen}

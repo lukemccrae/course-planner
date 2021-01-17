@@ -13,6 +13,7 @@ export const Row = styled.div`
 export const Col = styled.div`
     flex: ${(props) => props.size};
     width: 100%;
+    // border-left: solid 1px black;
 `;
 
 export function Centered({children}) {

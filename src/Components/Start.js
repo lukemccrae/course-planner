@@ -28,6 +28,7 @@ const CloseButton = styled.div`
 class Start extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
 
     this.state = {
       modalIsOpen: false,

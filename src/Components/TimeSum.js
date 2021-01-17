@@ -36,7 +36,7 @@ class TimeSum extends Component {
 
   render() {
     return (
-    <div>{this.secondsToHms(this.totalTime())}</div>
+    <div style={{display: 'inline', fontSize: '25px'}}>{this.secondsToHms(this.totalTime())}</div>
     )
   }
 

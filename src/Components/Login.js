@@ -65,7 +65,6 @@ class Login extends Component {
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
         if(json.success) {
           this.props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })
@@ -86,7 +85,7 @@ class Login extends Component {
 
   render(props) {
     return (
-        <div className="container">
+        <div>
             {this.state.showRegister ? 
             <Register showRegister={this.showRegister}></Register>
         :

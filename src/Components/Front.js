@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import Nav from './Nav';
 import Start from './Start';
-import EditGroup from './EditGroup';
+import DashFront from './DashFront';
 import {Grid, Row, Centered, Col} from './Grid';
 import 'whatwg-fetch';
 import styled from 'styled-components';
 
 const StartBox = styled.div`
   height: 100%;
+  
 `
 
 
 
-class Signin extends Component {
+class Front extends Component {
   constructor(props) {
     super(props)
     console.log(props)
@@ -22,7 +23,7 @@ class Signin extends Component {
       group: {
         name: "Test Group",
         timers: [{
-          name: "Task",
+          name: "Task 1",
           length: 300,
         }
     ],
@@ -57,8 +58,9 @@ class Signin extends Component {
   }
 
   startTimer() {
+    let toggle = !this.state.timerStart;
     this.setState({
-      timerStart: !this.state.timerStart
+      timerStart: toggle
     })
   }
 
@@ -68,24 +70,25 @@ class Signin extends Component {
         <Nav loggedIn={this.props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
         <Grid>
           <Row>
-          <Col>
-          <StartBox>
-            <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
-          </StartBox>
-          <div style={{marginTop: 15}}></div>
-            <EditGroup
-            timeFormat={this.props.timeFormat} 
-            timerStart={this.state.timerStart}
-            startTimer={this.startTimer}
-            group={this.state.group}
-            onTextboxChangeTimerName={this.onTextboxChangeTimerName}
-            onTextboxChangeNewTimerName={this.onTextboxChangeNewTimerName}
-            onTextboxChangeNewTimerLength={this.onTextboxChangeNewTimerLength}
-            onTextboxChangeTimerLengthMins={this.onTextboxChangeTimerLengthMins}
-            timerStart={this.timerStart}
-            >
-            </EditGroup>
-        </Col>
+            <Col size={1.5}></Col>
+            <Col size={3}>
+            <StartBox>
+              <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
+            </StartBox>
+            <div style={{marginTop: 15}}></div>
+                <DashFront
+                timeFormat={this.props.timeFormat} 
+                timerStart={this.state.timerStart}
+                startTimer={this.startTimer}
+                group={this.state.group}
+                onTextboxChangeTimerName={this.onTextboxChangeTimerName}
+                onTextboxChangeNewTimerName={this.onTextboxChangeNewTimerName}
+                onTextboxChangeNewTimerLength={this.onTextboxChangeNewTimerLength}
+                onTextboxChangeTimerLengthMins={this.onTextboxChangeTimerLengthMins}
+                >
+                </DashFront>
+            </Col>
+            <Col size={1.5}></Col>
           </Row>
         </Grid>
       </div>
@@ -93,4 +96,4 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+export default Front;

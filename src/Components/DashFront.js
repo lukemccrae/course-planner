@@ -30,7 +30,6 @@ const TimerMinsDisplay = styled.div`
 `
 
 const TimerInput = styled.input`
-  display: inline;
   font-size: 15px;
   margin: 0px 5px 10px 5px;
   // background-color: #D3D3D3;
@@ -137,12 +136,11 @@ class EditGroup extends Component {
   }
 
   componentDidMount() { 
-    let timersAmt = parseInt(this.props.group.timers.length) + 1;
     this.setState({
       timers: this.props.group.timers,
       groupName: this.props.group.name,
       id: this.props.group._id,
-      newTimerName: 'Task ' + timersAmt
+      newTimerName: 'Task ' + 2
     })
   }
 
@@ -247,14 +245,15 @@ class EditGroup extends Component {
           {/* <Grid> */}
             {this.state.timers.map(t => {
               return (
+                //turn off timer rows if start is running. 
                 <Row key={t.id}>
-                  {/* <Col size={.2}> */}
-                    <button style={{display: this.state.timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{this.delItem(t)}} type="button" className="close" aria-label="Close">
+                  <Col size={.05}>
+                    <button style={{display: this.state.timers.length < 2 ? "none" : "inline"}} onClick={()=>{this.delItem(t)}} type="button" className="close" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  {/* </Col> */}
+                  </Col>
 
-                  <Col size={.5}><TimerInput type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/></Col>
+                  <Col size={.5}><TimerInput disabled={true} type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/></Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
 
@@ -267,6 +266,7 @@ class EditGroup extends Component {
                     xmax = {30}
                     x={t.length / 60}
                     onChange={({ x }) =>  this.editTimerLength(x, t)}
+                    disabled={this.props.timerStart}
                     />
                   </SliderBox>
                   </Col>
@@ -275,40 +275,36 @@ class EditGroup extends Component {
               )
             })}
             <Divider></Divider>
-            <Row>
-              <Col size={1}>
-                <TimeSum timers={this.state.timers}></TimeSum>
-              </Col>
-              <Col size={3}>
-                <TimerInput style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
-                  <Col size={.1}></Col>
-              </Col>
-              <Col size={.5}>
-                <Button style={{display: 'inline'}} disabled={this.state.timers.length >= 5 || this.props.timerStart} onClick={this.addItem}>Add</Button>
-              </Col>
-            </Row>
-              <Divider></Divider>
-              <Row style={{display: 'flex'}}>
-              <Col size={2}>
+            <Row style={{justifyContent: 'space-between'}}>
+              <Col size={1.5}>
                 {/* if no token, show start button. if token, show save/add and delete
                   this is so that editTimer appears different on signIn and Dash components */}
                   {getFromStorage('the_main_app') ? (
                     <div>
-                      {/* dont show button if its add group box */}
-                      {this.props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right"  onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>}
                         {/* show add group button if its new group box, save button if save box */}
                       {this.props.group.hash === 'newgroup' ? 
-                      <Button onClick={this.addGroup}>Save</Button>
+                      <Button className="five-px-margin-right" onClick={this.addGroup}>Save</Button>
                       :
-                      <Button onClick={this.saveGroup}>Save</Button>}
+                      <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>}
+                      
+          
+                      {/* dont show button if its add group box */}
+                      {this.props.group.hash === 'newgroup' ? null : <Button onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>}
                     </div>
                   )
                 :
-                (<Button onClick={this.props.startTimer}>&#9658;</Button>)}
+                this.props.timerStart ? <Button onClick={this.props.startTimer}>&#9632;</Button> : <Button onClick={this.props.startTimer}>&#9658;</Button>}
+                  <TimeSum timers={this.state.timers}></TimeSum>
               </Col>
               {/* <Col size={1}><TimerInput type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/></Col> */}
-              </Row>
-
+              <VerticalDivider></VerticalDivider>
+                <Col size={4}>
+                  <TimerInput style={{margin: '10px 0 0 0'}} type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
+                </Col>
+                <Col size={1}>
+                  <Button disabled={this.state.timers.length >= 5 || this.props.timerStart} onClick={this.addItem}>Add</Button>
+                </Col>
+            </Row>
           {/* </Grid> */}
 
         </div>

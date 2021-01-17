@@ -69,5 +69,6 @@
 }
 
 .css-yvszuv-Slider {
-  width: 40vw !important;
+  max-width: 20vw !important;
+  min-width: 115px !important;
 }
