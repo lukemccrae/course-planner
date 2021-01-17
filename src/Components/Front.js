@@ -75,7 +75,7 @@ class Front extends Component {
             <StartBox>
               <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
             </StartBox>
-            <div style={{marginTop: 15}}></div>
+            <div style={{marginTop: '40px'}}></div>
                 <DashFront
                 timeFormat={this.props.timeFormat} 
                 timerStart={this.state.timerStart}
