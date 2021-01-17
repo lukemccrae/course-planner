@@ -40,6 +40,7 @@
   display: flex;
   justify-content: space-between;
   white-space: nowrap;
+  min-width: 293px;
 }
 
 .displayTime {
@@ -71,4 +72,8 @@
 .css-yvszuv-Slider {
   max-width: 20vw !important;
   min-width: 115px !important;
+}
+
+.css-166sbl1-Slider {
+  max-width: 20vw !important;
 }

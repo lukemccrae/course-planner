@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 const StartBox = styled.div`
   height: 100%;
-  
 `
 
 
@@ -24,7 +23,7 @@ class Front extends Component {
         name: "Test Group",
         timers: [{
           name: "Task 1",
-          length: 300,
+          length: 900,
         }
     ],
         hash: "newgroup",
@@ -33,7 +32,16 @@ class Front extends Component {
       mockBox: "",
       mockGetTimers: function(){},
       startModalIsOpen: false,
-      timerStart: false
+      timerStart: false,
+      colors: [
+        "#428A79",
+        "#71AF55",
+        "#F00500",
+        "#E4BE67",
+        "#E47043",
+        "#B63534",
+        "#9598AB",
+    ],
     }
 
     this.signInRef = React.createRef();
@@ -70,13 +78,12 @@ class Front extends Component {
         <Nav loggedIn={this.props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
         <Grid>
           <Row>
-            <Col size={1.5}></Col>
-            <Col size={3}>
-            <StartBox>
-              <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
-            </StartBox>
-            <div style={{marginTop: '40px'}}></div>
-                <DashFront
+            <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
+          </Row>
+        </Grid>
+          <Grid>
+          <Row>
+            <DashFront
                 timeFormat={this.props.timeFormat} 
                 timerStart={this.state.timerStart}
                 startTimer={this.startTimer}
@@ -87,8 +94,6 @@ class Front extends Component {
                 onTextboxChangeTimerLengthMins={this.onTextboxChangeTimerLengthMins}
                 >
                 </DashFront>
-            </Col>
-            <Col size={1.5}></Col>
           </Row>
         </Grid>
       </div>
