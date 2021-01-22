@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Completionist from './Completionist';
+import {Grid, Row, Centered, Col} from './Grid';
 
 // let colors = [
 //     "#428A79",
@@ -37,8 +38,8 @@ const Circle = styled.div`
 
     // set width / height as functions of the index of each timer in the timers group array
     // this enables them to sit on top of each other
-    width: ${(props) => 215 + props.children._owner.stateNode.props.group.timers.length * 5 - props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 20 + "px"};
-    height: ${(props) => 215 + props.children._owner.stateNode.props.group.timers.length * 5 - props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 20 + "px"};
+    width: ${(props) => 42 - props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 4 + "vh"};
+    height: ${(props) => 42 - props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 4 + "vh"};
     border-radius: 100%;
     background-color: ${(props) => props.colors[props.children._owner.stateNode.props.group.timers.indexOf(props.timer)]};
     background-image:
@@ -54,10 +55,10 @@ const Circle = styled.div`
 
     margin: 
     //margin top and left porportional to its place in the timer array
-        ${(props) => props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 10 + "px"};
+        ${(props) => props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 2 + "vh"};
         0
         0
-        ${(props) => props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 10 + "px"};
+        ${(props) => props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 2 + "vh"};
 
     display: flex;
 `
@@ -69,17 +70,17 @@ const InnerCircle = styled.div`
     border-radius: 100%;
 
     //height and width are functions of how many timers there are
-    //  decrease circle by 10px for each timer
-    width: ${(props) => 205 - props.children._owner.stateNode.props.group.timers.length * 10 - 2.4 * props.children._owner.stateNode.props.group.timers.length + "px"};
-    height: ${(props) => 205 - props.children._owner.stateNode.props.group.timers.length * 10 - 2.4 * props.children._owner.stateNode.props.group.timers.length   + "px"};
-    color: ${(props) => console.log()};
+    //  decrease circle for each timer
+    width: ${(props) => 39 - props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 4 + "vh"};
+    height: ${(props) => 39 - props.children._owner.stateNode.props.group.timers.indexOf(props.timer) * 4 + "vh"};
     background-color: white;
 `
 
 
-class DisplayCircle extends Component {
+class CountdownCircle extends Component {
     constructor(props) {
         super(props)
+        console.log(props)
         this.state = {
             colors: [
                 "#428A79",
@@ -188,7 +189,6 @@ class DisplayCircle extends Component {
                 {this.props.group.timers.map(t => {
                     return (
                         <Circle 
-
                         //only give the updated percent if the timerStart boolean is on
                             firstPercent={firstCalculatedPercent}
                             secondPercent={secondCalculatedPercent}
@@ -202,7 +202,7 @@ class DisplayCircle extends Component {
                         >
                     
                         <InnerCircle
-                            timerId={t.id}
+                            timer={t}
                         >
                         {
                             this.props.completed ? 
@@ -228,4 +228,4 @@ class DisplayCircle extends Component {
     }
 }
 
-export default DisplayCircle;
+export default CountdownCircle;

@@ -36,6 +36,8 @@ class Completionist extends Component {
   // https://banana-crumble-42815.herokuapp.com/log
   next() {
     this.setState({logging: true})
+    this.props.getTimers(token);
+        this.props.nextTimer();
     const token = JSON.parse(localStorage.the_main_app).token;
     fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
       method: 'POST',
@@ -55,8 +57,7 @@ class Completionist extends Component {
     }).then(res => res.json()).then(json => {
       this.setState({logging: false})
       if (json.success) {
-        this.props.getTimers(token);
-        this.props.nextTimer();
+        
       } else {
         this.setState({timerError: json.message, isLoading: false})
       }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Nav from './Nav';
 import Start from './Start';
+import DisplayCircle from './DisplayCircle';
 import DashFront from './DashFront';
 import {Grid, Row, Centered, Col} from './Grid';
 import 'whatwg-fetch';
@@ -67,6 +68,7 @@ class Front extends Component {
 
   startTimer() {
     let toggle = !this.state.timerStart;
+    
     this.setState({
       timerStart: toggle
     })
@@ -77,11 +79,13 @@ class Front extends Component {
       <div>
         <Nav loggedIn={this.props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
         <Grid>
-          <Row>
+          {!this.state.timerStart ? <DisplayCircle
+              group={this.state.group}
+              timer={{length: 100}}
+            >
+            </DisplayCircle> : 
             <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
-          </Row>
-        </Grid>
-          <Grid>
+          }
           <Row>
             <DashFront
                 timeFormat={this.props.timeFormat} 

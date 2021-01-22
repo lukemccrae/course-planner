@@ -150,7 +150,6 @@ class Start extends Component {
   render() {
     return (
       <div>
-      <Grid>
       {/* <Centered> */}
       {getFromStorage('the_main_app') ?
         <CloseButton>
@@ -192,7 +191,6 @@ class Start extends Component {
             null
           }
         {/* </Centered> */}
-      </Grid>
       
       </div>
     )

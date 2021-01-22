@@ -56,8 +56,8 @@ const Footer = styled.div`
   bottom: 0;
   // min-width: 361.59px;
   // padding: 0 40px 20px 40px;
-  width:90%;
-  margin: 0 0 20px 0;
+  width:90vw;
+  margin: 0 10px 20px 0;
 `
 
 class EditGroup extends Component {
@@ -243,7 +243,7 @@ class EditGroup extends Component {
   render() {
     return (
       <Footer>
-            {this.state.timers.map(t => {
+            {this.props.group.timers.map(t => {
               return (
                 //turn off timer rows if start is running. 
                 <Row style={{display: this.props.timerStart ? "none" : "flex"}} key={t.id}>
