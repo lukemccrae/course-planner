@@ -272,7 +272,7 @@ class Dash extends Component {
           contentLabel="Example Modal"
           shouldCloseOnOverlayClick={false}
         >
-          <Start timerStart={true} boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.props.timeFormat} group={this.state.startedGroup}></Start>
+          <Start colors={this.props.colors} timerStart={true} boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.props.timeFormat} group={this.state.startedGroup}></Start>
           </Modal>
         </Grid>
       </div>

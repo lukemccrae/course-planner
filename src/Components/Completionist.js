@@ -32,13 +32,20 @@ class Completionist extends Component {
       logging: false
     }
     this.next = this.next.bind(this);
+    this.logStats = this.logStats.bind(this);
   }
-  // https://banana-crumble-42815.herokuapp.com/log
+
   next() {
     this.setState({logging: true})
     this.props.getTimers(token);
         this.props.nextTimer();
     const token = JSON.parse(localStorage.the_main_app).token;
+    if(token != undefined) {
+      this.logStats(token)
+    }
+  }
+
+  logStats(token) {
     fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
       method: 'POST',
       headers: {

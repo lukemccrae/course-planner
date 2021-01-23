@@ -123,11 +123,11 @@ class CountdownCircle extends Component {
         //this solves the problem of the spinner not totally completing if the increment bumps it over 100%
         } else {
             //set state colors array in variable
-            let colorsDoneBecomeWhite = this.state.colors;
+            let colorsDoneBecomeWhite = this.props.colors;
 
             let index = this.props.group.timers.indexOf(this.props.currentTimer);
             for (let i = 0; i < index + 1; i++) {
-                if(this.state.colors[i] !== "white") {
+                if(this.props.colors[i] !== "white") {
                     colorsDoneBecomeWhite[i] = "white";
                     this.setState({
                         colors: colorsDoneBecomeWhite
@@ -157,11 +157,11 @@ class CountdownCircle extends Component {
       //this runs when component starts, either on group start or next timer
       UNSAFE_componentWillMount() {
         //copy state colors array
-        let colorsDoneBecomeWhite = this.state.colors;
+        let colorsDoneBecomeWhite = this.props.colors;
         let index = this.props.group.timers.indexOf(this.props.currentTimer);
 
         for (let i = 0; i < index; i++) {
-            if(this.state.colors[i] !== "white") {
+            if(this.props.colors[i] !== "white") {
                 colorsDoneBecomeWhite[i] = "white";
                 this.setState({
                     colors: colorsDoneBecomeWhite,
@@ -196,9 +196,9 @@ class CountdownCircle extends Component {
                             //if the spinner is over halfway, only make the spinning color change to white
                             firstGradientColor={secondCalculatedPercent >= 270 ? 
                                 //if timer is spinning timer, make it white after halfway
-                                (this.props.currentTimer === t ? "white" : this.state.colors[this.props.group.timers.indexOf(t)]) : this.state.colors[this.props.group.timers.indexOf(t)]}
+                                (this.props.currentTimer === t ? "white" : this.props.colors[this.props.group.timers.indexOf(t)]) : this.props.colors[this.props.group.timers.indexOf(t)]}
                             timer={t}
-                            colors={this.state.colors}
+                            colors={this.props.colors}
                         >
                     
                         <InnerCircle
@@ -206,7 +206,7 @@ class CountdownCircle extends Component {
                         >
                         {
                             this.props.completed ? 
-                            <Completionist currentColor={this.state.colors[this.props.group.timers.indexOf(this.props.currentTimer)]} group={this.props.group} userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
+                            <Completionist currentColor={this.props.colors[this.props.group.timers.indexOf(this.props.currentTimer)]} group={this.props.group} userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
                         :
                         <div>
                             {this.props.timerStart ? <TimeBox>

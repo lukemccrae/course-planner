@@ -7,19 +7,11 @@ import {Grid, Row, Centered, Col} from './Grid';
 import 'whatwg-fetch';
 import styled from 'styled-components';
 
-const StartBox = styled.div`
-  height: 100%;
-`
-
-
-
 class Front extends Component {
   constructor(props) {
     super(props)
     console.log(props)
     this.state = {
-      signInEmail: '',
-      signInPassword: '',
       group: {
         name: "Test Group",
         timers: [{
@@ -32,38 +24,23 @@ class Front extends Component {
       },
       mockBox: "",
       mockGetTimers: function(){},
-      startModalIsOpen: false,
       timerStart: false,
-      colors: [
-        "#428A79",
-        "#71AF55",
-        "#F00500",
-        "#E4BE67",
-        "#E47043",
-        "#B63534",
-        "#9598AB",
-    ],
+    newTimerName: 'Task ',
+    newTimerLength: '15'
     }
 
-    this.signInRef = React.createRef();
-    this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this)
-    this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this)
-    this.closeModal = this.closeModal.bind(this);
+    this.signInRef = React.createRef()
     this.startTimer = this.startTimer.bind(this);
-  }
-  
-  onTextboxChangeSignInEmail(event) {
-    this.setState({signInEmail: event.target.value})
-  }
-
-  onTextboxChangeSignInPassword(event) {
-    this.setState({signInPassword: event.target.value})
+    this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
+    this.editTimerLength = this.editTimerLength.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.delItem = this.delItem.bind(this);
   }
 
-  closeModal() {
+  componentDidMount() { 
     this.setState({
-      startModalIsOpen: false,
-    });
+      newTimerName: 'Task ' + 2
+    })
   }
 
   startTimer() {
@@ -71,6 +48,59 @@ class Front extends Component {
     
     this.setState({
       timerStart: toggle
+    })
+  }
+
+  editTimerLength(x, timer) {
+    let group = this.state.group;
+    for (let i = 0; i < group.timers.length; i++) {
+      if(group.timers[i].id == timer.id) {
+        group.timers[i].length = x * 60;
+      }      
+    }
+    this.setState({
+      group: group
+    })
+  }
+
+  addItem(timerName) {
+    console.log(timerName)
+    let group = this.state.group;
+    let timersAmt = parseInt(group.timers.length) + 2;
+    let newTimer = {
+      name: timerName,
+      length: this.state.newTimerLength * 60,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+    }
+    if(group.timers.length < 5) {
+      group.timers.push(newTimer)
+      this.setState({
+        group: group,
+        newTimerName: 'Task ' + (group.timers.length + 1),
+        newTimerLength: '15'
+      })
+    }
+  }
+
+  delItem(item) {
+    let group = this.state.group;
+    let timersAmt = parseInt(group.timers.length);
+
+    function isTimer(element) {
+      if(element.id === item.id) return element;
+    }
+    let index = group.timers.findIndex(isTimer);
+    group.timers.splice(index, 1);
+    let timers = group.timers;
+    this.setState({
+      group: group,
+      newTimerName: 'Task ' + timersAmt,
+    })
+  }
+
+  onTextboxChangeNewTimerName(event) {
+    this.setState({
+      newTimerName: event.target.value
     })
   }
 
@@ -82,20 +112,23 @@ class Front extends Component {
           {!this.state.timerStart ? <DisplayCircle
               group={this.state.group}
               timer={{length: 100}}
+              colors={this.props.colors}
             >
             </DisplayCircle> : 
-            <Start startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={this.closeModal} timeFormat={this.timeFormat} group={this.state.group}></Start>
+            <Start colors={this.props.colors} startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={function(){}} timeFormat={this.timeFormat} group={this.state.group}></Start>
           }
           <Row>
             <DashFront
                 timeFormat={this.props.timeFormat} 
                 timerStart={this.state.timerStart}
                 startTimer={this.startTimer}
-                group={this.state.group}
-                onTextboxChangeTimerName={this.onTextboxChangeTimerName}
                 onTextboxChangeNewTimerName={this.onTextboxChangeNewTimerName}
-                onTextboxChangeNewTimerLength={this.onTextboxChangeNewTimerLength}
-                onTextboxChangeTimerLengthMins={this.onTextboxChangeTimerLengthMins}
+                colors={this.props.colors}
+                newTimerName={this.state.newTimerName}
+                delItem={this.delItem}
+                editTimerLength={this.editTimerLength}
+                addItem={this.addItem}
+                group={this.state.group}
                 >
                 </DashFront>
           </Row>

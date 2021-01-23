@@ -26,6 +26,15 @@ class App extends Component {
       log: [],
       showRegister: false,
       groups: [],
+      colors: [
+        "#428A79",
+        "#71AF55",
+        "#F00500",
+        "#E4BE67",
+        "#E47043",
+        "#B63534",
+        "#9598AB",
+    ],
     }
     this.loggedIn = this.loggedIn.bind(this);
     this.loggedOut = this.loggedOut.bind(this);
@@ -51,7 +60,9 @@ class App extends Component {
       //   }
       // }));
     } else {
-      this.setState({isLoading: false})
+      this.setState({
+        isLoading: false
+      })
     }
   }
 
@@ -149,6 +160,7 @@ class App extends Component {
       <div>
         {this.state.token ? 
           <Dash
+          colors={this.state.colors}
           groups={this.state.groups}
           timers={this.state.timers}
           username={this.state.username}
@@ -175,7 +187,7 @@ class App extends Component {
             </Container>
           </div>
           : 
-          <Front timeFormat={this.timeFormat} loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Front>
+          <Front colors={this.state.colors} timeFormat={this.timeFormat} loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Front>
          }
         </div>
       }

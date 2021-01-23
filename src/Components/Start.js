@@ -123,6 +123,7 @@ class Start extends Component {
             userId={this.props.userId}
             percent={100 - percentDone * 100}
             group={this.props.group}
+            colors={this.props.colors}
           >
           </CountdownCircle>
         );
@@ -169,6 +170,7 @@ class Start extends Component {
                         timerStart={this.props.timerStart}
                         //passing only length and not a name causes the countdown to not start
                         timer={{length: 100}} 
+                        colors={this.props.colors}
                         minutes={"1"}
                         seconds={"1"}
                         currentTimer={t}
