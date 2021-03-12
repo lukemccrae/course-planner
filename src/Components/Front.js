@@ -7,6 +7,12 @@ import {Grid, Row, Centered, Col} from './Grid';
 import 'whatwg-fetch';
 import styled from 'styled-components';
 
+const TimerDisplay = styled.div`
+  padding-left: 25vw;
+  margin-left: 10%;
+  padding-top: 20px;
+`
+
 class Front extends Component {
   constructor(props) {
     super(props)
@@ -108,15 +114,17 @@ class Front extends Component {
     return (
       <div>
         <Nav loggedIn={this.props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
-        <Grid>
-          {!this.state.timerStart ? <DisplayCircle
-              group={this.state.group}
-              timer={{length: 100}}
-              colors={this.props.colors}
-            >
-            </DisplayCircle> : 
-            <Start colors={this.props.colors} startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={function(){}} timeFormat={this.timeFormat} group={this.state.group}></Start>
-          }
+          <TimerDisplay>
+            {!this.state.timerStart ? <DisplayCircle
+                group={this.state.group}
+                timer={{length: 100}}
+                colors={this.props.colors}
+              >
+              </DisplayCircle> : 
+              <Start colors={this.props.colors} startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={function(){}} timeFormat={this.timeFormat} group={this.state.group}></Start>
+            }
+          </TimerDisplay>
+          <Grid>
           <Row>
             <DashFront
                 timeFormat={this.props.timeFormat} 
