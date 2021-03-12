@@ -38,7 +38,18 @@ const TimerInput = styled.input`
   min-width: 100px;
   outline: 0;
   border-width: 0 0 1px;
-  border-color: #007bff;
+  border-color: ${(props) => props.colors[props.timers.indexOf(props.t)]};
+`
+
+const TimerInputNew = styled.input`
+  font-size: 15px;
+  margin: 0px 5px 10px 5px;
+  // background-color: #D3D3D3;
+  width: 90%;
+  max-width: 120px;
+  min-width: 100px;
+  outline: 0;
+  border-width: 0 0 1px;
 `
 
 const Divider = styled.div`
@@ -130,7 +141,9 @@ class EditGroup extends Component {
                     </div>
                   </Col>
 
-                  <Col size={.5}><TimerInput disabled={true} type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/></Col>
+                  <Col size={.5}>
+                    <TimerInput colors={this.props.colors} timers={this.props.group.timers} t={t} disabled={true} type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
+                  </Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
 
@@ -143,10 +156,12 @@ class EditGroup extends Component {
                     x={t.length / 60}
                     onChange={({ x }) =>  this.props.editTimerLength(x, t)}
                     disabled={this.props.timerStart}
+                    styles={{
+                      active: {backgroundColor: this.props.colors[this.props.group.timers.indexOf(t)]}
+                    }}
                     />
                   </SliderBox>
                   </Col>
-
                 </Row>
               )
             })}
@@ -160,7 +175,7 @@ class EditGroup extends Component {
               </Col>
               <VerticalDivider></VerticalDivider>
                 <Col size={4}>
-                  <TimerInput type="text" placeholder={'name'} value={this.props.newTimerName} onChange={(e) => this.props.onTextboxChangeNewTimerName(e)}/>
+                  <TimerInputNew type="text" placeholder={'name'} value={this.props.newTimerName} onChange={(e) => this.props.onTextboxChangeNewTimerName(e)}/>
                 </Col>
                 <Col size={1}>
                   <Button disabled={this.props.group.timers.length >= 5 || this.props.timerStart} onClick={() => this.props.addItem(this.props.newTimerName)}>Add</Button>
@@ -170,7 +185,6 @@ class EditGroup extends Component {
       </Footer>
     )
   }
-
 }
 
 export default EditGroup;

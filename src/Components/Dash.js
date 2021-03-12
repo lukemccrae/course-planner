@@ -231,6 +231,7 @@ class Dash extends Component {
                         <EditGroup
                         closeEditModal={this.closeEditModal}
                         group={g}
+                        colors={this.props.colors}
                         getTimers={this.props.getTimers}
                         deleteGroup={this.deleteGroup}
                         timeFormat={this.props.timeFormat}

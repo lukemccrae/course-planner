@@ -17,7 +17,7 @@ const GroupInput = styled.input`
   width: 50%;
   outline: 0;
   border-width: 0 0 1px;
-  border-color: #007bff;
+
 `
 
 const SliderBox = styled.div`
@@ -39,7 +39,19 @@ const TimerInput = styled.input`
   min-width: 100px;
   outline: 0;
   border-width: 0 0 1px;
-  border-color: #007bff;
+  border-color: ${(props) => props.colors[props.timers.indexOf(props.t)]};
+`
+
+const TimerInputNew = styled.input`
+  display: inline;
+  font-size: 15px;
+  margin: 0px 5px 10px 5px;
+  width: 90%;
+  max-width: 120px;
+  min-width: 100px;
+  outline: 0;
+  border-width: 0 0 1px;
+
 `
 
 const Divider = styled.div`
@@ -254,7 +266,9 @@ class EditGroup extends Component {
                     </button>
                   {/* </Col> */}
 
-                  <Col size={.5}><TimerInput type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/></Col>
+                  <Col size={.5}>
+                    <TimerInput colors={this.props.colors} timers={this.state.timers} t={t} type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
+                  </Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
 
@@ -267,6 +281,9 @@ class EditGroup extends Component {
                     xmax = {30}
                     x={t.length / 60}
                     onChange={({ x }) =>  this.editTimerLength(x, t)}
+                    styles={{
+                      active: {backgroundColor: this.props.colors[this.props.group.timers.indexOf(t)]}
+                    }}
                     />
                   </SliderBox>
                   </Col>
@@ -280,7 +297,7 @@ class EditGroup extends Component {
                 <TimeSum timers={this.state.timers}></TimeSum>
               </Col>
               <Col size={3}>
-                <TimerInput style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
+                <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
                   <Col size={.1}></Col>
               </Col>
               <Col size={.5}>
