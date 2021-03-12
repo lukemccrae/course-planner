@@ -12,6 +12,11 @@ const Footer = styled.div`
   position: fixed;
   bottom: 0;
   width: 80%;
+  margin-bottom: 20px;
+`
+
+const TimerDisplay = styled.div`
+
 `
 
 
@@ -161,9 +166,10 @@ class Start extends Component {
           </CloseButton>
           : null }
           <Row>
+          <TimerDisplay>
             {this.props.group.timers.map(t => {
               return (
-                <CountdownBox key={t.id}>
+                  <CountdownBox key={t.id}>
                     {this.props.timerStart ? this.countdownDisplay(t) : 
                         <CountdownCircle 
                         completed={false}
@@ -184,6 +190,7 @@ class Start extends Component {
                 </CountdownBox>
               )
             })} 
+            </TimerDisplay>
           </Row>
           {getFromStorage('the_main_app') ? 
             <Footer>

@@ -16,8 +16,8 @@ const ButtonWrapper = styled.div`
 `
 
 const ClearButton = styled.div`
-  margin-left:auto; 
-  margin-right:0;
+  margin-right:auto; 
+  margin-left:0;
 `
 
 
@@ -93,10 +93,10 @@ class ForgetBox extends Component {
       <div>
         <Box placeholder={"Distracted?\nHave an idea?\nWrite your thoughts here."} value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
         <ButtonWrapper>
-          {this.state.saved ? <div>saved</div> : <div>not saved</div>}
           <ClearButton>
-            <Button onClick={() => this.clearBox()}>clear</Button>
+              <Button onClick={() => this.clearBox()}>clear</Button>
           </ClearButton>
+          {this.state.saved ? <div>saved</div> : <div>not saved</div>}
         </ButtonWrapper>
       </div>
     )
