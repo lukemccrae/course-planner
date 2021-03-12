@@ -24,6 +24,7 @@ const ClearButton = styled.div`
 class ForgetBox extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
     
     this.state = {
         forgetBox: [],

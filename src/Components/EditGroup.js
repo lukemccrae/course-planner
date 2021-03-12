@@ -3,6 +3,7 @@ import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
+import Box from './ForgetBox.js';
 import {getFromStorage} from '../utils/storage';
 import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
@@ -76,13 +77,15 @@ class EditGroup extends Component {
       timerLengthSecs: 0,
       newTimerName: 'Task ',
       newTimerLength: 15,
-      timerToEdit: {}
+      timerToEdit: {},
+      showDetails: false
     }
 
     this.addModal = this.addModal.bind(this);
     this.saveGroup = this.saveGroup.bind(this);
     this.addGroup = this.addGroup.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.showDetails = this.showDetails.bind(this);
     this.calculateTime = this.calculateTime.bind(this);
     this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
     this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
@@ -206,6 +209,12 @@ class EditGroup extends Component {
       })
     }
 
+    showDetails() {
+      this.setState({
+        showDetails: !this.state.showDetails
+      })
+    }
+
     addItem() {
       let timers = this.state.timers;
       let timersAmt = parseInt(this.state.timers.length) + 2;
@@ -305,6 +314,12 @@ class EditGroup extends Component {
               </Col>
             </Row>
               <Divider></Divider>
+              {this.state.showDetails === true ? 
+              <div>
+                {console.log(this.props.group)}
+                <Box boxContents={this.props.group.box} group={this.props.group}></Box>
+                <Divider></Divider>
+              </div> : null}
               <Row style={{display: 'flex'}}>
               <Col size={2}>
                 {/* if no token, show start button. if token, show save/add and delete
@@ -317,7 +332,8 @@ class EditGroup extends Component {
                       {this.props.group.hash === 'newgroup' ? 
                       <Button onClick={this.addGroup}>Save</Button>
                       :
-                      <Button onClick={this.saveGroup}>Save</Button>}
+                      <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>}
+                      <Button onClick={() => this.showDetails()}>Details</Button>
                     </div>
                   )
                 :
