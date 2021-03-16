@@ -8,7 +8,20 @@ import Box from './ForgetBox.js';
 import {getFromStorage} from '../utils/storage';
 import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
+import Modal from 'react-modal';
 const ReactDOM = require('react-dom');
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
 
 const EditBox = styled.div`
 
@@ -81,10 +94,12 @@ class EditGroup extends Component {
       newTimerName: 'Task ',
       newTimerLength: 15,
       timerToEdit: {},
-      showDetails: false
+      showDetails: false,
+      deleteModalIsOpen: false
     }
 
-    this.addModal = this.addModal.bind(this);
+    this.deleteModal = this.deleteModal.bind(this);
+    this.closeDeleteModal = this.closeDeleteModal.bind(this);
     this.saveGroup = this.saveGroup.bind(this);
     this.addGroup = this.addGroup.bind(this);
     this.addItem = this.addItem.bind(this);
@@ -154,6 +169,20 @@ class EditGroup extends Component {
     }
   }
 
+  closeDeleteModal() {
+    this.setState({
+      deleteModalIsOpen: false
+    })
+  }
+
+  deleteModal() {
+    console.log(this.deleteModalIsOpen)
+    this.setState({
+      deleteModalIsOpen: true
+    })
+  }
+
+
   componentDidMount() { 
     let timersAmt = parseInt(this.props.group.timers.length) + 1;
     this.setState({
@@ -192,11 +221,7 @@ class EditGroup extends Component {
       }
     });
   }
-
-    addModal() {
-      this.setState({modalIsOpen: true});
-    }
-
+  
     delItem(item) {
       let timersAmt = parseInt(this.state.timers.length);
 
@@ -324,7 +349,7 @@ class EditGroup extends Component {
                   {getFromStorage('the_main_app') ? (
                     <div>
                       {/* dont show button if its add group box */}
-                      {this.props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right"  onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>}
+                      {this.props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={this.deleteModal}>Delete</Button>}
                         {/* show add group button if its new group box, save button if save box */}
                       {this.props.group.hash === 'newgroup' ? 
                       <Button onClick={this.addGroup}>Save</Button>
@@ -342,7 +367,21 @@ class EditGroup extends Component {
           {/* </Grid> */}
 
         </EditBox>
-
+        <Modal
+          isOpen={this.state.deleteModalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeDeleteModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <div>
+            <h5 style={{margin: '0 10px 10px 0'}}>
+            Are you sure?
+            </h5>
+            <Button className="five-px-margin-right"  onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>
+            <Button className="five-px-margin-right" onClick={this.closeDeleteModal}>Cancel</Button>
+          </div>
+        </Modal>
         </div>
     )
   }
