@@ -23,7 +23,6 @@ const TimerDisplay = styled.div`
 const CountdownBox = styled.div`
   display: flex;
   font-size: 15px;
-  height: 70px;
 `
 
 const CloseButton = styled.div`
