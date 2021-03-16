@@ -154,13 +154,8 @@ class Start extends Component {
   render() {
     return (
       <div style={{minHeight: '45vh'}}>
-      {/* <Centered> */}
       {getFromStorage('the_main_app') ?
         <CloseButton>
-         {/* <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5> */}
-            {/* <button onClick={this.props.closeModal} type="button" className="close" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button> */}
           </CloseButton>
           : null }
           <Row>
@@ -169,7 +164,7 @@ class Start extends Component {
               return (
                   <CountdownBox key={t.id}>
                     {this.props.timerStart ? this.countdownDisplay(t) : 
-                        <CountdownCircle 
+                        <CountdownCircle
                         completed={false}
                         timerStart={this.props.timerStart}
                         //passing only length and not a name causes the countdown to not start
@@ -190,14 +185,6 @@ class Start extends Component {
             })} 
             </TimerDisplay>
           </Row>
-          {/* { {getFromStorage('the_main_app') ? 
-            <Footer>
-              <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
-            </Footer> 
-          : 
-            null
-          } } */}
-      
       </div>
     )
   }
