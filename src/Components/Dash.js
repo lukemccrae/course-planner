@@ -7,19 +7,23 @@ import {Grid, Row, Col} from './Grid';
 import Modal from 'react-modal';
 import {getFromStorage} from '../utils/storage';
 import Button from 'react-bootstrap/Button';
+import Box from './ForgetBox.js';
 import TimeSum from './TimeSum.js';
 import styled from 'styled-components';
 
 const ButtonWrapper = styled.div`
   display: flex;
   margin-left: 20px;
-  
+`
+
+const EditButton = styled.div`
+  display: ${(props) => props.timerOn ? 'none' : 'inline'};
 `
 
 const Group = styled.div`
   width: 100%;
   height: 19px;
-  display: inline-table;
+  display: ${(props) => props.timerOn ? ((props.g._id == props.startedGroup._id) ? 'inline-table' : 'none') : 'inline-table'};
 `
 
 const TimeTotal = styled.div`
@@ -67,6 +71,7 @@ class Dash extends Component {
       startedGroup: {},
     }
     this.addModal = this.addModal.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
     this.startModal = this.startModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -135,7 +140,19 @@ class Dash extends Component {
     this.setState({addModalIsOpen: true});
   }
   startModal(g) {
-    this.setState({startModalIsOpen: true, startedGroup: g});
+    this.props.editOff();
+    this.setState({
+      startModalIsOpen: true, 
+      startedGroup: g,
+      editModalIsOpen: false
+    });
+  }
+
+  stopTimer() {
+    this.setState({
+      startModalIsOpen: false,
+      startedGroup: {}
+    })
   }
 
   deleteGroup(group) {
@@ -207,7 +224,7 @@ class Dash extends Component {
             <Col size={3}>
               {this.props.groups.map(g => {
                 return (
-                  <Group className="group" key={g._id}>
+                  <Group className="group" key={g._id} g={g} timerOn={this.state.startModalIsOpen} startedGroup={this.state.startedGroup}>
                     <div className="groupNameParent">
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
@@ -215,15 +232,21 @@ class Dash extends Component {
                         {g.hash === 'newgroup' ? 
                           null
                           :
-                          <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
+                          //show either start or
+                          this.state.startModalIsOpen ?
+                            <Button className="five-px-margin-right" onClick={this.stopTimer}>&#9632;</Button>
+                            :
+                            <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
                         }
 
                         {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
-                        {g.editOpen === true ? (
-                          <Button onClick={() => this.props.editGroup(g)}>&#8963;</Button>
-                        ) : (
-                          <Button id="dropdown-basic-button" onClick={() => this.props.editGroup(g)}>&#8963;</Button>
-                        )}
+                        <EditButton timerOn={this.state.startModalIsOpen}>
+                          {g.editOpen ? (
+                            <Button onClick={() => this.props.editGroup(g)}>&#8963;</Button>
+                          ) : (
+                            <Button id="dropdown-basic-button" onClick={() => this.props.editGroup(g)}>&#8963;</Button>
+                          )}
+                        </EditButton>
 
                       </ButtonWrapper>
                     </div>
@@ -239,42 +262,20 @@ class Dash extends Component {
                         addGroup={this.state.addGroup}
                       </EditGroup>
                     ) :
-                      g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : <TimeSum timers={g.timers}></TimeSum>
+                      g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : (this.state.startModalIsOpen ? null : <TimeSum timers={g.timers}></TimeSum>)
                     }
-
-
-                    <TimeTotal>
-                      {/* Total:&nbsp; */}
-                      {/* <TimeSum timers={g.timers}></TimeSum>  */}
-                    </TimeTotal>
+                    {this.state.startModalIsOpen ? (
+                      <div>
+                        <Start colors={this.props.colors} timerStart={true} boxContents={g.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.props.timeFormat} group={g}></Start>
+                        <Box boxContents={g.box} group={g}></Box>
+                      </div>
+                      ) : <div></div>}
                   </Group>
                 )
               })}
             </Col>
             <Col size={1.5}></Col>
             </Row>
-          <Modal
-            isOpen={this.state.addModalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal">
-
-            <AddGroup
-              closeModal={this.closeModal}
-              getTimers={this.props.getTimers}
-              timeFormat={this.props.timeFormat}></AddGroup>
-          </Modal>
-          <Modal
-          isOpen={this.state.startModalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-          shouldCloseOnOverlayClick={false}
-        >
-          <Start colors={this.props.colors} timerStart={true} boxContents={this.state.startedGroup.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.props.timeFormat} group={this.state.startedGroup}></Start>
-          </Modal>
         </Grid>
       </div>
     )

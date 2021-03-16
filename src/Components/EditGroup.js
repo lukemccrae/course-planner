@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TimeSum from './TimeSum.js';
+import Start from './Start.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
@@ -9,7 +10,9 @@ import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
 const ReactDOM = require('react-dom');
 
+const EditBox = styled.div`
 
+`
 
 const GroupInput = styled.input`
   font-size: 25px;
@@ -257,14 +260,8 @@ class EditGroup extends Component {
   render() {
     return (
       <div>
-
-          {/* <CloseButton>
-            <button onClick={this.props.closeEditModal} type="button" className="close" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </CloseButton> */}
           {this.props.group.hash === 'newgroup' ? null : <GroupInput type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>}
-        <div>
+        <EditBox>
           {/* <Grid> */}
             {this.state.timers.map(t => {
               return (
@@ -344,9 +341,9 @@ class EditGroup extends Component {
 
           {/* </Grid> */}
 
-        </div>
+        </EditBox>
 
-      </div>
+        </div>
     )
   }
 

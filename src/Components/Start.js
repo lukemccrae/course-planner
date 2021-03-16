@@ -16,7 +16,7 @@ const Footer = styled.div`
 `
 
 const TimerDisplay = styled.div`
-
+  
 `
 
 
@@ -154,14 +154,14 @@ class Start extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{minHeight: '45vh'}}>
       {/* <Centered> */}
       {getFromStorage('the_main_app') ?
         <CloseButton>
-         <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5>
-            <button onClick={this.props.closeModal} type="button" className="close" aria-label="Close">
+         {/* <h5 ref={subtitle => this.subtitle = subtitle}>{this.props.group.name}</h5> */}
+            {/* <button onClick={this.props.closeModal} type="button" className="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> */}
           </CloseButton>
           : null }
           <Row>
@@ -191,14 +191,13 @@ class Start extends Component {
             })} 
             </TimerDisplay>
           </Row>
-          {getFromStorage('the_main_app') ? 
+          {/* { {getFromStorage('the_main_app') ? 
             <Footer>
               <ForgetBox getTimers={this.props.getTimers} boxContents={this.props.boxContents} group={this.props.group} value={this.state.forgetBox} onChange={this.updateForgetBox}></ForgetBox>
             </Footer> 
           : 
             null
-          }
-        {/* </Centered> */}
+          } } */}
       
       </div>
     )

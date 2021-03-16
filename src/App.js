@@ -40,6 +40,7 @@ class App extends Component {
     this.loggedOut = this.loggedOut.bind(this);
     this.getTimers = this.getTimers.bind(this);
     this.editGroup = this.editGroup.bind(this);
+    this.editOff = this.editOff.bind(this);
     this.timeFormat = this.timeFormat.bind(this);
   }
 
@@ -126,12 +127,17 @@ class App extends Component {
     });
   }
 
+  //enable group to be editable
   editGroup(g) {
     let currentGroups = this.state.groups;
+    //loop through groups
     for (let i = 0; i < currentGroups.length; i++) {
+      //if the passed group matches passed group
       if(g.hash === currentGroups[i].hash) {
+        //toggle the editOpen boolean value
         currentGroups[i].editOpen = !currentGroups[i].editOpen;
       } else {
+        //otherwise make it false
         currentGroups[i].editOpen = false;
       }
     }
@@ -139,6 +145,19 @@ class App extends Component {
     this.setState({
       groups: currentGroups
     })
+  }
+
+  editOff() {
+    let currentGroups = this.state.groups;
+    //loop through groups
+    for (let i = 0; i < currentGroups.length; i++) {
+      //turn off
+      currentGroups[i].editOpen = false;
+    }
+
+    this.setState({
+      groups: currentGroups
+    })  
   }
 
   timeFormat(time, str) {
@@ -169,6 +188,7 @@ class App extends Component {
           log={this.state.log}
           userId={this.state.userId}
           editGroup={this.editGroup}
+          editOff={this.editOff}
           timeFormat={this.timeFormat}
         >
         </Dash>

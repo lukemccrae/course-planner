@@ -3,18 +3,6 @@ import styled from 'styled-components';
 import Completionist from './Completionist';
 import {Grid, Row, Centered, Col} from './Grid';
 
-// let colors = [
-//     "#428A79",
-//     "#71AF55",
-//     "#F00500",
-//     "#E4BE67",
-//     "#E47043",
-//     "#B63534",
-//     "#9598AB",
-//     "#697C68",
-//     "#420C0A"
-// ].sort(() => .5 - Math.random());
-
 
 const TimeBox = styled.div`
     display: block;
@@ -80,7 +68,6 @@ const InnerCircle = styled.div`
 class CountdownCircle extends Component {
     constructor(props) {
         super(props)
-        console.log(props)
         this.state = {
             colors: [
                 "#428A79",
