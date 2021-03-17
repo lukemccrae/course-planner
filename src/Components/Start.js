@@ -140,7 +140,6 @@ class Start extends Component {
         </Countdown>
       )
 
-
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
       if(timer.id === this.props.group.timers[this.state.currentTimerIndex].id) {
         
@@ -154,32 +153,12 @@ class Start extends Component {
   render() {
     return (
       <div style={{minHeight: '45vh'}}>
-      {getFromStorage('the_main_app') ?
-        <CloseButton>
-          </CloseButton>
-          : null }
           <Row>
           <TimerDisplay>
             {this.props.group.timers.map(t => {
               return (
                   <CountdownBox key={t.id}>
-                    {this.props.timerStart ? this.countdownDisplay(t) : 
-                        <CountdownCircle
-                        completed={false}
-                        timerStart={this.props.timerStart}
-                        //passing only length and not a name causes the countdown to not start
-                        timer={{length: 100}} 
-                        colors={this.props.colors}
-                        minutes={"1"}
-                        seconds={"1"}
-                        currentTimer={t}
-                        getTimers={this.props.getTimers}
-                        nextTimer={this.nextTimer}
-                        userId={this.props.userId}
-                        percent={5}
-                        group={this.props.group}
-                      >
-                      </CountdownCircle>}
+                    {this.countdownDisplay(t)}
                 </CountdownBox>
               )
             })} 

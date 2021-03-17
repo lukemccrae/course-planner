@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Nav from './Nav';
 import Start from './Start';
-import AddGroup from './AddGroup.js';
 import EditGroup from './EditGroup.js';
 import {Grid, Row, Col} from './Grid';
 import Modal from 'react-modal';
