@@ -68,6 +68,7 @@ const InnerCircle = styled.div`
 class CountdownCircle extends Component {
     constructor(props) {
         super(props)
+        console.log(props)
         this.state = {
             colors: [
                 "#428A79",
@@ -78,68 +79,11 @@ class CountdownCircle extends Component {
                 "#B63534",
                 "#9598AB",
             ],
-            //randomize array (couldnt get it to work this way)
-            // .sort(() => .5 - Math.random())
             currentPercent: 0,
             tickAdjust: .01
         }
+        this.checkCompleted = this.checkCompleted.bind(this);
       }
-
-      //this is called with state updates
-      //so after every setTimeout (many many times)
-    //   componentDidUpdate () {
-    //     let numberTicks = 5;
-
-    //     //set up amount to move spinner each second
-    //     let currentIncrement = 100 / this.props.timer.length / numberTicks;
-        
-    //     //make currentIncrement 0 if timer name is undefined
-    //     if(this.props.timer.name === undefined) currentIncrement = 0;
-
-    //     //if spinner isnt complete, or wont be complete after this tick,
-    //     if (this.state.currentPercent + currentIncrement < 100) {
-    //         currentIncrement += currentIncrement * this.state.tickAdjust;
-    //         let currentPercent = this.state.currentPercent;
-
-    //         setTimeout(() => 
-    //         this.setState({
-    //             currentPercent: currentPercent + currentIncrement
-    //         }), 200);
-
-    //     //once the timer is finished, make the final color white
-    //     //this solves the problem of the spinner not totally completing if the increment bumps it over 100%
-    //     } else {
-    //         console.log('hi')
-    //         //set state colors array in variable
-    //         let colorsDoneBecomeWhite = this.props.colors;
-
-    //         let index = this.props.group.timers.indexOf(this.props.currentTimer);
-    //         for (let i = 0; i < index + 1; i++) {
-    //             if(this.props.colors[i] !== "white") {
-    //                 colorsDoneBecomeWhite[i] = "white";
-    //                 this.setState({
-    //                     colors: colorsDoneBecomeWhite
-    //                 })
-    //             }
-    //         }
-    //     }
-    //   }
-
-      //this is an attempt to adjust the spinning rate to compensate for setTimeout bugs
-      //currently this.state.currentPercent and props.percent are not synchronized
-      componentWillReceiveProps(nextProps) {
-        //   console.log(nextProps.percent, this.state.currentPercent)
-        //   let newTickAdjust = this.state.tickAdjust;
-        // if(this.state.currentPercent % nextProps.percent > .05){
-        //     this.setState({
-        //         tickAdjust: newTickAdjust - .05
-        //     })
-        // } else {
-        //     this.setState({
-        //         tickAdjust: newTickAdjust + .1
-        //     })
-        // }
-    }
 
       //make finished timers colors white so they disapear after done
       //this runs when component starts, either on group start or next timer
@@ -158,6 +102,15 @@ class CountdownCircle extends Component {
             }
         }
       }
+
+      checkCompleted() {
+            // setTimeout(() => {
+            //     return this.props.completed;
+            // }, 300)
+            return this.props.completed;
+      }
+
+      
     
     render() {
         //white gradient on the left
@@ -197,7 +150,7 @@ class CountdownCircle extends Component {
                             timer={t}
                         >
                         {
-                            this.props.completed ? 
+                            this.checkCompleted() ? 
                             <Completionist currentColor={this.props.colors[this.props.group.timers.indexOf(this.props.currentTimer)]} group={this.props.group} userId={this.props.userId} getTimers={this.props.getTimers} currentTimer={this.props.currentTimer} nextTimer={this.props.nextTimer}></Completionist>
                         :
                         <div>

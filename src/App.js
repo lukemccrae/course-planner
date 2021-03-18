@@ -42,6 +42,7 @@ class App extends Component {
     this.editGroup = this.editGroup.bind(this);
     this.editOff = this.editOff.bind(this);
     this.timeFormat = this.timeFormat.bind(this);
+    this.resetColors = this.resetColors.bind(this);
   }
 
   componentDidMount() {
@@ -55,11 +56,6 @@ class App extends Component {
           this.setState({isLoading: false})
         }
       })
-      // .then(fetch('http://localhost:3000/api/account?token=' + obj.token).then(res => res.json()).then(json => {
-      //   if (json.success) {
-      //     this.setState({timers: json.data})
-      //   }
-      // }));
     } else {
       this.setState({
         isLoading: false
@@ -127,8 +123,25 @@ class App extends Component {
     });
   }
 
+  resetColors() {
+    const colors = [
+      "#428A79",
+      "#71AF55",
+      "#F00500",
+      "#E4BE67",
+      "#E47043",
+      "#B63534",
+      "#9598AB",
+  ]
+
+  this.setState({
+    colors: colors
+  })
+  }
+
   //enable group to be editable
   editGroup(g) {
+    this.resetColors();
     let currentGroups = this.state.groups;
     //loop through groups
     for (let i = 0; i < currentGroups.length; i++) {
@@ -169,7 +182,6 @@ class App extends Component {
     if(str === 'num') return [minutes, seconds];
     return null;
 
-    // return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   }
 
   render() {
@@ -179,6 +191,7 @@ class App extends Component {
       <div>
         {this.state.token ? 
           <Dash
+          resetColors={this.resetColors}
           colors={this.state.colors}
           groups={this.state.groups}
           timers={this.state.timers}

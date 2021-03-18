@@ -3,7 +3,6 @@ import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
-import {getFromStorage} from '../utils/storage';
 import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
 const ReactDOM = require('react-dom');

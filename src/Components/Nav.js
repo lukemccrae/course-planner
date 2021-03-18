@@ -7,6 +7,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
+import styled from 'styled-components';
+
+const TitleLetter = styled.h4`
+  display: inline;
+  color: ${(props) => props.color};
+`
 
 const customStyles = {
   content : {
@@ -88,6 +94,20 @@ class Nav extends Component {
           <Container>
             <div>{this.props.username}</div>
             <h4>Group Timer</h4>
+
+            {/* //colorful title? */}
+            {/* <div>
+              <TitleLetter color={"#428A79"}>G</TitleLetter>
+              <TitleLetter color={"#71AF55"}>r</TitleLetter>
+              <TitleLetter color={"#F00500"}>o</TitleLetter>
+              <TitleLetter color={"#E47043"}>u</TitleLetter>
+              <TitleLetter color={"#B63534"}>p</TitleLetter>
+              <TitleLetter color={"#428A79"}> T</TitleLetter>
+              <TitleLetter color={"#71AF55"}>i</TitleLetter>
+              <TitleLetter color={"#F00500"}>m</TitleLetter>
+              <TitleLetter color={"#E47043"}>e</TitleLetter>
+              <TitleLetter color={"#B63534"}>r</TitleLetter>
+            </div> */}
             {/* <Button onClick={this.props.addModal}>Add Group</Button> */}
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={this.openStatsModal}>Stats</NavDropdown.Item>

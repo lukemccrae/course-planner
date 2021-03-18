@@ -3,8 +3,6 @@ import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
 import {Grid, Row, Centered} from './Grid';
-import {getFromStorage} from '../utils/storage';
-import ForgetBox from './ForgetBox';
 
 import styled from 'styled-components';
 
@@ -101,7 +99,6 @@ class Start extends Component {
   countdownDisplay(timer) {
     let percentDone;
     let renderer = ({ minutes, seconds, completed }) => {
-      
 
       //not sure if this will cause problems later.... if I leave seconds as a number it won't show two zeros
       if(minutes === 0) minutes = '00';
@@ -112,6 +109,7 @@ class Start extends Component {
         // Render a countdown
         let totalSeconds = timer.length;
         let completedSeconds = parseInt(seconds) + minutes * 60;
+
         percentDone = completedSeconds / totalSeconds;
           return (
           <CountdownCircle 
@@ -142,7 +140,6 @@ class Start extends Component {
 
     if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
       if(timer.id === this.props.group.timers[this.state.currentTimerIndex].id) {
-        
         return (
           countdownComponent
         )
@@ -157,8 +154,8 @@ class Start extends Component {
           <TimerDisplay>
             {this.props.group.timers.map(t => {
               return (
-                  <CountdownBox key={t.id}>
-                    {this.countdownDisplay(t)}
+                <CountdownBox key={t.id}>
+                  {this.countdownDisplay(t)}
                 </CountdownBox>
               )
             })} 

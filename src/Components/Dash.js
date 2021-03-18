@@ -54,13 +54,14 @@ class Dash extends Component {
   }
   constructor(props) {
     super(props)
+    console.log(props)
     
     this.state = {
       timers: [],
       groups: [],
       editModalIsOpen: false,
       addModalIsOpen: false,
-      startModalIsOpen: false,
+      startIsOpen: false,
       timeInMins: false,
       timerName: '',
       timerLengthMins: 3,
@@ -125,7 +126,7 @@ class Dash extends Component {
     this.props.getTimers();
     this.setState({
       addModalIsOpen: false,
-      startModalIsOpen: false,
+      startIsOpen: false,
       timers: [],
       timerName: '',
       timerLengthMins: 3,
@@ -140,8 +141,9 @@ class Dash extends Component {
   }
   startModal(g) {
     this.props.editOff();
+    this.props.resetColors();
     this.setState({
-      startModalIsOpen: true, 
+      startIsOpen: true, 
       startedGroup: g,
       editModalIsOpen: false
     });
@@ -149,7 +151,7 @@ class Dash extends Component {
 
   stopTimer() {
     this.setState({
-      startModalIsOpen: false,
+      startIsOpen: false,
       startedGroup: {}
     })
   }
@@ -223,7 +225,7 @@ class Dash extends Component {
             <Col size={3}>
               {this.props.groups.map(g => {
                 return (
-                  <Group className="group" key={g._id} g={g} timerOn={this.state.startModalIsOpen} startedGroup={this.state.startedGroup}>
+                  <Group className="group" key={g._id} g={g} timerOn={this.state.startIsOpen} startedGroup={this.state.startedGroup}>
                     <div className="groupNameParent">
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
@@ -232,14 +234,14 @@ class Dash extends Component {
                           null
                           :
                           //show either start or
-                          this.state.startModalIsOpen ?
+                          this.state.startIsOpen ?
                             <Button className="five-px-margin-right" onClick={this.stopTimer}>&#9632;</Button>
                             :
                             <Button className="five-px-margin-right" onClick={() => this.startModal(g)}>&#9658;</Button>
                         }
 
                         {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
-                        <EditButton timerOn={this.state.startModalIsOpen}>
+                        <EditButton timerOn={this.state.startIsOpen}>
                           {g.editOpen ? (
                             <Button onClick={() => this.props.editGroup(g)}>&#8963;</Button>
                           ) : (
@@ -261,9 +263,9 @@ class Dash extends Component {
                         addGroup={this.state.addGroup}
                       </EditGroup>
                     ) :
-                      g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : (this.state.startModalIsOpen ? null : <TimeSum timers={g.timers}></TimeSum>)
+                      g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : (this.state.startIsOpen ? null : <TimeSum timers={g.timers}></TimeSum>)
                     }
-                    {this.state.startModalIsOpen ? (
+                    {this.state.startIsOpen ? (
                       <div>
                         <Start colors={this.props.colors} timerStart={true} boxContents={g.box} userId={this.props.userId} getTimers={this.props.getTimers} closeModal={this.closeModal} timeFormat={this.props.timeFormat} group={g}></Start>
                         <Box boxContents={g.box} group={g}></Box>
