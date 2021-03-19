@@ -104,10 +104,7 @@ class CountdownCircle extends Component {
       }
 
       checkCompleted() {
-            // setTimeout(() => {
-            //     return this.props.completed;
-            // }, 300)
-            return this.props.completed;
+        return this.props.completed;
       }
 
       

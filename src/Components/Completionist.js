@@ -75,7 +75,7 @@ class Completionist extends Component {
     return (
       <div>
         <CompleteButton currentColor={this.props.currentColor} currentTimer={this.props.currentTimer} timers={this.props.group.timers} disabled={this.state.logging} onClick={this.next}>Next</CompleteButton>
-        <Sound
+        {/* <Sound
           url={soundfile}
           playStatus={Sound.status.PLAYING}
           onLoading={this.handleSongLoading}
@@ -84,7 +84,7 @@ class Completionist extends Component {
           loop={true}
           ignoreMobileRestrictions={true}
           volume={30}
-      />
+      /> */}
       </div>
     )
   }
