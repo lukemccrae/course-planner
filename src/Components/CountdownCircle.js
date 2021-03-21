@@ -11,11 +11,12 @@ const TimeBox = styled.div`
 
 const Name = styled.h5`
     font-weight: 250;
+    font-size: 3vh;
     margin: 0;
 `
 
 const Time = styled.span`
-    font-size: 40px;
+    font-size: 5vh;
     font-weight: 90;
 `
 
