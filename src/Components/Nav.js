@@ -153,7 +153,7 @@ class Nav extends Component {
             {/* <Button onClick={this.props.addModal}>Add Group</Button> */}
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={this.openStatsModal}>Stats</NavDropdown.Item>
-              <NavDropdown.Item href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
+              <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
               <NavDropdown.Divider/>
               <NavDropdown.Item>
                 <Logout openLoginModal={this.openLoginModal} loggedOut={this.props.loggedOut} token={this.props.token}></Logout>
