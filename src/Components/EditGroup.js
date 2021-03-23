@@ -331,7 +331,6 @@ class EditGroup extends Component {
               <Divider></Divider>
               {this.state.showDetails === true ? 
               <div>
-                {console.log(this.props.group)}
                 <Box boxContents={this.props.group.box} group={this.props.group}></Box>
                 <Divider></Divider>
               </div> : null}

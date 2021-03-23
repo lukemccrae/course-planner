@@ -27,7 +27,6 @@ class Login extends Component {
     this.onSignIn = this.onSignIn.bind(this)
     this.closeModal = this.closeModal.bind(this);
     this.showRegister = this.showRegister.bind(this);
-    this.setLogin = this.setLogin.bind(this);
   }
   
 
