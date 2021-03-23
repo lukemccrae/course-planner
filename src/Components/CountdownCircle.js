@@ -69,7 +69,6 @@ const InnerCircle = styled.div`
 class CountdownCircle extends Component {
     constructor(props) {
         super(props)
-        console.log(props)
         this.state = {
             colors: [
                 "#428A79",

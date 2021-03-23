@@ -3,16 +3,15 @@ import Logout from './Logout';
 import Stats from './Stats';
 import Login from './Login';
 import Navbar from 'react-bootstrap/Navbar';
-// import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
-import styled from 'styled-components';
 
-const TitleLetter = styled.h4`
-  display: inline;
-  color: ${(props) => props.color};
-`
+// import styled from 'styled-components';
+// const TitleLetter = styled.h4`
+//   display: inline;
+//   color: ${(props) => props.color};
+// `
 
 const customStyles = {
   content : {
@@ -48,15 +47,9 @@ class Nav extends Component {
   }
 
   changePeriod(period) {
-    if(this.state.statPeriod === 'Week') {
-      this.setState({
-        statPeriod: 'Day'
-      })
-    } else {
-      this.setState({
-        statPeriod: 'Week'
-      })
-    }
+    this.setState({
+      statPeriod: period.value
+    })
   }
 
   closeModal() {
@@ -73,7 +66,55 @@ class Nav extends Component {
   }
 
   openStatsModal() {
-    this.setState({statsModalIsOpen: true});
+    let sortedLog = {
+      dayStats: [],
+      weekStats: []
+    }
+
+      //is this log entry already in the counter?
+      function findLog(entry) {
+        return sortedLog.weekStats.map(function(l) { return l.name; }).indexOf(entry); 
+    };
+    
+    function Stat(name, length, key, date) {
+      this.name = name;
+      this.length = length;
+      this.key = key;
+      this.date = date;
+  }
+
+    for (let i = 0; i < this.props.log.length; i++) {
+
+      //if its not there,
+      if(findLog(this.props.log[i].name) === -1) {
+          
+          //push a new stat entry
+          let stat1 = new Stat(this.props.log[i].name, this.props.log[i].length, i, this.props.log[i].date)
+
+          //if the activity was done in the past 24 hours, push it into dayStat array
+          if(Date.now() - this.props.log[i].date <= 86400000) {
+            sortedLog.dayStats.push(stat1)
+          }
+          
+          //push it into weekStat array regardless
+          sortedLog.weekStats.push(stat1);
+      } else {
+          //increment hash map log value
+          sortedLog.weekStats[findLog(this.props.log[i].name)].length += this.props.log[i].length
+
+          if(Date.now() - this.props.log[i].date <= 86400000) {
+              sortedLog.dayStats[findLog(this.props.log[i].name)].length += this.props.log[i].length 
+          }
+      }
+  }
+    //sort logs according to most time done
+    sortedLog.weekStats.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
+    sortedLog.dayStats.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
+
+    this.setState({
+      statsModalIsOpen: true,
+      sortedLog: sortedLog
+    })
   }
 
   openLoginModal() {
@@ -135,7 +176,7 @@ class Nav extends Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <Stats statPeriod={this.state.statPeriod} changePeriod={this.changePeriod} log={this.props.log}></Stats>
+          <Stats statPeriod={this.state.statPeriod} changePeriod={this.changePeriod} log={this.state.sortedLog}></Stats>
         </Modal>
       </div>
     )

@@ -41,7 +41,6 @@ class Register extends Component {
   }
 
   onSignUp() {
-    console.log('onSignUp');
     fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
       method: 'POST',
       headers: {
@@ -66,9 +65,10 @@ class Register extends Component {
             signUpFirstName: '',
             signUpLastName: ''
           })
+          this.props.setLogin(this.state.signInEmail, this.state.signInPassword)
           this.props.showRegister();
         } else {
-          console.log('failed');
+          console.log(json);
           this.setState({
             signUpError: json.message,
             isLoading: false
@@ -89,15 +89,6 @@ class Register extends Component {
                     />
                   </Form.Group>
                 </Col>
-                {/* <Col>
-                  <Form.Group controlId="lastName">
-                    <Form.Control
-                      placeholder="Last name"
-                      value={this.state.signUpLastName}
-                      onChange={this.onTextboxChangeSignUpLastName}
-                    />
-                  </Form.Group>
-                </Col> */}
               </Row>
             <Form.Group controlId="formBasicEmail">
               <Form.Control
