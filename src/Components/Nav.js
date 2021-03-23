@@ -34,7 +34,8 @@ class Nav extends Component {
       statsModalIsOpen: false,
       loginModalIsOpen: false,
       statPeriod: 'Week',
-      showRegister: false
+      showRegister: false,
+      sortedLog: []
 
     }
     this.closeModal = this.closeModal.bind(this);

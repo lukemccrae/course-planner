@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Completionist from './Completionist';
-import {Grid, Row, Centered, Col} from './Grid';
 
 // let colors = [
 //     "#428A79",

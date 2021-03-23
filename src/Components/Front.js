@@ -3,7 +3,7 @@ import Nav from './Nav';
 import Start from './Start';
 import DisplayCircle from './DisplayCircle';
 import DashFront from './DashFront';
-import {Grid, Row, Centered, Col} from './Grid';
+import {Grid, Row} from './Grid';
 import 'whatwg-fetch';
 import styled from 'styled-components';
 
@@ -60,7 +60,7 @@ class Front extends Component {
   editTimerLength(x, timer) {
     let group = this.state.group;
     for (let i = 0; i < group.timers.length; i++) {
-      if(group.timers[i].id == timer.id) {
+      if(group.timers[i].id === timer.id) {
         group.timers[i].length = x * 60;
       }      
     }
@@ -72,7 +72,6 @@ class Front extends Component {
   addItem(timerName) {
     console.log(timerName)
     let group = this.state.group;
-    let timersAmt = parseInt(group.timers.length) + 2;
     let newTimer = {
       name: timerName,
       length: this.state.newTimerLength * 60,
@@ -97,7 +96,6 @@ class Front extends Component {
     }
     let index = group.timers.findIndex(isTimer);
     group.timers.splice(index, 1);
-    let timers = group.timers;
     this.setState({
       group: group,
       newTimerName: 'Task ' + timersAmt,

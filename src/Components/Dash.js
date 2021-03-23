@@ -3,10 +3,9 @@ import Nav from './Nav';
 import Start from './Start';
 import EditGroup from './EditGroup.js';
 import {Grid, Row, Col} from './Grid';
-import Modal from 'react-modal';
-import {getFromStorage} from '../utils/storage';
 import Button from 'react-bootstrap/Button';
 import Box from './ForgetBox.js';
+import Modal from 'react-modal';
 import TimeSum from './TimeSum.js';
 import styled from 'styled-components';
 
@@ -22,30 +21,12 @@ const EditButton = styled.div`
 const Group = styled.div`
   width: 100%;
   height: 19px;
-  display: ${(props) => props.timerOn ? ((props.g._id == props.startedGroup._id) ? 'inline-table' : 'none') : 'inline-table'};
+  display: ${(props) => props.timerOn ? ((props.g._id === props.startedGroup._id) ? 'inline-table' : 'none') : 'inline-table'};
 `
-
-const TimeTotal = styled.div`
-  display: flex;
-`
-
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    height: '100%',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '100%'
-  }
-};
-
-
 Modal.setAppElement('#root')
 
 class Dash extends Component {
+
   static getDerivedStateFromProps(props, state) {
     if (props.log !== state.log) {
       return { log: props.log };
@@ -54,7 +35,6 @@ class Dash extends Component {
   }
   constructor(props) {
     super(props)
-    console.log(props)
     
     this.state = {
       timers: [],

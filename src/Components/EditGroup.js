@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
 import TimeSum from './TimeSum.js';
-import Start from './Start.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
 import Box from './ForgetBox.js';
 import {getFromStorage} from '../utils/storage';
-import {Grid, Row, Col} from './Grid';
+import {Row, Col} from './Grid';
 import Slider from 'react-input-slider';
 import Modal from 'react-modal';
-const ReactDOM = require('react-dom');
 
 const customStyles = {
   content : {
@@ -76,11 +74,6 @@ const Divider = styled.div`
   margin: 5px 0 10px 0;
 `
 
-const VerticalDivider = styled.div`
-  border-right: 2px solid #D3D3D3;
-  margin: 0 10px 0 10px;
-`
-
 class EditGroup extends Component {
   constructor(props) {
     super(props)
@@ -116,7 +109,7 @@ class EditGroup extends Component {
   editTimerLength(x, timer) {
     let temp = this.state.timers;
     for (let i = 0; i < temp.length; i++) {
-      if(temp[i].id == timer.id) {
+      if(temp[i].id === timer.id) {
         temp[i].length = x * 60;
       }      
     }

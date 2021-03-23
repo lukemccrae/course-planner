@@ -40,7 +40,7 @@ class Completionist extends Component {
     this.props.getTimers(token);
         this.props.nextTimer();
     const token = JSON.parse(localStorage.the_main_app).token;
-    if(token != undefined) {
+    if(token !== undefined) {
       this.logStats(token)
     }
   }

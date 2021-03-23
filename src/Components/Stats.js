@@ -24,35 +24,6 @@ const Stats = ({log, statPeriod, changePeriod}) => {
 
     let selectedStats = [];
     statPeriod === "Day" ? selectedStats = log.dayStats : selectedStats = log.weekStats;
-
-    // function setStats() {
-    //     for (let i = 0; i < log.length; i++) {
-
-    //         //if its not there,
-    //         if(findLog(log[i].name) === -1) {
-                
-    //             //push a new stat entry
-    //             let stat1 = new Stat(log[i].name, log[i].length, i, log[i].date)
-    
-    //             //if the activity was done in the past 24 hours, push it into dayStat array
-    //             if(Date.now() - log[i].date <= 86400000) {
-    //                 dayStats.push(stat1)
-    //             }
-                
-    //             //push it into weekStat array regardless
-    //             weekStats.push(stat1);
-    //         } else {
-    //             //increment hash map log value
-    //             weekStats[findLog(log[i].name)].length += log[i].length
-    
-    //             if(Date.now() - log[i].date <= 86400000) {
-    //                 dayStats[findLog(log[i].name)].length += log[i].length 
-    //             }
-    //         }
-    //     }
-    // }
-    
-
     
     return (
         <StatBox>

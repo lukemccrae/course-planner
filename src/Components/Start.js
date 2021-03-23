@@ -2,31 +2,18 @@ import React, {Component} from 'react';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
-import {Grid, Row, Centered} from './Grid';
-
+import {Row} from './Grid';
 import styled from 'styled-components';
-
-const Footer = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 80%;
-  margin-bottom: 20px;
-`
 
 const TimerDisplay = styled.div`
   
 `
-
 
 const CountdownBox = styled.div`
   display: flex;
   font-size: 15px;
 `
 
-const CloseButton = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 class Start extends Component {
   constructor(props) {
     super(props)

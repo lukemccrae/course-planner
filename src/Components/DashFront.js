@@ -3,21 +3,8 @@ import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
-import {Grid, Row, Col} from './Grid';
+import {Row, Col} from './Grid';
 import Slider from 'react-input-slider';
-const ReactDOM = require('react-dom');
-
-
-
-const GroupInput = styled.input`
-  font-size: 25px;
-  margin: 0px 5px 10px 5px;
-  // background-color: #D3D3D3;
-  width: 50%;
-  outline: 0;
-  border-width: 0 0 1px;
-  border-color: #007bff;
-`
 
 const SliderBox = styled.div`
   width: 30%;

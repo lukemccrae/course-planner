@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Completionist from './Completionist';
-import {Grid, Row, Centered, Col} from './Grid';
 
 
 const TimeBox = styled.div`
@@ -130,7 +129,7 @@ class CountdownCircle extends Component {
             <div>
                 {this.props.group.timers.map(t => {
                     return (
-                        <Circle 
+                        <Circle
                         //only give the updated percent if the timerStart boolean is on
                             firstPercent={firstCalculatedPercent}
                             secondPercent={secondCalculatedPercent}
