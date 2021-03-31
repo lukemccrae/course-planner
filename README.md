@@ -1,6 +1,6 @@
 Hey there! Thanks for checking out my project. 
 
-I created this timer to help myself stay focused on tasks and to keep track of  
+I created this timer to help myself stay focused on tasks.
 
 To run this locally:
 
