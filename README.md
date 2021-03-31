@@ -10,7 +10,6 @@ To run this locally:
 
 3. cd into the directory with `cd routine-timer`
 
-and finally<br>
 4. `yarn start`
 
 Runs the app in the development mode.<br>
