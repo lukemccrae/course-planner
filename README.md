@@ -4,14 +4,14 @@ I created this timer to help myself stay focused on tasks and to keep track of
 
 To run this locally:
 
-# 1. fork this repository
+1. fork this repository
 
-# 2. (in terminal) `git clone https://github.com/lukemccrae/routine-timer.git`
+2. (in terminal) `git clone https://github.com/lukemccrae/routine-timer.git`
 
-# 3. cd into the directory with `cd routine-timer`
+3. cd into the directory with `cd routine-timer`
 
 and finally
-# 4. `yarn start`
+4. `yarn start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
