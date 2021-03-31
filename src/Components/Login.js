@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import {setInStorage} from '../utils/storage';
 import styled from 'styled-components';
 import 'whatwg-fetch';
+import {signIn, storeToken} from '../actions/index';
 
 const Box = styled.div`
 
