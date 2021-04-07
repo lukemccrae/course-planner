@@ -10,9 +10,16 @@ export const signOut = () => {
     }
 }
 
-export const storeToken = () => {
+export const storeToken = (token) => {
+    console.log(token)
     return {
         type: 'STORE_TOKEN'
+    }
+}
+
+export const seeToken = () => {
+    return {
+        type: 'SEE_TOKEN'
     }
 }
 
@@ -28,3 +35,17 @@ export const getTimers = () => {
     } 
 }
 
+export const setEmail = (e) => {
+    console.log(e)
+    return {
+        type: 'SET_EMAIL',
+        val: e
+    }
+}
+
+export const setPassword = (e) => {
+    console.log(e)
+    return {
+        type: 'SET_PASSWORD'
+    }
+}

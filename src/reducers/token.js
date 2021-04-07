@@ -5,6 +5,8 @@ const tokenReducer = (state = false, action) => {
             return state;
         case 'REMOVE':
             console.log("removing token")
+        case 'SEE':
+            console.log("TOKENTOKEN")
         default:
             return state;
     }

@@ -1,14 +1,21 @@
-const signinReducer = (state = false, action) => {
+const signInReducer = (
+    state = {
+        signInEmail: '',
+        signInPassword: ''
+    }, action) => {
+        console.log(action)
     switch(action.type) {
-        case 'SIGN_IN':
-            console.log("signing in")
+        case 'SET_EMAIL':
+            state.signInEmail = action.val;
             return state;
-        case 'SIGN_OUT':
-            console.log("signing out")
+        case 'SET_PASSWORD':
+            state.signInPassword = action.val;
+            return state;
+        case 'SIGN_IN':
             return state;
         default:
             return state;
     }
 }
 
-export default signinReducer;
+export default signInReducer;

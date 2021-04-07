@@ -11,7 +11,7 @@ const allReducers = combineReducers({
     isLogged: loggedReducer,
     signIn: signInReducer,
     token: tokenReducer,
-    timer: timerReducer
+    timer: timerReducer,
 });
 
 export default allReducers;
