@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import Nav from './Nav';
 import Start from './Start';
 import DisplayCircle from './DisplayCircle';
@@ -13,82 +13,53 @@ const TimerDisplay = styled.div`
   padding-top: 20px;
 `
 
-class Front extends Component {
-  constructor(props) {
-    super(props)
-    console.log(props)
-    this.state = {
-      group: {
-        name: "Test Group",
-        timers: [{
-          name: "Task 1",
-          length: 900,
-        }
-    ],
-        hash: "newgroup",
-        timerGoing: false
-      },
-      mockBox: "",
-      mockGetTimers: function(){},
-      timerStart: false,
-    newTimerName: 'Task ',
-    newTimerLength: '15'
+function Front(props) {
+
+  const [newTimerLength, setNewTimerLength] = useState('15');
+  const [newTimerName, setNewTimerName] = useState('Task 2');
+  const [timerStart, setStartTimer] = useState(false);
+  const [testGroup, setTestGroup] = useState({
+    name: "Test Group",
+    timers: [{
+      name: "Task 1",
+      length: 900,
     }
+],
+    hash: "newgroup",
+    timerGoing: false
+  });
 
-    this.signInRef = React.createRef()
-    this.startTimer = this.startTimer.bind(this);
-    this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
-    this.editTimerLength = this.editTimerLength.bind(this);
-    this.addItem = this.addItem.bind(this);
-    this.delItem = this.delItem.bind(this);
-  }
+  // useEffect(() => {
+  //   setNewTimerName('Task ' + 2)
+  // }, []);
 
-  componentDidMount() { 
-    this.setState({
-      newTimerName: 'Task ' + 2
-    })
-  }
-
-  startTimer() {
-    let toggle = !this.state.timerStart;
-    
-    this.setState({
-      timerStart: toggle
-    })
-  }
-
-  editTimerLength(x, timer) {
-    let group = this.state.group;
+  function editTimerLength(x, timer) {
+    let group = testGroup;
     for (let i = 0; i < group.timers.length; i++) {
       if(group.timers[i].id === timer.id) {
         group.timers[i].length = x * 60;
       }      
     }
-    this.setState({
-      group: group
-    })
+    setTestGroup(group);
   }
 
-  addItem(timerName) {
-    console.log(timerName)
-    let group = this.state.group;
+  function addItem(timerName) {
+    let group = testGroup;
     let newTimer = {
       name: timerName,
-      length: this.state.newTimerLength * 60,
+      length: newTimerLength * 60,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     }
     if(group.timers.length < 5) {
       group.timers.push(newTimer)
-      this.setState({
-        group: group,
-        newTimerName: 'Task ' + (group.timers.length + 1),
-        newTimerLength: '15'
-      })
+      setTestGroup(group);
+      setNewTimerName('Task ' + (group.timers.length + 1));
+      setNewTimerLength('15')
     }
   }
 
-  delItem(item) {
-    let group = this.state.group;
+  function delItem(item) {
+    let group = testGroup;
     let timersAmt = parseInt(group.timers.length);
 
     function isTimer(element) {
@@ -96,52 +67,43 @@ class Front extends Component {
     }
     let index = group.timers.findIndex(isTimer);
     group.timers.splice(index, 1);
-    this.setState({
-      group: group,
-      newTimerName: 'Task ' + timersAmt,
-    })
+
+    setTestGroup(group);
+    setNewTimerName('Task ' + timersAmt)
   }
 
-  onTextboxChangeNewTimerName(event) {
-    this.setState({
-      newTimerName: event.target.value
-    })
-  }
-
-  render(props) {
     return (
       <div>
-        <Nav loggedIn={this.props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
+        <Nav loggedIn={props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
           <TimerDisplay>
-            {!this.state.timerStart ? <DisplayCircle
-                group={this.state.group}
+            {!timerStart ? <DisplayCircle
+                group={testGroup}
                 timer={{length: 100}}
-                colors={this.props.colors}
+                colors={props.colors}
               >
               </DisplayCircle> : 
-              <Start colors={this.props.colors} startTimer={this.startTimer} timerStart={this.state.timerStart} boxContents={this.state.mockBox} userId={this.props.userId} getTimers={this.state.mockGetTimers} closeModal={function(){}} timeFormat={this.timeFormat} group={this.state.group}></Start>
+              <Start colors={props.colors} startTimer={timerStart} timerStart={timerStart} boxContents={''} userId={props.userId} getTimers={function(){}} closeModal={function(){}} timeFormat={props.timeFormat} group={testGroup}></Start>
             }
           </TimerDisplay>
           <Grid>
           <Row>
             <DashFront
-                timeFormat={this.props.timeFormat} 
-                timerStart={this.state.timerStart}
-                startTimer={this.startTimer}
-                onTextboxChangeNewTimerName={this.onTextboxChangeNewTimerName}
-                colors={this.props.colors}
-                newTimerName={this.state.newTimerName}
-                delItem={this.delItem}
-                editTimerLength={this.editTimerLength}
-                addItem={this.addItem}
-                group={this.state.group}
+                timeFormat={props.timeFormat} 
+                timerStart={timerStart}
+                startTimer={setStartTimer}
+                onTextboxChangeNewTimerName={setNewTimerName}
+                colors={props.colors}
+                newTimerName={newTimerName}
+                delItem={delItem}
+                editTimerLength={editTimerLength}
+                addItem={addItem}
+                group={testGroup}
                 >
                 </DashFront>
           </Row>
         </Grid>
       </div>
     )
-  }
 }
 
 export default Front;

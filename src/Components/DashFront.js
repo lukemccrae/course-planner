@@ -57,6 +57,7 @@ const Footer = styled.div`
 
 class EditGroup extends Component {
   constructor(props) {
+    console.log(props)
     super(props)
 
     this.state = {

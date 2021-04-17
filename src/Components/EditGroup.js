@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
@@ -74,124 +74,117 @@ const Divider = styled.div`
   margin: 5px 0 10px 0;
 `
 
-class EditGroup extends Component {
-  constructor(props) {
-    super(props)
+function EditGroup(props) {
+  const [deleteModalIsOpen, openDeleteModal] = useState(false);
+  const [timers, setTimers] = useState([]);
+  const [groupName, setGroupName] = useState("");
+  const [timerLengthMins, setTimerLengthMins] = useState(5);
+  const [timerLengthSecs, setTimerLengthSecs] = useState(0);
+  const [newTimerName, setNewTimerName] = useState("Task");
+  const [newTimerLength, setNewTimerLength] = useState(15);
+  const [timerToEdit, setTimerToEdit] = useState({});
+  const [showDetails, setShowDetails] = useState(false);
 
-    this.state = {
-      modalIsOpen: false,
-      timers: [],
-      groupName: '',
-      timerLengthMins: 5,
-      timerLengthSecs: 0,
-      newTimerName: 'Task ',
-      newTimerLength: 15,
-      timerToEdit: {},
-      showDetails: false,
-      deleteModalIsOpen: false
-    }
+  // constructor(props) {
+  //   super(props)
 
-    this.deleteModal = this.deleteModal.bind(this);
-    this.closeDeleteModal = this.closeDeleteModal.bind(this);
-    this.saveGroup = this.saveGroup.bind(this);
-    this.addGroup = this.addGroup.bind(this);
-    this.addItem = this.addItem.bind(this);
-    this.showDetails = this.showDetails.bind(this);
-    this.calculateTime = this.calculateTime.bind(this);
-    this.onTextboxChangeGroupName = this.onTextboxChangeGroupName.bind(this);
-    this.onTextboxChangeNewTimerName = this.onTextboxChangeNewTimerName.bind(this);
-    this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this);
-    this.onTextboxChangeNewTimerLength = this.onTextboxChangeNewTimerLength.bind(this);
-    this.editTimerLength = this.editTimerLength.bind(this);
-    this.onTextboxChangeTimerLengthMins = this.onTextboxChangeTimerLengthMins.bind(this);
-  }
+  //   state = {
+  //     modalIsOpen: false,
+  //     timers: [],
+  //     groupName: '',
+  //     timerLengthMins: 5,
+  //     timerLengthSecs: 0,
+  //     newTimerName: 'Task ',
+  //     newTimerLength: 15,
+  //     timerToEdit: {},
+  //     showDetails: false,
+  //     deleteModalIsOpen: false
+  //   }
 
-  editTimerLength(x, timer) {
-    let temp = this.state.timers;
+  //   deleteModal = deleteModal.bind(this);
+  //   closeDeleteModal = closeDeleteModal.bind(this);
+  //   saveGroup = saveGroup.bind(this);
+  //   addGroup = addGroup.bind(this);
+  //   addItem = addItem.bind(this);
+  //   showDetails = showDetails.bind(this);
+  //   calculateTime = calculateTime.bind(this);
+  //   onTextboxChangeGroupName = onTextboxChangeGroupName.bind(this);
+  //   onTextboxChangeNewTimerName = onTextboxChangeNewTimerName.bind(this);
+  //   onTextboxChangeTimerName = onTextboxChangeTimerName.bind(this);
+  //   onTextboxChangeNewTimerLength = onTextboxChangeNewTimerLength.bind(this);
+  //   editTimerLength = editTimerLength.bind(this);
+  //   onTextboxChangeTimerLengthMins = onTextboxChangeTimerLengthMins.bind(this);
+  // }
+
+
+  useEffect(() => {
+    let timersAmt = parseInt(props.group.timers.length) + 1;
+    setTimers(props.group.timers)
+    setGroupName(props.group.name)
+    setNewTimerName('Task ' + timersAmt);
+  })
+
+  // function componentDidMount() { 
+  //   setState({
+  //     timers: props.group.timers,
+  //     groupName: props.group.name,
+  //     id: props.group._id,
+  //     newTimerName: 'Task ' + timersAmt
+  //   })
+  // }
+
+  function editTimerLength(x, timer) {
+    let temp = props.group.timers;
     for (let i = 0; i < temp.length; i++) {
       if(temp[i].id === timer.id) {
         temp[i].length = x * 60;
       }      
     }
-    this.setState({
-      timerToEdit: temp
-    })
-    // this.onTextboxChangeTimerLengthMins({target: {value: x}}, temp)
+    setTimerToEdit(temp);
   }
 
-  onTextboxChangeNewTimerLength(x) {
-    this.setState({
-      newTimerLength: x
-    })
+  function onTextboxChangeNewTimerName(event) {
+    setNewTimerName(event.target.value);
   }
 
-  onTextboxChangeNewTimerName(event) {
+  function onTextboxChangeTimerName(event, t) {
     console.log(event)
-    this.setState({
-      newTimerName: event.target.value
-    })
-  }
-
-  onTextboxChangeTimerName(event, t) {
-    let timers = cloneDeep(this.state.timers)
+    let timers = cloneDeep(props.group.timers)
     for (var i = 0; i < timers.length; i++) {
       if(timers[i].id === t.id) {
         timers[i].name = event.target.value
       }
     }
-    this.setState({
-      timers: timers
-    })
+    setTimers(timers);
   }
 
-  onTextboxChangeGroupName(event) {
-    this.setState({groupName: event.target.value})
+  function onTextboxChangeGroupName(event) {
+    setGroupName(event.target.value)
   }
 
-  onTextboxChangeTimerLengthMins(event, t) {
-    if(event.target.value < 60 && event.target.value !== 'e') {
-      let timers = cloneDeep(this.state.timers)
-      for (var i = 0; i < timers.length; i++) {
-        if(timers[i].id === t.id) {
-          timers[i].length = event.target.value * 60
-        }
-      }
-      this.setState({
-        timers: timers
-      })
-    }
+  // function onTextboxChangeTimerLengthMins(event, t) {
+  //   if(event.target.value < 60 && event.target.value !== 'e') {
+  //     let timers = cloneDeep(state.timers)
+  //     for (var i = 0; i < timers.length; i++) {
+  //       if(timers[i].id === t.id) {
+  //         timers[i].length = event.target.value * 60
+  //       }
+  //     }
+  //     setState({
+  //       timers: timers
+  //     })
+  //   }
+  // }
+
+  function closeDeleteModal() {
+    openDeleteModal(false);
   }
 
-  closeDeleteModal() {
-    this.setState({
-      deleteModalIsOpen: false
-    })
+  function deleteModal() {
+    openDeleteModal(true);
   }
 
-  deleteModal() {
-    console.log(this.deleteModalIsOpen)
-    this.setState({
-      deleteModalIsOpen: true
-    })
-  }
-
-
-  componentDidMount() { 
-    let timersAmt = parseInt(this.props.group.timers.length) + 1;
-    this.setState({
-      timers: this.props.group.timers,
-      groupName: this.props.group.name,
-      id: this.props.group._id,
-      newTimerName: 'Task ' + timersAmt
-    })
-  }
-
-  calculateTime() {
-    let mins = this.state.timerLengthMins * 60;
-    return this.state.timerLengthSecs + mins;
-  }
-
-  addGroup() {
+  function addGroup() {
     const token = JSON.parse(localStorage.the_main_app).token;
     fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
       method: 'POST',
@@ -199,104 +192,93 @@ class EditGroup extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: this.state.groupName,
-        length: this.calculateTime(),
-        timers: this.state.timers,
+        name: groupName,
+        length: timerLengthMins * 60,
+        timers: timers,
         hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
         token: token
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        this.setState({timers: [], groupName: ''})
-        this.props.getTimers(token)
+        setTimers([]);
+        setGroupName('');
+        props.getTimers(token)
       } else {
-        this.setState({timerError: json.message, isLoading: false})
+        console.log("Error: adding this group failed.")
+        console.log(json)
       }
     });
   }
   
-    delItem(item) {
-      let timersAmt = parseInt(this.state.timers.length);
+  function delItem(item) {
+      let timersAmt = parseInt(props.group.timers.length);
 
       function isTimer(element) {
         if(element.id === item.id) return element;
       }
-      let index = this.state.timers.findIndex(isTimer);
-      this.state.timers.splice(index, 1);
-      let timers = this.state.timers;
-      this.setState({
-        timers: timers,
-        newTimerName: 'Task ' + timersAmt,
-      })
+      let index = props.group.timers.findIndex(isTimer);
+      
+      setTimers(timers.splice(index, 1));
+      newTimerName('Task ' + timersAmt);
     }
 
-    showDetails() {
-      this.setState({
-        showDetails: !this.state.showDetails
-      })
-    }
-
-    addItem() {
-      let timers = this.state.timers;
-      let timersAmt = parseInt(this.state.timers.length) + 2;
+    function addItem() {
+      let prevTimers = props.group.timers;
+      let timersAmt = parseInt(prevTimers.length) + 2;
       let newTimer = {
-        name: this.state.newTimerName,
-        length: this.state.newTimerLength * 60,
+        name: newTimerName,
+        length: newTimerLength * 60,
         id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
       }
-      if(this.state.timers.length < 5) {
+      if(prevTimers.length < 5) {
         timers.push(newTimer)
-        this.setState({
-          timers: timers,
-          newTimerName: this.state.timers.length < 5 ? 'Task ' + timersAmt : '',
-          newTimerLength: '15'
-        })
+        setTimers(timers);
+        setNewTimerName(props.group.timers.length < 5 ? 'Task ' + timersAmt : '');
+        setNewTimerLength('15');
       }
     }
 
-    saveGroup(group) {
+    function saveGroup(group) {
       const token = JSON.parse(localStorage.the_main_app).token;
-      fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${this.state.id}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${group.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: this.state.groupName,
-          timers: this.state.timers
+          name: groupName,
+          timers: timers
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          this.props.getTimers(token)
-          this.props.closeEditModal();
+          props.getTimers(token)
+          props.closeEditModal();
         } else {
-          this.setState({timerError: json.message, isLoading: false})
+          console.log("Error: adding this group failed.")
+          console.log(json)
         }
       });
     }
 
-  render() {
+
     return (
       <div>
-          {this.props.group.hash === 'newgroup' ? null : <GroupInput type="text" ref={this.groupNameRef} placeholder="Group Name" value={this.state.groupName} onChange={this.onTextboxChangeGroupName}/>}
+          {props.group.hash === 'newgroup' ? null : <GroupInput type="text" placeholder="Group Name" value={groupName} onChange={onTextboxChangeGroupName}/>}
         <EditBox>
-          {/* <Grid> */}
-            {this.state.timers.map(t => {
+            {timers.map(t => {
               return (
                 <Row key={t.id}>
-                  {/* <Col size={.2}> */}
-                    <button style={{display: this.state.timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{this.delItem(t)}} type="button" className="close" aria-label="Close">
+                    <button style={{display: timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{delItem(t)}} type="button" className="close" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                  {/* </Col> */}
 
                   <Col size={.5}>
-                    <TimerInput colors={this.props.colors} timers={this.state.timers} t={t} type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
+                    <TimerInput colors={props.colors} timers={timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e)}/>
                   </Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
 
-                  {/* <Col size={1}><TimerInput onBlur={()=>{this.onFocus({})}} onFocus={()=>{this.onFocus(t)}} type="number" placeholder="Mins" value={this.props.timeFormat(t.length, 'num')[0]} onChange={(e) => this.onTextboxChangeTimerLengthMins(e, t)}/></Col> */}
+
                   <Col size={.5}>
                     
                   <SliderBox>
@@ -304,9 +286,9 @@ class EditGroup extends Component {
                     axis="x"
                     xmax = {30}
                     x={t.length / 60}
-                    onChange={({ x }) =>  this.editTimerLength(x, t)}
+                    onChange={({ x }) =>  editTimerLength(x, t)}
                     styles={{
-                      active: {backgroundColor: this.props.colors[this.props.group.timers.indexOf(t)]}
+                      active: {backgroundColor: props.colors[props.group.timers.indexOf(t)]}
                     }}
                     />
                   </SliderBox>
@@ -318,20 +300,20 @@ class EditGroup extends Component {
             <Divider></Divider>
             <Row>
               <Col size={1}>
-                <TimeSum timers={this.state.timers}></TimeSum>
+                <TimeSum timers={timers}></TimeSum>
               </Col>
               <Col size={3}>
-                <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={this.state.newTimerName} onChange={(e) => this.onTextboxChangeNewTimerName(e)}/>
+                <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={newTimerName} onChange={(e, t) => onTextboxChangeNewTimerName(e)}/>
                   <Col size={.1}></Col>
               </Col>
               <Col size={.5}>
-                <Button style={{display: 'inline'}} disabled={this.state.timers.length >= 5 || this.props.timerStart} onClick={this.addItem}>Add</Button>
+                <Button style={{display: 'inline'}} disabled={timers.length >= 5 || props.timerStart} onClick={addItem}>Add</Button>
               </Col>
             </Row>
               <Divider></Divider>
-              {this.state.showDetails === true ? 
+              {showDetails === true ? 
               <div>
-                <Box boxContents={this.props.group.box} group={this.props.group}></Box>
+                <Box boxContents={props.group.box} group={props.group}></Box>
                 <Divider></Divider>
               </div> : null}
               <Row style={{display: 'flex'}}>
@@ -341,28 +323,28 @@ class EditGroup extends Component {
                   {getFromStorage('the_main_app') ? (
                     <div>
                       {/* dont show button if its add group box */}
-                      {this.props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={this.deleteModal}>Delete</Button>}
+                      {props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
                         {/* show add group button if its new group box, save button if save box */}
-                      {this.props.group.hash === 'newgroup' ? 
-                      <Button onClick={this.addGroup}>Save</Button>
+                      {props.group.hash === 'newgroup' ? 
+                      <Button onClick={addGroup}>Save</Button>
                       :
-                      <Button className="five-px-margin-right" onClick={this.saveGroup}>Save</Button>}
-                      <Button onClick={() => this.showDetails()}>Details</Button>
+                      <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
+                      <Button onClick={() => showDetails()}>Details</Button>
                     </div>
                   )
                 :
-                (<Button onClick={this.props.startTimer}>&#9658;</Button>)}
+                (<Button onClick={props.startTimer}>&#9658;</Button>)}
               </Col>
-              {/* <Col size={1}><TimerInput type="number" onChange={(e) => this.onTextboxChangeNewTimerLength(e)} value={this.state.newTimerLength} placeholder="Mins"/></Col> */}
+              {/* <Col size={1}><TimerInput type="number" onChange={(e) => onTextboxChangeNewTimerLength(e)} value={state.newTimerLength} placeholder="Mins"/></Col> */}
               </Row>
 
           {/* </Grid> */}
 
         </EditBox>
         <Modal
-          isOpen={this.state.deleteModalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeDeleteModal}
+          isOpen={deleteModalIsOpen}
+          // onAfterOpen={afterOpenModal}
+          onRequestClose={closeDeleteModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
@@ -370,13 +352,13 @@ class EditGroup extends Component {
             <h5 style={{margin: '0 10px 10px 0'}}>
             Are you sure?
             </h5>
-            <Button className="five-px-margin-right"  onClick={() => this.props.deleteGroup(this.props.group)}>Delete</Button>
-            <Button className="five-px-margin-right" onClick={this.closeDeleteModal}>Cancel</Button>
+            <Button className="five-px-margin-right"  onClick={() => props.deleteGroup(props.group)}>Delete</Button>
+            <Button className="five-px-margin-right" onClick={closeDeleteModal}>Cancel</Button>
           </div>
         </Modal>
         </div>
     )
-  }
+
 
 }
 

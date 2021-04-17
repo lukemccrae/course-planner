@@ -219,7 +219,7 @@ class App extends Component {
             />
             </Container>
           </div>
-          : 
+          :
           <Front colors={this.state.colors} timeFormat={this.timeFormat} loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Front>
          }
         </div>

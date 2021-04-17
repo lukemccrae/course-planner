@@ -25,7 +25,6 @@ const Circle = styled.div`
 
     // set width / height as functions of the index of each timer in the timers group array
     // this enables them to sit on top of each other
-    width: ${(props) => console.log(props.children)};
     width: ${(props) => 42 - props.children._owner.memoizedProps.group.timers.indexOf(props.timer) * 4 + "vh"};
     height: ${(props) => 42 - props.children._owner.memoizedProps.group.timers.indexOf(props.timer) * 4 + "vh"};
     border-radius: 100%;
