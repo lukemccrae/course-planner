@@ -273,7 +273,7 @@ function EditGroup(props) {
                     </button>
 
                   <Col size={.5}>
-                    <TimerInput colors={props.colors} timers={timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e)}/>
+                    <TimerInput colors={props.colors} timers={timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e, t)}/>
                   </Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
