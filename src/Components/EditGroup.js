@@ -79,68 +79,27 @@ function EditGroup(props) {
   const [timers, setTimers] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [timerLengthMins, setTimerLengthMins] = useState(5);
-  const [timerLengthSecs, setTimerLengthSecs] = useState(0);
   const [newTimerName, setNewTimerName] = useState("Task");
   const [newTimerLength, setNewTimerLength] = useState(15);
-  const [timerToEdit, setTimerToEdit] = useState({});
   const [showDetails, setShowDetails] = useState(false);
-
-  // constructor(props) {
-  //   super(props)
-
-  //   state = {
-  //     modalIsOpen: false,
-  //     timers: [],
-  //     groupName: '',
-  //     timerLengthMins: 5,
-  //     timerLengthSecs: 0,
-  //     newTimerName: 'Task ',
-  //     newTimerLength: 15,
-  //     timerToEdit: {},
-  //     showDetails: false,
-  //     deleteModalIsOpen: false
-  //   }
-
-  //   deleteModal = deleteModal.bind(this);
-  //   closeDeleteModal = closeDeleteModal.bind(this);
-  //   saveGroup = saveGroup.bind(this);
-  //   addGroup = addGroup.bind(this);
-  //   addItem = addItem.bind(this);
-  //   showDetails = showDetails.bind(this);
-  //   calculateTime = calculateTime.bind(this);
-  //   onTextboxChangeGroupName = onTextboxChangeGroupName.bind(this);
-  //   onTextboxChangeNewTimerName = onTextboxChangeNewTimerName.bind(this);
-  //   onTextboxChangeTimerName = onTextboxChangeTimerName.bind(this);
-  //   onTextboxChangeNewTimerLength = onTextboxChangeNewTimerLength.bind(this);
-  //   editTimerLength = editTimerLength.bind(this);
-  //   onTextboxChangeTimerLengthMins = onTextboxChangeTimerLengthMins.bind(this);
-  // }
-
 
   useEffect(() => {
     let timersAmt = parseInt(props.group.timers.length) + 1;
-    setTimers(props.group.timers)
-    setGroupName(props.group.name)
-    setNewTimerName('Task ' + timersAmt);
+    if(timers.length == 0) {
+      setTimers(props.group.timers)
+      setGroupName(props.group.name)
+      setNewTimerName('Task ' + timersAmt);
+    }
   })
 
-  // function componentDidMount() { 
-  //   setState({
-  //     timers: props.group.timers,
-  //     groupName: props.group.name,
-  //     id: props.group._id,
-  //     newTimerName: 'Task ' + timersAmt
-  //   })
-  // }
-
   function editTimerLength(x, timer) {
-    let temp = props.group.timers;
-    for (let i = 0; i < temp.length; i++) {
-      if(temp[i].id === timer.id) {
-        temp[i].length = x * 60;
+    const updatedTimers = cloneDeep(timers)
+    for (let i = 0; i < updatedTimers.length; i++) {
+      if(updatedTimers[i].id === timer.id) {
+        updatedTimers[i].length = x * 60;
       }      
     }
-    setTimerToEdit(temp);
+    setTimers(updatedTimers);
   }
 
   function onTextboxChangeNewTimerName(event) {
@@ -148,33 +107,18 @@ function EditGroup(props) {
   }
 
   function onTextboxChangeTimerName(event, t) {
-    console.log(event)
-    let timers = cloneDeep(props.group.timers)
+    const updatedTimers = cloneDeep(props.group.timers)
     for (var i = 0; i < timers.length; i++) {
       if(timers[i].id === t.id) {
         timers[i].name = event.target.value
       }
     }
-    setTimers(timers);
+    setTimers(updatedTimers);
   }
 
   function onTextboxChangeGroupName(event) {
     setGroupName(event.target.value)
   }
-
-  // function onTextboxChangeTimerLengthMins(event, t) {
-  //   if(event.target.value < 60 && event.target.value !== 'e') {
-  //     let timers = cloneDeep(state.timers)
-  //     for (var i = 0; i < timers.length; i++) {
-  //       if(timers[i].id === t.id) {
-  //         timers[i].length = event.target.value * 60
-  //       }
-  //     }
-  //     setState({
-  //       timers: timers
-  //     })
-  //   }
-  // }
 
   function closeDeleteModal() {
     openDeleteModal(false);
@@ -238,9 +182,9 @@ function EditGroup(props) {
       }
     }
 
-    function saveGroup(group) {
+    function saveGroup() {
       const token = JSON.parse(localStorage.the_main_app).token;
-      fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${group.id}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${props.group._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -288,7 +232,7 @@ function EditGroup(props) {
                     x={t.length / 60}
                     onChange={({ x }) =>  editTimerLength(x, t)}
                     styles={{
-                      active: {backgroundColor: props.colors[props.group.timers.indexOf(t)]}
+                      active: {backgroundColor: props.colors[timers.indexOf(t)]}
                     }}
                     />
                   </SliderBox>
@@ -329,13 +273,12 @@ function EditGroup(props) {
                       <Button onClick={addGroup}>Save</Button>
                       :
                       <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
-                      <Button onClick={() => showDetails()}>Details</Button>
+                      <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>
                     </div>
                   )
                 :
                 (<Button onClick={props.startTimer}>&#9658;</Button>)}
               </Col>
-              {/* <Col size={1}><TimerInput type="number" onChange={(e) => onTextboxChangeNewTimerLength(e)} value={state.newTimerLength} placeholder="Mins"/></Col> */}
               </Row>
 
           {/* </Grid> */}
@@ -343,7 +286,6 @@ function EditGroup(props) {
         </EditBox>
         <Modal
           isOpen={deleteModalIsOpen}
-          // onAfterOpen={afterOpenModal}
           onRequestClose={closeDeleteModal}
           style={customStyles}
           contentLabel="Example Modal"

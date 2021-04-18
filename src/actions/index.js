@@ -49,3 +49,10 @@ export const setPassword = (e) => {
         type: 'SET_PASSWORD'
     }
 }
+
+export const storeData = (e) => {
+    console.log(e)
+    return {
+        type: 'STORE_DATA'
+    }
+}
