@@ -76,7 +76,8 @@ const Divider = styled.div`
 
 function EditGroup(props) {
   const [deleteModalIsOpen, openDeleteModal] = useState(false);
-  const [timers, setTimers] = useState([]);
+
+  const [group, setGroup] = useState({timers: []});
   const [groupName, setGroupName] = useState("");
   const [timerLengthMins, setTimerLengthMins] = useState(5);
   const [newTimerName, setNewTimerName] = useState("Task");
@@ -84,22 +85,22 @@ function EditGroup(props) {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    let timersAmt = parseInt(props.group.timers.length) + 1;
-    if(timers.length == 0) {
-      setTimers(props.group.timers)
+    if(group.timers.length == 0) {
+      setGroup(props.group);
       setGroupName(props.group.name)
-      setNewTimerName('Task ' + timersAmt);
+      setNewTimerName('Task ' + parseInt(props.group.timers.length) + 1);
     }
   })
 
   function editTimerLength(x, timer) {
-    const updatedTimers = cloneDeep(timers)
-    for (let i = 0; i < updatedTimers.length; i++) {
-      if(updatedTimers[i].id === timer.id) {
-        updatedTimers[i].length = x * 60;
+    const updatedGroup = cloneDeep(group)
+    for (let i = 0; i < updatedGroup.timers.length; i++) {
+      if(updatedGroup.timers[i].id === timer.id) {
+        updatedGroup.timers[i].length = x * 60;
       }      
     }
-    setTimers(updatedTimers);
+    // setTimers(updatedTimers);
+    setGroup(updatedGroup);
   }
 
   function onTextboxChangeNewTimerName(event) {
@@ -107,13 +108,14 @@ function EditGroup(props) {
   }
 
   function onTextboxChangeTimerName(event, t) {
-    const updatedTimers = cloneDeep(props.group.timers)
-    for (var i = 0; i < timers.length; i++) {
-      if(timers[i].id === t.id) {
-        timers[i].name = event.target.value
+    const updatedGroup = cloneDeep(group)
+    for (var i = 0; i < updatedGroup.timers.length; i++) {
+      if(updatedGroup.timers[i].id === t.id) {
+        updatedGroup.timers[i].name = event.target.value
       }
     }
-    setTimers(updatedTimers);
+    // setTimers(updatedTimers);
+    setGroup(updatedGroup)
   }
 
   function onTextboxChangeGroupName(event) {
@@ -128,55 +130,54 @@ function EditGroup(props) {
     openDeleteModal(true);
   }
 
-  function addGroup() {
+  function saveNewGroup() {
+    console.log(group)
     const token = JSON.parse(localStorage.the_main_app).token;
-    fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: groupName,
-        length: timerLengthMins * 60,
-        timers: timers,
-        hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
-        token: token
-      })
-    }).then(res => res.json()).then(json => {
-      if (json.success) {
-        setTimers([]);
-        setGroupName('');
-        props.getTimers(token)
-      } else {
-        console.log("Error: adding this group failed.")
-        console.log(json)
-      }
-    });
+      fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: group.name,
+          timers: group.timers
+        })
+      }).then(res => res.json()).then(json => {
+        if (json.success) {
+          props.getTimers(token)
+        } else {
+          console.log("Error: adding this group failed.")
+          console.log(json)
+        }
+      });
   }
   
   function delItem(item) {
-      let timersAmt = parseInt(props.group.timers.length);
+      let timersAmt = parseInt(group.timers.length);
+      let updatedGroup = group;
 
       function isTimer(element) {
         if(element.id === item.id) return element;
       }
-      let index = props.group.timers.findIndex(isTimer);
-      
-      setTimers(timers.splice(index, 1));
-      newTimerName('Task ' + timersAmt);
+
+      let index = group.timers.findIndex(isTimer);
+      updatedGroup.timers.splice(index, 1);
+      setGroup(updatedGroup);
+      setNewTimerName('Task ' + timersAmt);
     }
 
     function addItem() {
-      let prevTimers = props.group.timers;
-      let timersAmt = parseInt(prevTimers.length) + 2;
+      let updatedGroup = group;
+      let timersAmt = parseInt(group.timers.length) + 2;
+
       let newTimer = {
         name: newTimerName,
         length: newTimerLength * 60,
         id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
       }
-      if(prevTimers.length < 5) {
-        timers.push(newTimer)
-        setTimers(timers);
+      if(updatedGroup.timers.length < 5) {
+        updatedGroup.timers.push(newTimer);
+        setGroup(updatedGroup);
         setNewTimerName(props.group.timers.length < 5 ? 'Task ' + timersAmt : '');
         setNewTimerLength('15');
       }
@@ -184,24 +185,25 @@ function EditGroup(props) {
 
     function saveGroup() {
       const token = JSON.parse(localStorage.the_main_app).token;
-      fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${props.group._id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: groupName,
-          timers: timers
-        })
-      }).then(res => res.json()).then(json => {
-        if (json.success) {
-          props.getTimers(token)
-          props.closeEditModal();
-        } else {
-          console.log("Error: adding this group failed.")
-          console.log(json)
-        }
-      });
+      if(group.timers.length > 1) {
+        fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${props.group._id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            timers: group.timers,
+            name: groupName
+          })
+        }).then(res => res.json()).then(json => {
+          if (json.success) {
+            props.getTimers(token)
+          } else {
+            console.log("Error: adding this group failed.")
+            console.log(json)
+          }
+        });
+      }
     }
 
 
@@ -209,20 +211,18 @@ function EditGroup(props) {
       <div>
           {props.group.hash === 'newgroup' ? null : <GroupInput type="text" placeholder="Group Name" value={groupName} onChange={onTextboxChangeGroupName}/>}
         <EditBox>
-            {timers.map(t => {
+            {group.timers.map(t => {
               return (
                 <Row key={t.id}>
-                    <button style={{display: timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{delItem(t)}} type="button" className="close" aria-label="Close">
+                    <button style={{display: group.timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{delItem(t)}} type="button" className="close" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
 
                   <Col size={.5}>
-                    <TimerInput colors={props.colors} timers={timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e, t)}/>
+                    <TimerInput colors={props.colors} timers={group.timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e, t)}/>
                   </Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
-
-
                   <Col size={.5}>
                     
                   <SliderBox>
@@ -232,7 +232,7 @@ function EditGroup(props) {
                     x={t.length / 60}
                     onChange={({ x }) =>  editTimerLength(x, t)}
                     styles={{
-                      active: {backgroundColor: props.colors[timers.indexOf(t)]}
+                      active: {backgroundColor: props.colors[group.timers.indexOf(t)]}
                     }}
                     />
                   </SliderBox>
@@ -244,14 +244,14 @@ function EditGroup(props) {
             <Divider></Divider>
             <Row>
               <Col size={1}>
-                <TimeSum timers={timers}></TimeSum>
+                <TimeSum timers={group.timers}></TimeSum>
               </Col>
               <Col size={3}>
                 <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={newTimerName} onChange={(e, t) => onTextboxChangeNewTimerName(e)}/>
                   <Col size={.1}></Col>
               </Col>
               <Col size={.5}>
-                <Button style={{display: 'inline'}} disabled={timers.length >= 5 || props.timerStart} onClick={addItem}>Add</Button>
+                <Button style={{display: 'inline'}} disabled={group.timers.length >= 5 || props.timerStart} onClick={addItem}>Add</Button>
               </Col>
             </Row>
               <Divider></Divider>
@@ -270,14 +270,14 @@ function EditGroup(props) {
                       {props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
                         {/* show add group button if its new group box, save button if save box */}
                       {props.group.hash === 'newgroup' ? 
-                      <Button onClick={addGroup}>Save</Button>
+                      <Button onClick={saveNewGroup}>Save</Button>
                       :
                       <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
                       <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>
                     </div>
                   )
                 :
-                (<Button onClick={props.startTimer}>&#9658;</Button>)}
+                <div></div>}
               </Col>
               </Row>
 
@@ -300,7 +300,6 @@ function EditGroup(props) {
         </Modal>
         </div>
     )
-
 
 }
 

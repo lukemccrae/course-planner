@@ -26,6 +26,7 @@ const Group = styled.div`
 Modal.setAppElement('#root')
 
 function Dash(props) {
+  console.log(props)
   const [startIsOpen, setStart] = useState(false);
   const [startedGroup, setStartedGroup] = useState({});
 
@@ -35,10 +36,9 @@ function Dash(props) {
   }
 
   function startModal(g) {
-    setStartedGroup(g);
     props.resetColors();
     setStart(true);
-    g.editOpen = false;
+    setStartedGroup(g);
   }
 
   function stopTimer() {
@@ -64,57 +64,39 @@ function Dash(props) {
     });
   }
 
-  function noGroups() {
-    if(props.groups.length === 0) {
-      return (
-        <div>
-          <h2>Welcome to Group Timer</h2>
-          <h4>Press the Add Group button above to create your first group.</h4>
-        </div>
-      )
-    }
-  }
-
 
     return (
       <div>
         {/* <Nav log={props.log} username={props.username} getTimers={props.getTimers} loggedOut={props.loggedOut}></Nav> */}
         <Grid>
             <Row>
-            {noGroups()}
             <Col size={1.5}></Col>
             <Col size={3}>
-              {console.log(props.groups)}
               {props.groups.map(g => {
                 return (
                   <Group className="group" key={g._id} g={g} timerOn={startIsOpen} startedGroup={startedGroup}>
                     <div className="groupNameParent">
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
-                        {/* dont display start button if its new timer box */}
-                        {g.hash === 'newgroup' ? 
-                          null
+                        {startIsOpen ?
+                          <Button className="five-px-margin-right" onClick={stopTimer}>&#9632;</Button>
                           :
-                          //show either start or
-                          startIsOpen ?
-                            <Button className="five-px-margin-right" onClick={stopTimer}>&#9632;</Button>
-                            :
-                            <Button className="five-px-margin-right" onClick={() => startModal(g)}>&#9658;</Button>
-                        }
+                          <Button className="five-px-margin-right" onClick={() => startModal(g)}>&#9658;</Button>}
 
                         {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
-                        <EditButton timerOn={startIsOpen}>
+                        {/* <EditButton timerOn={startIsOpen}>
                           {g.editOpen ? (
                             <Button onClick={() => props.editGroup(g)}>&#8963;</Button>
                           ) : (
                             <Button id="dropdown-basic-button" onClick={() => props.editGroup(g)}>&#8963;</Button>
                           )}
-                        </EditButton>
+                        </EditButton> */}
 
                       </ButtonWrapper>
+                      
                     </div>
-                    {g.editOpen === true ? (
-                        <EditGroup
+                    {startIsOpen === false ? (
+                      <EditGroup
                         group={g}
                         colors={props.colors}
                         getTimers={props.getTimers}
@@ -123,12 +105,12 @@ function Dash(props) {
                         timers={g.timers}>
                       </EditGroup>
                     ) :
-                      g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : (startIsOpen ? null : <TimeSum timers={g.timers}></TimeSum>)
+                      <TimeSum timers={g.timers}></TimeSum>
                     }
                     {startIsOpen ? (
                       <div>
                         <Start colors={props.colors} timerStart={true} boxContents={g.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={g}></Start>
-                        <Box boxContents={g.box} group={g}></Box>
+                        {/* <Box boxContents={g.box} group={g}></Box> */}
                       </div>
                       ) : <div></div>}
                   </Group>

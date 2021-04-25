@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
@@ -14,76 +14,53 @@ const CountdownBox = styled.div`
   font-size: 15px;
 `
 
-class Start extends Component {
-  constructor(props) {
-    super(props)
+function Start(props) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
+  const [percentDone, setPercentDone] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [forgetBox, setForgetBox] = useState([]);
 
-    this.state = {
-      modalIsOpen: false,
-      promptModalIsOpen: false,
-      currentTimerIndex: 0,
-      percentDone: 0,
-      minutes: 0,
-      seconds: 0,
-      forgetBox: [],
-      lastUpdated: Date.now()
-    }
-    
-    this.start = this.start.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.countdownDisplay = this.countdownDisplay.bind(this);
-    this.nextTimer = this.nextTimer.bind(this);
-    this.routineEnded = this.routineEnded.bind(this);
-    this.formatCountdown = this.formatCountdown.bind(this);
-  }
-  
-  openModal() {
-    this.setState({modalIsOpen: true});
+
+  function openModal() {
+    setModalIsOpen(true);
   }
 
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = 'black';
+  function closeModal() {
+    props.getTimers();
+    props.closeModal();
+    setCurrentTimerIndex(0);
   }
 
-  closeModal() {
-    this.props.getTimers();
-    this.props.closeModal();
-    this.setState({
-      currentTimerIndex: 0
-    });
+  function start() {
+    openModal()
   }
 
-  start() {
-    this.openModal()
-  }
-
-  routineEnded() {
-    if(this.state.currentTimerIndex < this.props.group.timers.length - 1) {
+  function routineEnded() {
+    if(currentTimerIndex < props.group.timers.length - 1) {
       return false;
     } else {
       return true;
     }
   }
 
-  nextTimer() {
-    if(this.routineEnded() === false) {
-      let currentTimerIndex = this.state.currentTimerIndex;
-      currentTimerIndex = ++currentTimerIndex;
-      this.setState({currentTimerIndex});
+  function nextTimer() {
+    if(routineEnded() === false) {
+      let tempTimerIndex = currentTimerIndex;
+      tempTimerIndex = ++tempTimerIndex;
+      setCurrentTimerIndex(tempTimerIndex);
       
     } else {
-      this.closeModal();
+      closeModal();
     }
   }
 
-  formatCountdown(timer) {
+  function formatCountdown(timer) {
     return Date.now() + timer.length * 1000;
   }
 
-  countdownDisplay(timer) {
+  function countdownDisplay(timer) {
     let percentDone;
     let renderer = ({ minutes, seconds, completed }) => {
 
@@ -101,17 +78,17 @@ class Start extends Component {
           return (
           <CountdownCircle 
             completed={completed}
-            timerStart={this.props.timerStart}
+            timerStart={props.timerStart}
             timer={timer} 
             minutes={minutes}
             seconds={seconds}
             currentTimer={timer}
-            getTimers={this.props.getTimers}
-            nextTimer={this.nextTimer}
-            userId={this.props.userId}
+            getTimers={props.getTimers}
+            nextTimer={nextTimer}
+            userId={props.userId}
             percent={100 - percentDone * 100}
-            group={this.props.group}
-            colors={this.props.colors}
+            group={props.group}
+            colors={props.colors}
           >
           </CountdownCircle>
         );
@@ -120,13 +97,13 @@ class Start extends Component {
     };
 
       let countdownComponent = (
-        <Countdown controlled={false} renderer={renderer} date={this.formatCountdown(timer)}>
-          <Completionist currentColor={this.state.currentColor} getTimers={this.props.getTimers} currentTimer={timer} nextTimer={this.nextTimer}></Completionist>
+        <Countdown controlled={false} renderer={renderer} date={formatCountdown(timer)}>
+          <Completionist getTimers={props.getTimers} currentTimer={timer} nextTimer={nextTimer}></Completionist>
         </Countdown>
       )
 
-    if(this.props.group.timers[this.state.currentTimerIndex] !== undefined) {
-      if(timer.id === this.props.group.timers[this.state.currentTimerIndex].id) {
+    if(props.group.timers[currentTimerIndex] !== undefined) {
+      if(timer.id === props.group.timers[currentTimerIndex].id) {
         return (
           countdownComponent
         )
@@ -134,15 +111,14 @@ class Start extends Component {
       }
   }
 
-  render() {
     return (
       <div style={{minHeight: '45vh'}}>
           <Row>
           <TimerDisplay>
-            {this.props.group.timers.map(t => {
+            {props.group.timers.map(t => {
               return (
                 <CountdownBox key={t.id}>
-                  {this.countdownDisplay(t)}
+                  {countdownDisplay(t)}
                 </CountdownBox>
               )
             })} 
@@ -150,7 +126,6 @@ class Start extends Component {
           </Row>
       </div>
     )
-  }
 }
 
 export default Start;

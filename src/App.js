@@ -4,8 +4,10 @@ import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
 import Front from './Components/Front';
 import Dash from './Components/Dash';
+import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
+import Nav from './Components/Nav';
 import ClockLoader from "react-spinners/ClockLoader";
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -35,34 +37,59 @@ function App(props) {
     "#E47043",
     "#B63534",
     "#9598AB",]);
-  // componentDidMount() {
-  //   const obj = getFromStorage('the_main_app');
-  //   if (obj && obj.token) {
-  //     //verify token
-  //     fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
-  //       if (json.success) {
-  //         this.setState({token: obj.token, groups: json.groups, log: json.log, username: json.email, isLoading: false})
-  //       } else {
-  //         this.setState({isLoading: false})
-  //       }
-  //     })
-  //   } else {
-  //     this.setState({
-  //       isLoading: false
-  //     })
-  //   }
-  // }
+    const [testGroup, setTestGroup] = useState({
+      name: "",
+      timers: [{
+        name: "Task 1",
+        length: 900,
+        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+      },
+      {
+        name: "Task 2",
+        length: 900,
+        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+      },
+      {
+        name: "Task 3",
+        length: 900,
+        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+      }
+  ],
+      hash: "newgroup",
+      timerGoing: false,
+      editOpen: true,
+    });
+
+    //add object for creating more groups
+    let addGroup = {
+      box: [""],
+      editOpen: false,
+      hash: "newgroup",
+      name: "New Group",
+      timers: [
+        {
+          name: "New Timer",
+          length: 3,
+        }
+      ],
+      user: "current user"
+    }
 
   useEffect(() => {
     const obj = getFromStorage('the_main_app');
-    if (obj && obj.token) {
+    if (obj && obj.token && groups.length == 0) {
       //verify token
       fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
           setToken(obj);
-          setGroups(json.groups);
+          setGroups([addGroup])
+          if(json.groups.length == 0) {
+            setGroups([addGroup])
+          } else {
+            setGroups(json.groups)
+          }
           setLog(json.log);
-          username(json.email);
+          setUsername(json.email);
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -74,25 +101,20 @@ function App(props) {
   })
 
   function loggedIn(args) {
-    this.setState({
-      token: args.token,
-      username: args.user,
-      timers: args.timers,
-      groups: args.groups,
-      log: args.log,
-      userId: args.id,
-    })
+    setToken(args.token);
+    if(args.groups == []) args.groups = addGroup;
+    setGroups(args.groups);
+    setLog(args.log);
+    setUsername(args.user);
+    setUserId(args.id);
   }
 
   function loggedOut() {
     localStorage.clear();
-    this.setState({
-      token: ''
-    })
+    setToken('');
   }
 
   function getTimers(token) {
-    console.log("getTimers")
     fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
       headers: {
@@ -101,38 +123,13 @@ function App(props) {
     })
     .then(res => res.json())
     .then(json => {
-
-      //add object for creating more groups
-      //displays at the end of the groups list in Dash
-      let addGroup = {
-        box: [""],
-        editOpen: false,
-        hash: "newgroup",
-        name: "New Group",
-        timers: [
-          {
-            name: "New Timer",
-            length: 3,
-          }
-        ],
-        user: "current user"
-      }
       json.groups.push(addGroup);
 
       if(json.success) {
-        console.log(json)
-        this.setState({
-          timers: json.timers,
-          groups: json.groups,
-          userName: json.username,
-          log: json.log
-        })
-
+        setGroups(json.groups)
+        setLog(json.log)
       } else {
-        this.setState({
-          timerError: json.message,
-          isLoading: false
-        })
+        console.log("Error: ", json)
       }
     });
   }
@@ -148,14 +145,12 @@ function App(props) {
       "#9598AB",
   ]
 
-  this.setState({
-    colors: colors
-  })
+  setColors(colors);
   }
 
   //enable group to be editable
   function editGroup(g) {
-    this.resetColors();
+    resetColors();
     let currentGroups = groups;
     //loop through groups
     for (let i = 0; i < currentGroups.length; i++) {
@@ -168,10 +163,7 @@ function App(props) {
         currentGroups[i].editOpen = false;
       }
     }
-
-    this.setState({
-      groups: currentGroups
-    })
+    setGroups(currentGroups);
   }
 
   function editOff() {
@@ -181,10 +173,7 @@ function App(props) {
       //turn off
       currentGroups[i].editOpen = false;
     }
-
-    this.setState({
-      groups: currentGroups
-    })  
+    setGroups(currentGroups);  
   }
 
   function timeFormat(time, str) {
@@ -202,12 +191,12 @@ function App(props) {
     //
     return (
       <div>
+        <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={props.username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
         {token ? 
           <Dash
           resetColors={resetColors}
           colors={colors}
           groups={groups}
-          timers={timers}
           username={username}
           getTimers={getTimers}
           loggedOut={loggedOut}
@@ -233,7 +222,7 @@ function App(props) {
             </Container>
           </div>
           :
-          <Front colors={this.state.colors} timeFormat={this.timeFormat} loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Front>
+          <DashNoLogin resetColors={resetColors} groups={[testGroup]} colors={colors} timeFormat={props.timeFormat} ></DashNoLogin>
          }
         </div>
       }

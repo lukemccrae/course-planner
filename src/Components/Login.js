@@ -33,6 +33,9 @@ function Login(props) {
         if(json.success) {
           props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })
+
+          //close login modal
+          props.closeModal();
         } else {
           console.log(json)
           alert("Invalid signin")
@@ -40,10 +43,17 @@ function Login(props) {
       });
   }
 
+  function setLogin(email, pass) {
+    setEmail(email);
+    setPassword(pass);
+    setShowRegister(false);
+  }
+
     return (
         <div>
             {showRegister ? 
-            <Register showRegister={showRegister}></Register>
+            <Register setLogin={setLogin} showRegisterr={props.showRegister}></Register>
+
         :
         <Box>
             <Form>

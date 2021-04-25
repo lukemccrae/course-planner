@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import Logout from './Logout';
 import Stats from './Stats';
 import Login from './Login';
@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
+import {getFromStorage} from '../utils/storage';
 
 // import styled from 'styled-components';
 // const TitleLetter = styled.h4`
@@ -25,75 +26,77 @@ const customStyles = {
   }
 };
 
-class Nav extends Component {
-  constructor(props) {
-    super(props)
+function Nav(props) {
+  // constructor(props) {
+  //   super(props)
 
-    this.state = {
-      modalIsOpen: false,
-      statsModalIsOpen: false,
-      loginModalIsOpen: false,
-      statPeriod: 'Week',
-      showRegister: false,
-      sortedLog: []
+  //   state = {
+  //     modalIsOpen: false,
+  //     statsModalIsOpen: false,
+  //     loginModalIsOpen: false,
+  //     statPeriod: 'Week',
+  //     showRegister: false,
+  //     sortedLog: []
 
-    }
-    this.closeModal = this.closeModal.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.openStatsModal = this.openStatsModal.bind(this);
-    this.openLoginModal = this.openLoginModal.bind(this);
-    this.changePeriod = this.changePeriod.bind(this);
-    this.showRegister = this.showRegister(this);
-    
+  //   }
+  //   closeModal = closeModal.bind(this);
+  //   openModal = openModal.bind(this);
+  //   openStatsModal = openStatsModal.bind(this);
+  //   openLoginModal = openLoginModal.bind(this);
+  //   changePeriod = changePeriod.bind(this);
+  //   showRegister = showRegister(this);
+  //   onLogout = onLogout.bind(this); 
+  // }
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
+  const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
+  const [statPeriod, setStatPeriod] = useState('Week');
+  const [showRegister, setShowRegister] = useState(false);
+  const [sortedLog, setSortedLog] = useState([]);
+
+
+  function changePeriod(period) {
+    setStatPeriod(period.value)
   }
 
-  changePeriod(period) {
-    this.setState({
-      statPeriod: period.value
-    })
+  function closeModal() {
+    setModalIsOpen(false);
+    setStatsModalIsOpen(false);
+    setLoginModalIsOpen(false);
   }
 
-  closeModal() {
-    this.setState({
-      modalIsOpen: false,
-      statsModalIsOpen: false,
-      loginModalIsOpen: false,
-      statPeriod: 'Week'
-    });
+  function openModal() {
+    setModalIsOpen(true);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  openStatsModal() {
+  function openStatsModal() {
     let sortedLog = {
       dayStats: [],
       weekStats: []
     }
-
       //is this log entry already in the counter?
       function findLog(entry) {
         return sortedLog.weekStats.map(function(l) { return l.name; }).indexOf(entry); 
     };
     
     function Stat(name, length, key, date) {
-      this.name = name;
-      this.length = length;
-      this.key = key;
-      this.date = date;
+      name = name;
+      length = length;
+      key = key;
+      date = date;
   }
 
-    for (let i = 0; i < this.props.log.length; i++) {
+    for (let i = 0; i < props.log.length; i++) {
 
       //if its not there,
-      if(findLog(this.props.log[i].name) === -1) {
+      if(findLog(props.log[i].name) === -1) {
           
           //push a new stat entry
-          let stat1 = new Stat(this.props.log[i].name, this.props.log[i].length, i, this.props.log[i].date)
+          let stat1 = new Stat(props.log[i].name, props.log[i].length, i, props.log[i].date)
 
           //if the activity was done in the past 24 hours, push it into dayStat array
-          if(Date.now() - this.props.log[i].date <= 86400000) {
+          if(Date.now() - props.log[i].date <= 86400000) {
             sortedLog.dayStats.push(stat1)
           }
           
@@ -101,10 +104,10 @@ class Nav extends Component {
           sortedLog.weekStats.push(stat1);
       } else {
           //increment hash map log value
-          sortedLog.weekStats[findLog(this.props.log[i].name)].length += this.props.log[i].length
+          sortedLog.weekStats[findLog(props.log[i].name)].length += props.log[i].length
 
-          if(Date.now() - this.props.log[i].date <= 86400000) {
-              sortedLog.dayStats[findLog(this.props.log[i].name)].length += this.props.log[i].length 
+          if(Date.now() - props.log[i].date <= 86400000) {
+              sortedLog.dayStats[findLog(props.log[i].name)].length += props.log[i].length 
           }
       }
   }
@@ -112,29 +115,35 @@ class Nav extends Component {
     sortedLog.weekStats.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
     sortedLog.dayStats.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
 
-    this.setState({
-      statsModalIsOpen: true,
-      sortedLog: sortedLog
+    setStatsModalIsOpen(true)
+    setSortedLog(sortedLog);
+  }
+
+  function onLogout() {
+    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/logout?token=${props.token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
     })
+      .then(callback => {
+        if(callback.status === 200) {
+          props.loggedOut();
+        } else {
+          console.log(callback);
+        }
+      });
   }
 
-  openLoginModal() {
-    this.setState({loginModalIsOpen: true});
+  function openLoginModal() {
+    setLoginModalIsOpen(true)
   }
 
-
-  showRegister() {
-    this.setState({
-      showRegister: !this.state.showRegister
-    })
-  }
-
-  render() {
     return (
       <div>
         <Navbar bg="light">
           <Container>
-            <div>{this.props.username}</div>
+            <div>{props.username}</div>
             <h4>Group Timer</h4>
 
             {/* //colorful title? */}
@@ -150,38 +159,39 @@ class Nav extends Component {
               <TitleLetter color={"#E47043"}>e</TitleLetter>
               <TitleLetter color={"#B63534"}>r</TitleLetter>
             </div> */}
-            {/* <Button onClick={this.props.addModal}>Add Group</Button> */}
+            {/* <Button onClick={props.addModal}>Add Group</Button> */}
             <NavDropdown title="More" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={this.openStatsModal}>Stats</NavDropdown.Item>
+              <NavDropdown.Item onClick={openStatsModal}>Stats</NavDropdown.Item>
               <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
               <NavDropdown.Divider/>
               <NavDropdown.Item>
-                <Logout openLoginModal={this.openLoginModal} loggedOut={this.props.loggedOut} token={this.props.token}></Logout>
+              {getFromStorage("the_main_app") ? <div onClick={onLogout}>Logout</div> : <div onClick={openLoginModal}>Login</div>}
+                {/* <Logout openLoginModal={openLoginModal} loggedOut={props.loggedOut} token={props.token}></Logout> */}
               </NavDropdown.Item>
             </NavDropdown>
           </Container>
         </Navbar>
         <Modal
-          isOpen={this.state.loginModalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
+          isOpen={loginModalIsOpen}
+          // onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <Login showRegister={this.showRegister} loggedIn={this.props.loggedIn}></Login>
+          <Login closeModal={closeModal} showRegister={setShowRegister} loggedIn={props.loggedIn}></Login>
         </Modal>
         <Modal
-          isOpen={this.state.statsModalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
+          isOpen={statsModalIsOpen}
+          // onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <Stats statPeriod={this.state.statPeriod} changePeriod={this.changePeriod} log={this.state.sortedLog}></Stats>
+          <Stats token={getFromStorage("the_main_app")} statPeriod={statPeriod} changePeriod={changePeriod} log={sortedLog}></Stats>
         </Modal>
       </div>
     )
-  }
+
 }
 
 export default Nav;

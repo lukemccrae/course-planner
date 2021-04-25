@@ -3,6 +3,7 @@ import Nav from './Nav';
 import Start from './Start';
 import DisplayCircle from './DisplayCircle';
 import DashFront from './DashFront';
+import DashNoLogin from './DashNoLogin';
 import {Grid, Row} from './Grid';
 import 'whatwg-fetch';
 import styled from 'styled-components';
@@ -23,25 +24,12 @@ function Front(props) {
     timers: [{
       name: "Task 1",
       length: 900,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     }
 ],
     hash: "newgroup",
     timerGoing: false
   });
-
-  // useEffect(() => {
-  //   setNewTimerName('Task ' + 2)
-  // }, []);
-
-  function editTimerLength(x, timer) {
-    let group = testGroup;
-    for (let i = 0; i < group.timers.length; i++) {
-      if(group.timers[i].id === timer.id) {
-        group.timers[i].length = x * 60;
-      }      
-    }
-    setTestGroup(group);
-  }
 
   function addItem(timerName) {
     let group = testGroup;
@@ -56,6 +44,17 @@ function Front(props) {
       setNewTimerName('Task ' + (group.timers.length + 1));
       setNewTimerLength('15')
     }
+  }
+
+  function editTimerLength(x, timer) {
+    console.log(timer)
+    let group = testGroup;
+    for (let i = 0; i < group.timers.length; i++) {
+      if(group.timers[i].id == timer.id) {
+        group.timers[i].length = x * 60;
+      }      
+    }
+    setTestGroup(group);
   }
 
   function delItem(item) {
@@ -74,7 +73,8 @@ function Front(props) {
 
     return (
       <div>
-        <Nav loggedIn={props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
+        {/* <DashNoLogin groups={[testGroup]} colors={props.colors} timeFormat={props.timeFormat} ></DashNoLogin> */}
+        {/* <Nav loggedIn={props.loggedIn} log={""} username={""} getTimers={function(){}} loggedOut={true}></Nav>
           <TimerDisplay>
             {!timerStart ? <DisplayCircle
                 group={testGroup}
@@ -101,7 +101,7 @@ function Front(props) {
                 >
                 </DashFront>
           </Row>
-        </Grid>
+        </Grid> */}
       </div>
     )
 }

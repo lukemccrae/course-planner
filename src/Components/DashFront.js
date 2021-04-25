@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
@@ -55,81 +55,70 @@ const Footer = styled.div`
   margin: 0 10px 20px 0;
 `
 
-class EditGroup extends Component {
-  constructor(props) {
-    console.log(props)
-    super(props)
+function DashFront(props) {
+  
+  const [timers, setTimers] = useState([]);
+  const [newTimerName, setNewTimerName] = useState("Task");
+  const [newTimerLength, setNewTimerLength] = useState(15);
+  const [group, setGroup] = useState({});
 
-    this.state = {
-      timers: [],
-      timerLengthMins: 5,
-      timerLengthSecs: 0,
-      newTimerLength: 15,
-      newTimerName: ''
-    }
-
-    this.calculateTime = this.calculateTime.bind(this);
-    this.onTextboxChangeTimerName = this.onTextboxChangeTimerName.bind(this);
-  }
+    useEffect(() => {
+      console.log(props)
+      setTimers(props.group.timers)
+    }, []);
 
 
-  onTextboxChangeTimerName(event, t) {
-    let timers = cloneDeep(this.state.timers)
+
+  function onTextboxChangeTimerName(event, t) {
+    console.log(event, t)
+    let timers = cloneDeep(timers)
     for (var i = 0; i < timers.length; i++) {
       if(timers[i].id === t.id) {
         timers[i].name = event.target.value
       }
     }
-    this.setState({
-      timers: timers
-    })
+    setTimers(timers);
   }
 
-  onTextboxChangeTimerLengthMins(event, t) {
-    if(event.target.value < 60 && event.target.value !== 'e') {
-      let timers = cloneDeep(this.state.timers)
-      for (var i = 0; i < timers.length; i++) {
-        if(timers[i].id === t.id) {
-          timers[i].length = event.target.value * 60
-        }
-      }
-      this.setState({
-        timers: timers
-      })
-    }
-  }
+  // function onTextboxChangeTimerLengthMins(event, t) {
+  //   if(event.target.value < 60 && event.target.value !== 'e') {
+  //     let timers = cloneDeep(timers)
+  //     for (var i = 0; i < timers.length; i++) {
+  //       if(timers[i].id === t.id) {
+  //         timers[i].length = event.target.value * 60
+  //       }
+  //     }
+  //     setState({
+  //       timers: timers
+  //     })
+  //   }
+  // }
 
-  componentDidMount() { 
-    this.setState({
-      timers: this.props.group.timers,
-      groupName: this.props.group.name,
-      id: this.props.group._id,
-      newTimerName: 'Task ' + this.props.group.timers.length + 2
-    })
-  }
+  // function componentDidMount() {
+  //   setState({
+  //     timers: props.group.timers,
+  //     groupName: props.group.name,
+  //     id: props.group._id,
+  //     newTimerName: 'Task ' + props.group.timers.length + 2
+  //   })
+  // }
 
-  calculateTime() {
-    let mins = this.state.timerLengthMins * 60;
-    return this.state.timerLengthSecs + mins;
-  }
-
-  render() {
     return (
       <Footer>
-            {this.props.group.timers.map(t => {
+            {timers.map(t => {
               return (
                 //turn off timer rows if start is running. 
-                <Row style={{display: this.props.timerStart ? "none" : "flex"}} key={t.id}>
+                <Row style={{display: props.timerStart ? "none" : "flex"}} key={t.id}>
                   <Col size={.05}>
                     <div style={{minWidth: '15.87px'}}>
-                      <button style={{display: this.state.timers.length < 2 ? "none" : "inline"}} onClick={()=>{this.props.delItem(t)}} type="button" className="close" aria-label="Close">
+                      <button style={{display: props.group.timers.length < 2 ? "none" : "inline"}} onClick={()=>{props.delItem(t)}} type="button" className="close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                   </Col>
 
                   <Col size={.5}>
-                    <TimerInput colors={this.props.colors} timers={this.props.group.timers} t={t} disabled={true} type="text" value={t.name} onChange={(e) => this.onTextboxChangeTimerName(e, t)}/>
+                    <TimerInput colors={props.colors} timers={props.group.timers} t={t} disabled={true} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e, t)}/>
                   </Col>
                   <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
                   <Col size={.01}></Col>
@@ -141,10 +130,10 @@ class EditGroup extends Component {
                     axis="x"
                     xmax = {30}
                     x={t.length / 60}
-                    onChange={({ x }) =>  this.props.editTimerLength(x, t)}
-                    disabled={this.props.timerStart}
+                    onChange={({ x }) =>  props.editTimerLength(x, t)}
+                    disabled={props.timerStart}
                     styles={{
-                      active: {backgroundColor: this.props.colors[this.props.group.timers.indexOf(t)]}
+                      active: {backgroundColor: props.colors[props.group.timers.indexOf(t)]}
                     }}
                     />
                   </SliderBox>
@@ -155,23 +144,22 @@ class EditGroup extends Component {
             <Divider></Divider>
             <Row>
               <Col style={{display: 'flex'}} size={1.5}>
-                  {this.props.timerStart ? <Button onClick={this.props.startTimer}>&#9632;</Button> : <Button onClick={this.props.startTimer}>&#9658;</Button>}
+                  {props.timerStart ? <Button onClick={() => props.startTimer(!props.timerStart)}>&#9632;</Button> : <Button onClick={props.startTimer}>&#9658;</Button>}
                     <div style={{marginLeft: '15px'}}>
-                      <TimeSum timers={this.props.group.timers}></TimeSum>
+                      <TimeSum timers={props.group.timers}></TimeSum>
                     </div>
               </Col>
               <VerticalDivider></VerticalDivider>
                 <Col size={4}>
-                  <TimerInputNew type="text" placeholder={'name'} value={this.props.newTimerName} onChange={(e) => this.props.onTextboxChangeNewTimerName(e)}/>
+                  <TimerInputNew disabled={false} type="text" placeholder={'name'} value={props.newTimerName} onChange={(e) => props.onTextboxChangeNewTimerName(e)}/>
                 </Col>
                 <Col size={1}>
-                  <Button disabled={this.props.group.timers.length >= 5 || this.props.timerStart} onClick={() => this.props.addItem(this.props.newTimerName)}>Add</Button>
+                  <Button disabled={props.group.timers.length >= 5 || props.timerStart} onClick={() => props.addItem(props.newTimerName)}>Add</Button>
                 </Col>
             </Row>
 
       </Footer>
     )
   }
-}
 
-export default EditGroup;
+export default DashFront;
