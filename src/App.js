@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
-import Front from './Components/Front';
 import Dash from './Components/Dash';
 import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
@@ -28,7 +27,7 @@ function App(props) {
   const [log, setLog] = useState([]);
   const [showRegister, setShowRegister] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [loading, setIsLoading] = useState(false);
+  const [loading, setIsLoading] = useState(true);
   const [colors, setColors] = useState([
     "#428A79",
     "#71AF55",
@@ -69,7 +68,7 @@ function App(props) {
       timers: [
         {
           name: "New Timer",
-          length: 3,
+          length: 900,
         }
       ],
       user: "current user"
@@ -82,7 +81,7 @@ function App(props) {
       fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
           setToken(obj);
-          setGroups([addGroup])
+          json.groups.push(addGroup);
           if(json.groups.length == 0) {
             setGroups([addGroup])
           } else {
@@ -103,6 +102,7 @@ function App(props) {
   function loggedIn(args) {
     setToken(args.token);
     if(args.groups == []) args.groups = addGroup;
+    args.groups.push(addGroup);
     setGroups(args.groups);
     setLog(args.log);
     setUsername(args.user);
@@ -191,7 +191,10 @@ function App(props) {
     //
     return (
       <div>
+        {!loading ? 
         <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={props.username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
+        : <div></div>
+        }
         {token ? 
           <Dash
           resetColors={resetColors}

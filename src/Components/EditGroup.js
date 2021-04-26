@@ -140,7 +140,10 @@ function EditGroup(props) {
         },
         body: JSON.stringify({
           name: group.name,
-          timers: group.timers
+          timers: group.timers,
+          token: token,
+          hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
@@ -270,7 +273,7 @@ function EditGroup(props) {
                       {props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
                         {/* show add group button if its new group box, save button if save box */}
                       {props.group.hash === 'newgroup' ? 
-                      <Button onClick={saveNewGroup}>Save</Button>
+                      <Button className="five-px-margin-right" onClick={saveNewGroup}>Save</Button>
                       :
                       <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
                       <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>
@@ -280,8 +283,6 @@ function EditGroup(props) {
                 <div></div>}
               </Col>
               </Row>
-
-          {/* </Grid> */}
 
         </EditBox>
         <Modal

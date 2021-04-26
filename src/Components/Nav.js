@@ -27,26 +27,6 @@ const customStyles = {
 };
 
 function Nav(props) {
-  // constructor(props) {
-  //   super(props)
-
-  //   state = {
-  //     modalIsOpen: false,
-  //     statsModalIsOpen: false,
-  //     loginModalIsOpen: false,
-  //     statPeriod: 'Week',
-  //     showRegister: false,
-  //     sortedLog: []
-
-  //   }
-  //   closeModal = closeModal.bind(this);
-  //   openModal = openModal.bind(this);
-  //   openStatsModal = openStatsModal.bind(this);
-  //   openLoginModal = openLoginModal.bind(this);
-  //   changePeriod = changePeriod.bind(this);
-  //   showRegister = showRegister(this);
-  //   onLogout = onLogout.bind(this); 
-  // }
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);

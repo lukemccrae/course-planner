@@ -57,7 +57,6 @@ function Dash(props) {
     }).then(res => res.json()).then(json => {
       if (json.success) {
         props.getTimers(token)
-        closeModal()
       } else {
         console.log("error: ", json)
       }
@@ -84,7 +83,6 @@ function Dash(props) {
             {noGroups()}
             <Col size={1.5}></Col>
             <Col size={3}>
-              {console.log(props.groups)}
               {props.groups.map(g => {
                 return (
                   <Group className="group" key={g._id} g={g} timerOn={startIsOpen} startedGroup={startedGroup}>
