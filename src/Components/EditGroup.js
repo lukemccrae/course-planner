@@ -80,7 +80,7 @@ function EditGroup(props) {
   const [group, setGroup] = useState({timers: []});
   const [groupName, setGroupName] = useState("");
   const [timerLengthMins, setTimerLengthMins] = useState(5);
-  const [newTimerName, setNewTimerName] = useState("Task");
+  const [newTimerName, setNewTimerName] = useState("Task 2");
   const [newTimerLength, setNewTimerLength] = useState(15);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -88,7 +88,7 @@ function EditGroup(props) {
     if(group.timers.length == 0) {
       setGroup(props.group);
       setGroupName(props.group.name)
-      setNewTimerName('Task ' + parseInt(props.group.timers.length) + 1);
+      setNewTimerName('Task 4');
     }
   })
 
@@ -172,16 +172,18 @@ function EditGroup(props) {
     function addItem() {
       let updatedGroup = group;
       let timersAmt = parseInt(group.timers.length) + 2;
-
+      
       let newTimer = {
         name: newTimerName,
         length: newTimerLength * 60,
         id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
       }
-      if(updatedGroup.timers.length < 5) {
+
+
+      if(updatedGroup.timers.length < 7) {
         updatedGroup.timers.push(newTimer);
+        setNewTimerName(props.group.timers.length < 7 ? 'Task ' + timersAmt : '');
         setGroup(updatedGroup);
-        setNewTimerName(props.group.timers.length < 5 ? 'Task ' + timersAmt : '');
         setNewTimerLength('15');
       }
     }
@@ -254,7 +256,7 @@ function EditGroup(props) {
                   <Col size={.1}></Col>
               </Col>
               <Col size={.5}>
-                <Button style={{display: 'inline'}} disabled={group.timers.length >= 5 || props.timerStart} onClick={addItem}>Add</Button>
+                <Button style={{display: 'inline'}} disabled={group.timers.length >= 7 || props.timerStart} onClick={addItem}>Add</Button>
               </Col>
             </Row>
               <Divider></Divider>

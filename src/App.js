@@ -67,7 +67,15 @@ function App(props) {
       name: "New Group",
       timers: [
         {
-          name: "New Timer",
+          name: "Task 1",
+          length: 900,
+        },
+        {
+          name: "Task 2",
+          length: 900,
+        },
+        {
+          name: "Task 3",
           length: 900,
         }
       ],
