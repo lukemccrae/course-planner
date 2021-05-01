@@ -36,28 +36,7 @@ function App(props) {
     "#E47043",
     "#B63534",
     "#9598AB",]);
-    const [testGroup, setTestGroup] = useState({
-      name: "",
-      timers: [{
-        name: "Task 1",
-        length: 900,
-        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
-      },
-      {
-        name: "Task 2",
-        length: 900,
-        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
-      },
-      {
-        name: "Task 3",
-        length: 900,
-        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
-      }
-  ],
-      hash: "newgroup",
-      timerGoing: false,
-      editOpen: true,
-    });
+    
 
     //add object for creating more groups
     let addGroup = {
@@ -233,7 +212,14 @@ function App(props) {
             </Container>
           </div>
           :
-          <DashNoLogin resetColors={resetColors} groups={[testGroup]} colors={colors} timeFormat={props.timeFormat} ></DashNoLogin>
+          <DashNoLogin 
+            resetColors={resetColors} 
+            colors={colors} 
+            timeFormat={props.timeFormat}
+            getTimers={getTimers}
+            timeFormat={props.timeFormat}
+            resetColors={resetColors}>
+          </DashNoLogin>
          }
         </div>
       }
