@@ -22,16 +22,18 @@ const ClearButton = styled.div`
 
 function ForgetBox(props) {
   const [forgetBox, setBox] = useState("");
-  const [lastUpdated, setLastUpdated] = useState(0);
-  const [saved, isSaved] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState();
+  const [saved, setSaved] = useState(true);
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     setBox(props.boxContents[0])
+    setTimer(null);
   }, []);
 
   function clearBox() {
     setBox("");
-    isSaved(false);
+    setSaved(false);
     updateBox(forgetBox);
   }
 
@@ -43,11 +45,12 @@ function ForgetBox(props) {
       },
       body: JSON.stringify({
         group: props.group._id,
-        box: box
+        box: forgetBox
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        isSaved(true)
+        console.log("saved")
+        setSaved(true)
       } else {
         console.log('failed');
         
@@ -56,19 +59,12 @@ function ForgetBox(props) {
   }
 
   function updateForgetBox(event) {
-    setLastUpdated(Date.now());
-    setBox(event.target.value);
-    isSaved(false);
-
-    //if user hasn't typed anything in 3 seconds, update box  
-    setTimeout(() => {
-      //Date.now() in this function refers to when this function was INITIALLY CALLED
-      //after the timeout length, the Date.now() value is equal to what it was WHEN THE SET TIMEOUT FUNCTION WAS INVOKED
-      //i think thats how it works at least.
-      if(Date.now() - lastUpdated - 3050 < 100 && Date.now() - lastUpdated - 3000 > -50) {
-        updateBox(forgetBox)
-      }
-    }, 3000);
+    setBox(event.target.value)
+    clearTimeout(timer);
+    setSaved(false);
+    setTimer(setTimeout(() => {
+      updateBox();
+    }, 1000))
   }
 
     return (
