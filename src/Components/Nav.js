@@ -51,12 +51,14 @@ function Nav(props) {
   }
 
   function openStatsModal() {
+    //create two arrays of stats for user to select between
     let sortedLog = {
       dayStats: [],
       weekStats: []
     }
       //is this log entry already in the counter?
       function findLog(entry) {
+        //all day stats are in week
         return sortedLog.weekStats.map(function(l) { return l.name; }).indexOf(entry); 
     };
     

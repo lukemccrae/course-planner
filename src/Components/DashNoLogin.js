@@ -105,7 +105,7 @@ function Dash(props) {
                         timers={g.timers}>
                       </EditGroup>
                     ) :
-                      <TimeSum timers={g.timers}></TimeSum>
+                      <div></div>
                     }
                     {startIsOpen ? (
                       <div>
