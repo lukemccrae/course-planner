@@ -21,6 +21,7 @@ const options = [
 const defaultOption = options[1];
 
 const Stats = ({log, statPeriod, changePeriod}) => {
+    console.log(log)
 
     let selectedStats = [];
     statPeriod === "Day" ? selectedStats = log.dayStats : selectedStats = log.weekStats;

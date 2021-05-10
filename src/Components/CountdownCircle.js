@@ -69,45 +69,33 @@ class CountdownCircle extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            colors: [
-                "#428A79",
-                "#71AF55",
-                "#F00500",
-                "#E4BE67",
-                "#E47043",
-                "#B63534",
-                "#9598AB",
-            ],
-            currentPercent: 0,
-            tickAdjust: .01
         }
         this.checkCompleted = this.checkCompleted.bind(this);
       }
 
       //make finished timers colors white so they disapear after done
       //this runs when component starts, either on group start or next timer
-      UNSAFE_componentWillMount() {
-        //copy state colors array
-        let colorsDoneBecomeWhite = this.props.colors;
-        let index = this.props.group.timers.indexOf(this.props.currentTimer);
+    //   UNSAFE_componentWillMount() {
+    //     //copy state colors array
+    //     let colorsDoneBecomeWhite = this.props.colors;
+    //     let index = this.props.group.timers.indexOf(this.props.currentTimer);
 
-        for (let i = 0; i < index; i++) {
-            if(this.props.colors[i] !== "white") {
-                colorsDoneBecomeWhite[i] = "white";
-                this.setState({
-                    colors: colorsDoneBecomeWhite,
-                    currentTotalSeconds: this.props.seconds
-                })
-            }
-        }
-      }
+    //     for (let i = 0; i < index; i++) {
+    //         if(this.props.colors[i] !== "white") {
+    //             console.log("HI")
+    //             colorsDoneBecomeWhite[i] = "white";
+    //             this.setState({
+    //                 colors: colorsDoneBecomeWhite,
+    //                 currentTotalSeconds: this.props.seconds
+    //             })
+    //         }
+    //     }
+    //   }
 
       checkCompleted() {
         return this.props.completed;
       }
 
-      
-    
     render() {
         //white gradient on the left
         let firstCalculatedPercent = 270;

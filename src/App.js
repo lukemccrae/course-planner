@@ -179,7 +179,7 @@ function App(props) {
     return (
       <div>
         {!loading ? 
-        <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={props.username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
+        <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
         {token ? 

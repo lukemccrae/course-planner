@@ -4,11 +4,9 @@ import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
 import Box from './ForgetBox.js';
-import {getFromStorage} from '../utils/storage';
 import Start from './Start';
 import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
-import Modal from 'react-modal';
 
 const customStyles = {
   content : {
@@ -193,97 +191,83 @@ function DashNoLogin(props) {
 
     return (
       <div>
-      {/* <Nav log={props.log} username={props.username} getTimers={props.getTimers} loggedOut={props.loggedOut}></Nav> */}
       <Grid>
           <Row>
           <Col size={1.5}></Col>
           <Col size={3}>
-                <Group className="group" key={group._id} g={group} timerOn={startIsOpen} startedGroup={startedGroup}>
-                  <div className="groupNameParent">
-                    <h3>{group.name}</h3>
-                    <ButtonWrapper>
-                      {startIsOpen ?
-                        <Button className="five-px-margin-right" onClick={stopTimer}>&#9632;</Button>
-                        :
-                        <Button className="five-px-margin-right" onClick={() => startModal(group)}>&#9658;</Button>}
+            <Group className="group" key={group._id} g={group} timerOn={startIsOpen} startedGroup={startedGroup}>
+              <div className="groupNameParent">
+                <h3>{group.name}</h3>
+                <ButtonWrapper>
+                  {startIsOpen ?
+                    <Button className="five-px-margin-right" onClick={stopTimer}>&#9632;</Button>
+                    :
+                    <Button className="five-px-margin-right" onClick={() => startModal(group)}>&#9658;</Button>}
+                </ButtonWrapper>
+              </div>
+              {startIsOpen === false ? (
+              <EditBox>
+                {group.timers.map(t => {
+                  return (
+                    <Row key={t.id}>
+                        <button style={{display: group.timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{delItem(t)}} type="button" className="close" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
 
-                      {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
-                      {/* <EditButton timerOn={startIsOpen}>
-                        {g.editOpen ? (
-                          <Button onClick={() => props.editGroup(g)}>&#8963;</Button>
-                        ) : (
-                          <Button id="dropdown-basic-button" onClick={() => props.editGroup(g)}>&#8963;</Button>
-                        )}
-                      </EditButton> */}
-
-                    </ButtonWrapper>
-                    
-                  </div>
-                  {startIsOpen === false ? (
-                    <EditBox>
-            {group.timers.map(t => {
-              return (
-                <Row key={t.id}>
-                    <button style={{display: group.timers.length < 2 ? "none" : "inline", marginBottom: "10px"}} onClick={()=>{delItem(t)}} type="button" className="close" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-
-                  <Col size={.5}>
-                    <TimerInput colors={props.colors} timers={group.timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e, t)}/>
-                  </Col>
-                  <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
-                  <Col size={.01}></Col>
-                  <Col size={.5}>
-                    
-                  <SliderBox>
-                    <Slider
-                    axis="x"
-                    xmax = {30}
-                    x={t.length / 60}
-                    onChange={({ x }) =>  editTimerLength(x, t)}
-                    styles={{
-                      active: {backgroundColor: props.colors[group.timers.indexOf(t)]}
-                    }}
-                    />
-                  </SliderBox>
-                  </Col>
-
-                </Row>
-              )
-            })}
-            <Divider></Divider>
-            <Row>
-              <Col size={1}>
-                <TimeSum timers={group.timers}></TimeSum>
-              </Col>
-              <Col size={3}>
-                <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={newTimerName} onChange={(e, t) => onTextboxChangeNewTimerName(e)}/>
-                  <Col size={.1}></Col>
-              </Col>
-              <Col size={.5}>
-                <Button style={{display: 'inline'}} disabled={group.timers.length >= 7 || props.timerStart} onClick={addItem}>Add</Button>
-              </Col>
-            </Row>
-              <Divider></Divider>
-              {showDetails === true ? 
-              <div>
-                <Box boxContents={props.group.box} group={props.group}></Box>
+                      <Col size={.5}>
+                        <TimerInput colors={props.colors} timers={group.timers} t={t} type="text" value={t.name} onChange={(e) => onTextboxChangeTimerName(e, t)}/>
+                      </Col>
+                      <TimerMinsDisplay><div fontSize={12}>{t.length / 60}</div></TimerMinsDisplay>
+                      <Col size={.01}></Col>
+                      <Col size={.5}>
+                        
+                      <SliderBox>
+                        <Slider
+                        axis="x"
+                        xmax = {30}
+                        x={t.length / 60}
+                        onChange={({ x }) =>  editTimerLength(x, t)}
+                        styles={{
+                          active: {backgroundColor: props.colors[group.timers.indexOf(t)]}
+                        }}
+                        />
+                      </SliderBox>
+                      </Col>
+                    </Row>
+                  )
+                })}
                 <Divider></Divider>
-              </div> : null}
-              <Row style={{display: 'flex'}}>
-              <Col size={2}>
-              </Col>
-              </Row>
-        </EditBox>
-                  ) :
-                    <div></div>
-                  }
-                  {startIsOpen ? (
-                    <div>
-                      <Start colors={props.colors} timerStart={true} boxContents={group.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={group}></Start>
-                    </div>
-                    ) : <div></div>}
-                </Group>
+                <Row>
+                  <Col size={1}>
+                    <TimeSum timers={group.timers}></TimeSum>
+                  </Col>
+                  <Col size={3}>
+                    <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={newTimerName} onChange={(e, t) => onTextboxChangeNewTimerName(e)}/>
+                      <Col size={.1}></Col>
+                  </Col>
+                  <Col size={.5}>
+                    <Button style={{display: 'inline'}} disabled={group.timers.length >= 7 || props.timerStart} onClick={addItem}>Add</Button>
+                  </Col>
+                </Row>
+                  <Divider></Divider>
+
+                  {showDetails === true ? 
+                  <div>
+                    <Box boxContents={props.group.box} group={props.group}></Box>
+                    <Divider></Divider>
+                  </div> : null}
+                  <Row style={{display: 'flex'}}>
+                  <Col size={2}></Col>
+                  </Row>
+              </EditBox> )
+              : <div></div> }
+
+              {startIsOpen ? (
+                <div>
+                  <Start colors={props.colors} timerStart={true} boxContents={group.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={group}></Start>
+                </div>
+                ) : <div></div>}
+            </Group>
           </Col>
           <Col size={1.5}></Col>
           </Row>

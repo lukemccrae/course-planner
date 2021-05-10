@@ -26,10 +26,10 @@ function Completionist(props) {
   const [logging, setLogging] = useState(false);
 
   function next() {
+    const token = JSON.parse(localStorage.the_main_app).token;
     setLogging(true);
     props.getTimers(token);
-        props.nextTimer();
-    const token = JSON.parse(localStorage.the_main_app).token;
+    props.nextTimer();
     if(token !== undefined) {
       logStats(token)
     }
@@ -39,8 +39,7 @@ function Completionist(props) {
     fetch(`https://banana-crumble-42815.herokuapp.com/log`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         name: props.group.name,

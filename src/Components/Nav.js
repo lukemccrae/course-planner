@@ -27,7 +27,6 @@ const customStyles = {
 };
 
 function Nav(props) {
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
@@ -61,34 +60,26 @@ function Nav(props) {
         //all day stats are in week
         return sortedLog.weekStats.map(function(l) { return l.name; }).indexOf(entry); 
     };
-    
-    function Stat(name, length, key, date) {
-      name = name;
-      length = length;
-      key = key;
-      date = date;
-  }
+
+  let oneDayAgo = 86400000;
 
     for (let i = 0; i < props.log.length; i++) {
 
       //if its not there,
       if(findLog(props.log[i].name) === -1) {
-          
-          //push a new stat entry
-          let stat1 = new Stat(props.log[i].name, props.log[i].length, i, props.log[i].date)
 
           //if the activity was done in the past 24 hours, push it into dayStat array
-          if(Date.now() - props.log[i].date <= 86400000) {
-            sortedLog.dayStats.push(stat1)
+          if(Date.now() - props.log[i].date <= oneDayAgo) {
+            sortedLog.dayStats.push(props.log[i])
           }
           
           //push it into weekStat array regardless
-          sortedLog.weekStats.push(stat1);
+          sortedLog.weekStats.push(props.log[i]);
       } else {
           //increment hash map log value
           sortedLog.weekStats[findLog(props.log[i].name)].length += props.log[i].length
 
-          if(Date.now() - props.log[i].date <= 86400000) {
+          if(Date.now() - props.log[i].date <= oneDayAgo) {
               sortedLog.dayStats[findLog(props.log[i].name)].length += props.log[i].length 
           }
       }
