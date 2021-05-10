@@ -28,7 +28,7 @@ class Logout extends Component {
   render() {
     return ( 
     <div>
-      {getFromStorage("the_main_app") ? <div onClick={this.onLogout}>Logout</div> : <div onClick={this.props.openLoginModal}>Login</div>}
+      
     </div> )
   }
 

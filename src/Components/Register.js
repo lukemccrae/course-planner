@@ -1,119 +1,116 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-class Register extends Component {
-  constructor(props) {
-    super(props)
+function Register(props) {
+  console.log(props)
+  // constructor(props) {
+  //   super(props)
 
-    this.state = {
-      signInError: '',
-      signInEmail: '',
-      signInPassword: '',
-      signUpFirstName: '',
-      signUpLastName: '',
-      signUpEmail: '',
-      signUpPassword: '',
-    }
-    this.onSignUp = this.onSignUp.bind(this)
-    this.onTextboxChangeSignUpEmail = this.onTextboxChangeSignUpEmail.bind(this)
-    this.onTextboxChangeSignUpPassword = this.onTextboxChangeSignUpPassword.bind(this)
-    this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this)
-    this.onTextboxChangeSignUpLastName = this.onTextboxChangeSignUpLastName.bind(this)
+  //   state = {
+  //     signInError: '',
+  //     signInEmail: '',
+  //     signInPassword: '',
+  //     signUpFirstName: '',
+  //     signUpLastName: '',
+  //     signUpEmail: '',
+  //     signUpPassword: '',
+  //   }
+  //   onSignUp = onSignUp.bind(this)
+  //   onTextboxChangeSignUpEmail = onTextboxChangeSignUpEmail.bind(this)
+  //   onTextboxChangeSignUpPassword = onTextboxChangeSignUpPassword.bind(this)
+  //   onTextboxChangeSignUpFirstName = onTextboxChangeSignUpFirstName.bind(this)
+  //   onTextboxChangeSignUpLastName = onTextboxChangeSignUpLastName.bind(this)
+  // }
+
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+  const [signUpFirstName, setSignUpFirstName] = useState('');
+  const [signUpLastName, setSignUpLastName] = useState('');
+
+  function onTextboxChangeSignUpEmail(event) {
+    setSignUpEmail(event.target.value);
   }
 
-  onTextboxChangeSignUpEmail(event) {
-    this.setState({signUpEmail: event.target.value})
+  function onTextboxChangeSignUpPassword(event) {
+    setSignUpPassword(event.target.value);
   }
 
-  onTextboxChangeSignUpPassword(event) {
-    this.setState({signUpPassword: event.target.value})
+  function onTextboxChangeSignUpFirstName(event) {
+    setSignUpFirstName(event.target.value);
   }
 
-  onTextboxChangeSignUpFirstName(event) {
-    this.setState({signUpFirstName: event.target.value})
-  }
-
-  onTextboxChangeSignUpLastName(event) {
-    this.setState({signUpLastName: event.target.value})
-  }
-
-  onSignUp() {
+  function onSignUp() {
     fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        firstName: this.state.signUpFirstName,
-        lastName: this.state.signUpLastName,
-        email: this.state.signUpEmail,
-        password: this.state.signUpPassword
+        firstName: signUpFirstName,
+        lastName: signUpLastName,
+        email: signUpEmail,
+        password: signUpPassword
       })
     })
       .then(res => res.json())
       .then(json => {
         if(json.success) {
-          console.log(json);
-          this.setState({
-            signUpError: json.message,
-            isLoading: false,
-            signUpEmail: '',
-            signUpPassword: '',
-            signUpFirstName: '',
-            signUpLastName: ''
-          })
-          this.props.setLogin(this.state.signInEmail, this.state.signInPassword)
-          this.props.showRegister();
+          props.setLogin(signUpEmail, signUpPassword)
+
+          setSignUpEmail('');
+          setSignUpPassword('');
+          setSignUpFirstName('');
+
+          // props.showRegister();
         } else {
+          console.log("error signing up")
           console.log(json);
-          this.setState({
-            signUpError: json.message,
-            isLoading: false
-          })
         }
       });
   }
-  render(props) {
-    return (
-        <div>
-              <Row>
-                <Col>
-                  <Form.Group controlId="firstName">
-                    <Form.Control
-                      placeholder="First name"
-                      value={this.state.signUpFirstName}
-                      onChange={this.onTextboxChangeSignUpFirstName}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={this.state.signUpEmail}
-                onChange={this.onTextboxChangeSignUpEmail}
-              />
-            </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={this.state.signUpPassword}
-                onChange={this.onTextboxChangeSignUpPassword}
-              />
-            </Form.Group>
-            <Button onClick={this.onSignUp} variant="primary" type="submit">
-              Register
-            </Button>
-        </div>
+  return (
+      <div>
+            <Row>
+              <Col>
+                <Form.Group controlId="firstName">
+                  <Form.Control
+                    placeholder="First name"
+                    value={signUpFirstName}
+                    onChange={onTextboxChangeSignUpFirstName}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={signUpEmail}
+              onChange={onTextboxChangeSignUpEmail}
+            />
+          </Form.Group>
 
-    )
-  }
+          <Form.Group controlId="formBasicPassword">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={signUpPassword}
+              onChange={onTextboxChangeSignUpPassword}
+            />
+          </Form.Group>
+          <Button onClick={onSignUp} variant="primary" type="submit">
+            Register
+          </Button>
+      </div>
+
+  )
 }
 
 export default Register;

@@ -1,17 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class TimeSum extends Component {
-  constructor(props) {
-    super(props)
-    
-  
-    this.state = {}
+function TimeSum(props) {
 
-    this.secondsToHms = this.secondsToHms.bind(this);
-    this.totalTime = this.totalTime.bind(this);
-  }
-
-  secondsToHms(d) {
+  function secondsToHms(d) {
     d = Number(d);
     var h = Math.floor(d / 3600);
     var m = Math.floor(d % 3600 / 60);
@@ -23,22 +14,18 @@ class TimeSum extends Component {
     return hDisplay + mDisplay + sDisplay; 
   }
 
-  totalTime() {
+  function totalTime() {
       var result = 0;
-      for (let i = 0; i < this.props.timers.length; i++) {
-          result = result + this.props.timers[i].length      
+      for (let i = 0; i < props.timers.length; i++) {
+          result = result + props.timers[i].length      
       }
       
       return result;
   }
 
-
-
-  render() {
-    return (
-    <div style={{display: 'inline', fontSize: '25px'}}>{this.secondsToHms(this.totalTime())}</div>
-    )
-  }
+  return (
+    <div style={{display: 'inline', fontSize: '25px'}}>{secondsToHms(totalTime())}</div>
+  )
 
 }
 

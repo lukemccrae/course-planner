@@ -1,12 +1,16 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
-import Front from './Components/Front';
 import Dash from './Components/Dash';
+import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
+import Nav from './Components/Nav';
 import ClockLoader from "react-spinners/ClockLoader";
+
+import {useSelector, useDispatch} from 'react-redux';
+import {storeData} from './actions';
 
 const override = css`
   display: flex;
@@ -15,73 +19,90 @@ const override = css`
 `;
 
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function App(props) {
+  const [token, setToken] = useState('');
+  const [timers, setTimers] = useState([]);
+  const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
+  const [log, setLog] = useState([]);
+  const [showRegister, setShowRegister] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [loading, setIsLoading] = useState(true);
+  const [colors, setColors] = useState([
+    "#428A79",
+    "#71AF55",
+    "#F00500",
+    "#E4BE67",
+    "#E47043",
+    "#B63534",
+    "#9598AB",]);
+    
 
-    this.state = {
-      token: '',
-      timers: [],
-      username: '',
-      log: [],
-      showRegister: false,
-      groups: [],
-      colors: [
-        "#428A79",
-        "#71AF55",
-        "#F00500",
-        "#E4BE67",
-        "#E47043",
-        "#B63534",
-        "#9598AB",
-    ],
+    //add object for creating more groups
+    let addGroup = {
+      box: [""],
+      editOpen: false,
+      hash: "newgroup",
+      name: "New Group",
+      timers: [
+        {
+          name: "Task 1",
+          length: 900,
+        },
+        {
+          name: "Task 2",
+          length: 900,
+        },
+        {
+          name: "Task 3",
+          length: 900,
+        }
+      ],
+      user: "current user"
     }
-    this.loggedIn = this.loggedIn.bind(this);
-    this.loggedOut = this.loggedOut.bind(this);
-    this.getTimers = this.getTimers.bind(this);
-    this.editGroup = this.editGroup.bind(this);
-    this.editOff = this.editOff.bind(this);
-    this.timeFormat = this.timeFormat.bind(this);
-    this.resetColors = this.resetColors.bind(this);
-  }
 
-  componentDidMount() {
+  useEffect(() => {
     const obj = getFromStorage('the_main_app');
-    if (obj && obj.token) {
+    if (obj && obj.token && groups.length == 0) {
       //verify token
       fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
         if (json.success) {
-          this.setState({token: obj.token, groups: json.groups, log: json.log, username: json.email, isLoading: false})
+          setToken(obj);
+          json.groups.push(addGroup);
+          if(json.groups.length == 0) {
+            setGroups([addGroup])
+          } else {
+            setGroups(json.groups)
+          }
+          setLog(json.log);
+          setUsername(json.email);
+          setIsLoading(false);
         } else {
-          this.setState({isLoading: false})
+          setIsLoading(false);
         }
       })
     } else {
-      this.setState({
-        isLoading: false
-      })
+      setIsLoading(false);
     }
+  })
+
+  function loggedIn(args) {
+    setToken(args.token);
+    if(args.groups == []) args.groups = addGroup;
+    args.groups.push(addGroup);
+    setGroups(args.groups);
+    setLog(args.log);
+    setUsername(args.user);
+    setUserId(args.id);
   }
 
-  loggedIn(args) {
-    this.setState({
-      token: args.token,
-      username: args.user,
-      timers: args.timers,
-      groups: args.groups,
-      log: args.log,
-      userId: args.id,
-    })
-  }
-
-  loggedOut() {
+  function loggedOut() {
     localStorage.clear();
-    this.setState({
-      token: ''
-    })
+    setToken('');
   }
-  getTimers(token) {
-    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${this.state.token}`, {
+
+  function getTimers(token) {
+    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -89,41 +110,18 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(json => {
-
-      //add object for creating more groups
-      //displays at the end of the groups list in Dash
-      let addGroup = {
-        box: [""],
-        editOpen: false,
-        hash: "newgroup",
-        name: "New Group",
-        timers: [
-          {
-            name: "New Timer",
-            length: 3,
-          }
-        ],
-        user: "current user"
-      }
       json.groups.push(addGroup);
 
       if(json.success) {
-        this.setState({
-          timers: json.timers,
-          groups: json.groups,
-          userName: json.username,
-          log: json.log
-        })
+        setGroups(json.groups)
+        setLog(json.log)
       } else {
-        this.setState({
-          timerError: json.message,
-          isLoading: false
-        })
+        console.log("Error: ", json)
       }
     });
   }
 
-  resetColors() {
+  function resetColors() {
     const colors = [
       "#428A79",
       "#71AF55",
@@ -134,15 +132,13 @@ class App extends Component {
       "#9598AB",
   ]
 
-  this.setState({
-    colors: colors
-  })
+  setColors(colors);
   }
 
   //enable group to be editable
-  editGroup(g) {
-    this.resetColors();
-    let currentGroups = this.state.groups;
+  function editGroup(g) {
+    resetColors();
+    let currentGroups = groups;
     //loop through groups
     for (let i = 0; i < currentGroups.length; i++) {
       //if the passed group matches passed group
@@ -154,26 +150,20 @@ class App extends Component {
         currentGroups[i].editOpen = false;
       }
     }
-
-    this.setState({
-      groups: currentGroups
-    })
+    setGroups(currentGroups);
   }
 
-  editOff() {
-    let currentGroups = this.state.groups;
+  function editOff() {
+    let currentGroups = groups;
     //loop through groups
     for (let i = 0; i < currentGroups.length; i++) {
       //turn off
       currentGroups[i].editOpen = false;
     }
-
-    this.setState({
-      groups: currentGroups
-    })  
+    setGroups(currentGroups);  
   }
 
-  timeFormat(time, str) {
+  function timeFormat(time, str) {
     var minutes = Math.floor(time / 60);
     time -= minutes * 60;
     var seconds = parseInt(time % 60, 10);
@@ -184,25 +174,27 @@ class App extends Component {
 
   }
 
-  render() {
     //if token, return dash, and show spinner
     //
     return (
       <div>
-        {this.state.token ? 
+        {!loading ? 
+        <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
+        : <div></div>
+        }
+        {token ? 
           <Dash
-          resetColors={this.resetColors}
-          colors={this.state.colors}
-          groups={this.state.groups}
-          timers={this.state.timers}
-          username={this.state.username}
-          getTimers={this.getTimers}
-          loggedOut={this.loggedOut}
-          log={this.state.log}
-          userId={this.state.userId}
-          editGroup={this.editGroup}
-          editOff={this.editOff}
-          timeFormat={this.timeFormat}
+          resetColors={resetColors}
+          colors={colors}
+          groups={groups}
+          username={username}
+          getTimers={getTimers}
+          loggedOut={loggedOut}
+          log={log}
+          userId={userId}
+          editGroup={editGroup}
+          editOff={editOff}
+          timeFormat={timeFormat}
         >
         </Dash>
         :
@@ -215,18 +207,24 @@ class App extends Component {
               css={override}
               size={150}
               color={"#007bff"}
-              loading={this.state.loading}
+              loading={loading}
             />
             </Container>
           </div>
-          : 
-          <Front colors={this.state.colors} timeFormat={this.timeFormat} loggedIn={this.loggedIn} onSignIn={this.onSignIn} showRegister={this.showRegister}></Front>
+          :
+          <DashNoLogin 
+            resetColors={resetColors} 
+            colors={colors} 
+            timeFormat={props.timeFormat}
+            getTimers={getTimers}
+            timeFormat={props.timeFormat}
+            resetColors={resetColors}>
+          </DashNoLogin>
          }
         </div>
       }
       </div>
     )
   }
-}
 
 export default App;

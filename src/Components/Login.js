@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import ShowRegister from './showRegister';
+import React, {useState} from 'react';
 import Register from './Register';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -10,47 +9,13 @@ import 'whatwg-fetch';
 const Box = styled.div`
 
 `
+function Login(props) {
+  const [showRegister, setShowRegister] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-class Login extends Component {
-  constructor(props) {
-      super(props)
-    console.log(props)
-    this.state = {
-      signInEmail: '',
-      signInPassword: '',
-      showRegister: false
-    }
 
-    this.signInRef = React.createRef();
-    this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this)
-    this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this)
-    this.onSignIn = this.onSignIn.bind(this)
-    this.closeModal = this.closeModal.bind(this);
-    this.showRegister = this.showRegister.bind(this);
-  }
-  
-
-  onTextboxChangeSignInEmail(event) {
-    this.setState({signInEmail: event.target.value})
-  }
-
-  onTextboxChangeSignInPassword(event) {
-    this.setState({signInPassword: event.target.value})
-  }
-
-  componentDidMount() {
-      this.signInRef.current.focus();
-    
-
-  }
-
-  showRegister() {
-    this.setState({
-      showRegister: !this.state.showRegister
-    })
-  }
-
-  onSignIn(e) {
+  const onSignIn = (e) => {
     //turn this on when pushing
     e.preventDefault();
     fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signin`, {
@@ -59,35 +24,36 @@ class Login extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: this.state.signInEmail,
-        password: this.state.signInPassword
+        email: email,
+        password: password
       })
     })
       .then(res => res.json())
       .then(json => {
         if(json.success) {
-          this.props.loggedIn(json)
+          props.loggedIn(json)
           setInStorage('the_main_app', { token: json.token })
+
+          //close login modal
+          props.closeModal();
         } else {
-          this.setState({
-            signInError: json.message,
-            isLoading: false
-          })
+          console.log(json)
+          alert("Invalid signin")
         }
       });
   }
 
-  closeModal() {
-    this.setState({
-      startModalIsOpen: false,
-    });
+  function setLogin(email, pass) {
+    setEmail(email);
+    setPassword(pass);
+    setShowRegister(false);
   }
 
-  render(props) {
     return (
         <div>
-            {this.state.showRegister ? 
-            <Register showRegister={this.showRegister}></Register>
+            {showRegister ? 
+            <Register setLogin={setLogin} showRegisterr={props.showRegister}></Register>
+
         :
         <Box>
             <Form>
@@ -95,9 +61,8 @@ class Login extends Component {
                 <Form.Control
                     type="email"
                     placeholder="Enter email"
-                    value={this.signInEmail}
-                    onChange={this.onTextboxChangeSignInEmail}
-                    ref={this.signInRef}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
                 </Form.Group>
 
@@ -105,20 +70,21 @@ class Login extends Component {
                 <Form.Control
                     type="password"
                     placeholder="Password"
-                    value={this.signInPassword}
-                    onChange={this.onTextboxChangeSignInPassword}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                 />
                 </Form.Group>
-                <Button onClick={this.onSignIn} type="submit">
+                <Button onClick={onSignIn} type="submit">
                 Sign In
                 </Button>
             </Form>
         </Box>
         }
-        <ShowRegister showRegister={this.showRegister} value={this.state.showRegister ? "Already have an account? Login" : "Need to register?"}></ShowRegister>
-        </div>
+        <a href="#" onClick={() => setShowRegister(!showRegister)}>
+          {showRegister ? "Already have an account? Login" : "Need to register?"}
+        </a>
+      </div>
     )
-  }
 }
 
 export default Login;

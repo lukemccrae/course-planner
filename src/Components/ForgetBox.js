@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 
@@ -20,49 +20,37 @@ const ClearButton = styled.div`
   margin-left:0;
 `
 
+function ForgetBox(props) {
+  const [forgetBox, setBox] = useState("");
+  const [lastUpdated, setLastUpdated] = useState();
+  const [saved, setSaved] = useState(true);
+  const [timer, setTimer] = useState(null);
 
-class ForgetBox extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-        forgetBox: [],
-        lastUpdated: Date.now(),
-        saved: true
-    }
+  useEffect(() => {
+    setBox(props.boxContents[0])
+    setTimer(null);
+  }, []);
 
-    this.updateForgetBox = this.updateForgetBox.bind(this);
-    this.updateBox = this.updateBox.bind(this);
-    this.clearBox = this.clearBox.bind(this);
+  function clearBox() {
+    setBox("");
+    setSaved(false);
+    updateBox(forgetBox);
   }
 
-  UNSAFE_componentWillMount(props) {
-    let contents = this.props.boxContents
-    this.setState({
-      forgetBox: contents
-    })
-  }
-
-  clearBox() {
-    this.updateBox(" ");
-  }
-
-  updateBox(forgetBox) {
+  function updateBox(box) {
     fetch(`https://banana-crumble-42815.herokuapp.com/box`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        group: this.props.group._id,
+        group: props.group._id,
         box: forgetBox
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        this.setState({
-          saved: true,
-          forgetBox: json.box
-        })
+        console.log("saved")
+        setSaved(true)
       } else {
         console.log('failed');
         
@@ -70,37 +58,26 @@ class ForgetBox extends Component {
     });
   }
 
-  updateForgetBox(event) {
-    this.setState({
-        forgetBox: event.target.value,
-        lastUpdated: Date.now(),
-        saved: false
-    });
-
-    //if user hasn't typed anything in 3 seconds, update box  
-    setTimeout(() => {
-      //Date.now() in this function refers to when this function was INITIALLY CALLED
-      //after the timeout length, the Date.now() value is equal to what it was WHEN THE SET TIMEOUT FUNCTION WAS INVOKED
-      //i think thats how it works at least.
-      if(Date.now() - this.state.lastUpdated - 3000 < 50 && Date.now() - this.state.lastUpdated - 3000 > -50) {
-        this.updateBox(this.state.forgetBox)
-      }
-    }, 3000);
+  function updateForgetBox(event) {
+    setBox(event.target.value)
+    clearTimeout(timer);
+    setSaved(false);
+    setTimer(setTimeout(() => {
+      updateBox();
+    }, 1000))
   }
 
-  render(props) {
     return (
       <div>
-        <Box placeholder={"Distracted?\nHave an idea?\nWrite your thoughts here."} value={this.state.forgetBox} onChange={this.updateForgetBox}></Box>
+        <Box placeholder={"Distracted?\nHave an idea?\nWrite your thoughts here."} value={forgetBox} onChange={updateForgetBox}></Box>
         <ButtonWrapper>
           <ClearButton>
-              <Button onClick={() => this.clearBox()}>clear</Button>
+              <Button onClick={() => clearBox()}>clear</Button>
           </ClearButton>
-          {this.state.saved ? <div>saved</div> : <div>not saved</div>}
+          {saved ? <div>saved</div> : <div>not saved</div>}
         </ButtonWrapper>
       </div>
     )
-  }
 }
 
 export default ForgetBox;

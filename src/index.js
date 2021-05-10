@@ -4,7 +4,27 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { createStore } from 'redux';
+import allReducers from './reducers';
+import {Provider} from 'react-redux';
+
+//set up the redux store
+const store = createStore(
+
+    //the composite reducer object being imported above
+    allReducers,
+    
+    //along with this line that connects the dev tools to
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+   );
+
+ReactDOM.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
