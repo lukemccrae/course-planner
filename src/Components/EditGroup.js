@@ -234,6 +234,7 @@ function EditGroup(props) {
                     <Slider
                     axis="x"
                     xmax = {30}
+                    xmin = {1}
                     x={t.length / 60}
                     onChange={({ x }) =>  editTimerLength(x, t)}
                     styles={{

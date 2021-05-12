@@ -48,14 +48,17 @@ function App(props) {
         {
           name: "Task 1",
           length: 900,
+          id: '1'
         },
         {
           name: "Task 2",
           length: 900,
+          id: '2',
         },
         {
           name: "Task 3",
           length: 900,
+          id: '3',
         }
       ],
       user: "current user"
