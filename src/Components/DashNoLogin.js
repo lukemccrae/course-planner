@@ -125,6 +125,7 @@ function DashNoLogin(props) {
   }
 
   function stopTimer() {
+    document.title = `Group Timer`;
     setStart(false);
     setStartedGroup({});
   }
