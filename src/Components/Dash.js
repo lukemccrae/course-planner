@@ -8,6 +8,7 @@ import Box from './ForgetBox.js';
 import Modal from 'react-modal';
 import TimeSum from './TimeSum.js';
 import styled from 'styled-components';
+import {Helmet} from "react-helmet";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -29,6 +30,10 @@ function Dash(props) {
   const [startIsOpen, setStart] = useState(false);
   const [startedGroup, setStartedGroup] = useState({});
 
+  useEffect(() => {
+    document.title = `Group Timer`;
+}, [props.sec]);
+
   function closeModal() {
     props.getTimers();
     setStart(false);
@@ -42,6 +47,7 @@ function Dash(props) {
   }
 
   function stopTimer() {
+    document.title = `Group Timer`;
     setStart(false);
     setStartedGroup({});
   }
@@ -77,6 +83,9 @@ function Dash(props) {
 
     return (
       <div>
+        <Helmet>
+          <title>Group Timer</title>
+        </Helmet>
         {/* <Nav log={props.log} username={props.username} getTimers={props.getTimers} loggedOut={props.loggedOut}></Nav> */}
         <Grid>
             <Row>
@@ -125,8 +134,10 @@ function Dash(props) {
                     }
                     {startIsOpen ? (
                       <div>
-                        <Start colors={props.colors} timerStart={true} boxContents={g.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={g}></Start>
-                        <Box boxContents={g.box} group={g}></Box>
+                        {startedGroup._id == g._id ? (<div>
+                          <Start colors={props.colors} timerStart={true} boxContents={g.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={g}></Start>
+                          <Box boxContents={g.box} group={g}></Box>
+                        </div>) : <div></div>}
                       </div>
                       ) : <div></div>}
                   </Group>

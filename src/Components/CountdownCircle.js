@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Completionist from './Completionist';
+import Title from './Title';
 
 
 const TimeBox = styled.div`
@@ -141,6 +142,7 @@ class CountdownCircle extends Component {
                             {this.props.timerStart ? <TimeBox>
                                 <Name>{this.props.timer.name}</Name>
                                 <Time>{this.props.minutes}:{this.props.seconds}</Time>
+                                <Title name={this.props.timer.name} min={this.props.minutes} sec={this.props.seconds}></Title>
                             </TimeBox> : null}
                             
                         </div>
