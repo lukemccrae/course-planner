@@ -2,7 +2,11 @@ import React, {useState, useEffect} from 'react';
 
 function Title(props) {
     useEffect(() => {
-        document.title = `${props.name} ${props.min}:${props.sec}` || "";
+        if(props.sec - 1 == 0) {
+            document.title = `DONE`;
+        } else {
+            document.title = `${props.name} ${props.min}:${props.sec}` || "";
+        }
     }, [props.sec]);
     return (<div></div>);
 };
