@@ -84,18 +84,23 @@ function DashNoLogin(props) {
   const [group, setGroup] = useState({
     name: "",
     timers: [{
-      name: "Task 1",
-      length: 900,
+      name: "Work",
+      length: 1260,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     },
     {
-      name: "Task 2",
-      length: 900,
+      name: "Break",
+      length: 180,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     },
     {
-      name: "Task 3",
-      length: 900,
+      name: "Work",
+      length: 1260,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+    },
+    {
+      name: "Stretch",
+      length: 300,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     }
 ],
