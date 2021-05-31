@@ -20,9 +20,17 @@ const customStyles = {
   }
 };
 
+const CheckBox = styled.input`
+  display: inline;
+`
 
 const EditBox = styled.div`
 
+`
+
+const CheckBoxBox = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `
 
 const GroupInput = styled.input`
@@ -83,6 +91,7 @@ function EditGroup(props) {
   const [newTimerName, setNewTimerName] = useState("Task 2");
   const [newTimerLength, setNewTimerLength] = useState(15);
   const [showDetails, setShowDetails] = useState(false);
+  const [settings, setSettings] = useState({props})
 
   useEffect(() => {
     if(group.timers.length == 0) {
@@ -216,6 +225,9 @@ function EditGroup(props) {
       <div>
           {props.group.hash === 'newgroup' ? null : <GroupInput type="text" placeholder="Group Name" value={groupName} onChange={onTextboxChangeGroupName}/>}
         <EditBox>
+
+          {showDetails == false ? <div>
+
             {group.timers.map(t => {
               return (
                 <Row key={t.id}>
@@ -234,7 +246,7 @@ function EditGroup(props) {
                     <Slider
                     axis="x"
                     xmax = {30}
-                    xmin = {.05}
+                    xmin = {1}
                     x={t.length / 60}
                     onChange={({ x }) =>  editTimerLength(x, t)}
                     styles={{
@@ -243,11 +255,11 @@ function EditGroup(props) {
                     />
                   </SliderBox>
                   </Col>
-
+                  <Divider></Divider>
                 </Row>
+                
               )
             })}
-            <Divider></Divider>
             <Row>
               <Col size={1}>
                 <TimeSum timers={group.timers}></TimeSum>
@@ -260,9 +272,17 @@ function EditGroup(props) {
                 <Button style={{display: 'inline'}} disabled={group.timers.length >= 7 || props.timerStart} onClick={addItem}>Add</Button>
               </Col>
             </Row>
+          </div> : <div></div>}
+            
               <Divider></Divider>
               {showDetails === true ? 
               <div>
+                <CheckBoxBox>
+                  <div style={{display: "inline"}}><CheckBox type="checkbox" aria-checked=""/> Auto Next</div>
+                  <div style={{display: "inline"}}><CheckBox type="checkbox" aria-checked=""/> Sound</div>
+                  <div style={{display: "inline"}}><CheckBox type="checkbox" aria-checked=""/> Restart</div>
+                </CheckBoxBox>
+
                 <Box boxContents={props.group.box} group={props.group}></Box>
                 <Divider></Divider>
               </div> : null}

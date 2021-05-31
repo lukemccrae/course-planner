@@ -15,7 +15,7 @@ const GreyBox = styled.div`
 `
 
 const options = [
-    // "Day", 
+    "Day", 
     "Week"]
 
 const defaultOption = options[1];
