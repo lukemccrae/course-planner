@@ -91,7 +91,7 @@ function EditGroup(props) {
   const [newTimerName, setNewTimerName] = useState("Task 2");
   const [newTimerLength, setNewTimerLength] = useState(15);
   const [showDetails, setShowDetails] = useState(false);
-  const [settings, setSettings] = useState({props})
+  const [details, setDetails] = useState({})
 
   useEffect(() => {
     if(group.timers.length == 0) {
@@ -99,6 +99,7 @@ function EditGroup(props) {
       setGroupName(props.group.name)
       setNewTimerName('Task 4');
     }
+    setDetails(props.group.details);
   })
 
   function editTimerLength(x, timer) {
@@ -140,7 +141,7 @@ function EditGroup(props) {
   }
 
   function saveNewGroup() {
-    console.log(group)
+    
     const token = JSON.parse(localStorage.the_main_app).token;
       fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
         method: 'POST',
@@ -207,7 +208,8 @@ function EditGroup(props) {
           },
           body: JSON.stringify({
             timers: group.timers,
-            name: groupName
+            name: groupName,
+            details: details
           })
         }).then(res => res.json()).then(json => {
           if (json.success) {
@@ -218,6 +220,12 @@ function EditGroup(props) {
           }
         });
       }
+    }
+
+    function saveDetails(str) {
+      let tempDetails = details;
+      tempDetails[str] = !tempDetails[str];
+      setDetails(tempDetails)
     }
 
 
@@ -278,9 +286,9 @@ function EditGroup(props) {
               {showDetails === true ? 
               <div>
                 <CheckBoxBox>
-                  <div style={{display: "inline"}}><CheckBox type="checkbox" aria-checked=""/> Auto Next</div>
-                  <div style={{display: "inline"}}><CheckBox type="checkbox" aria-checked=""/> Sound</div>
-                  <div style={{display: "inline"}}><CheckBox type="checkbox" aria-checked=""/> Restart</div>
+                  <div onClick={() => {saveDetails("autoNext")}} style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={details.autoNext}/> Auto Next</div>
+                  <div onClick={() => {saveDetails("sound")}}  style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={details.sound}/> Sound</div>
+                  <div onClick={() => {saveDetails("restart")}} style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={details.restart}/> Restart</div>
                 </CheckBoxBox>
 
                 <Box boxContents={props.group.box} group={props.group}></Box>
