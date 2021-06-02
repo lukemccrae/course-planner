@@ -199,7 +199,7 @@ function EditGroup(props) {
 
     function saveGroup() {
       const token = JSON.parse(localStorage.the_main_app).token;
-      if(group.timers.length > 1) {
+      if(group.timers.length > 0) {
         fetch(`https://banana-crumble-42815.herokuapp.com/group?groupId=${props.group._id}`, {
           method: 'PATCH',
           headers: {

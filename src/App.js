@@ -68,7 +68,12 @@ function App(props) {
     const obj = getFromStorage('the_main_app');
     if (obj && obj.token && groups.length == 0) {
       //verify token
-      fetch('https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token).then(res => res.json()).then(json => {
+      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token, {
+        method: 'GET',
+        headers: {
+          'origin': 'https://group-timer.firebaseapp.com/'
+        }
+      }).then(res => res.json()).then(json => {
         if (json.success) {
           setToken(obj);
           json.groups.push(addGroup);
