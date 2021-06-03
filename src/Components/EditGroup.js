@@ -296,7 +296,8 @@ function EditGroup(props) {
                     <Button className="five-px-margin-right" onClick={saveNewGroup}>Save</Button>
                     :
                     <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
-                    <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>
+                    {props.group.hash === 'newgroup' ? null : <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>}
+                    
                 </div>
 
         </EditBox>
