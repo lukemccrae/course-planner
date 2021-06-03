@@ -118,7 +118,7 @@ function Dash(props) {
                         {g.hash === 'newgroup' ? 
                           null
                           :
-                            <Button className="five-px-margin-right" onClick={() => startModal(g)}>&#9658;</Button>
+                            startIsOpen ? <Button className="five-px-margin-right" onClick={() => stopTimer(g)}>&#9632;</Button> : <Button className="five-px-margin-right" onClick={() => startModal(g)}>&#9658;</Button>
                         }
 
                         <EditButton timerOn={startIsOpen}>
