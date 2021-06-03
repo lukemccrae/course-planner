@@ -71,7 +71,10 @@ function App(props) {
       fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
-          'origin': 'https://group-timer.firebaseapp.com/'
+          'Content-Type': 'application/json',
+          'origin': 'https://group-timer.firebaseapp.com/',
+          'Accept': 'application/json'
+
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
@@ -110,7 +113,7 @@ function App(props) {
   }
 
   function getTimers(token) {
-    fetch(`https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
+    fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

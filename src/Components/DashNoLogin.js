@@ -4,9 +4,12 @@ import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
 import Box from './ForgetBox.js';
+import { css } from "@emotion/core";
 import Start from './Start';
 import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
+import Container from 'react-bootstrap/Container';
+import ClockLoader from "react-spinners/ClockLoader";
 
 const customStyles = {
   content : {
@@ -23,6 +26,12 @@ const customStyles = {
 const EditBox = styled.div`
 
 `
+
+const override = css`
+  display: flex;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const Group = styled.div`
   width: 100%;
@@ -80,6 +89,7 @@ function DashNoLogin(props) {
   const [showDetails, setShowDetails] = useState(false);
   const [startIsOpen, setStart] = useState(false);
   const [startedGroup, setStartedGroup] = useState({});
+  const [load, setLoad] = useState(true);
 
   const [group, setGroup] = useState({
     name: "",
@@ -110,12 +120,35 @@ function DashNoLogin(props) {
   });
 
   useEffect(() => {
+    let url = window.location.href.split('/');
+    if(url[url.length - 2] == 'g') {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/g/${url[url.length - 1]}`, {
+        method: 'GET',
+        headers: {
+          'origin': 'https://group-timer.firebaseapp.com/',
+          'Content-Type': 'application/json'
+        },
+      })
+        .then(res => res.json())
+        .then(json => {
+          if(json.success) {
+            if(json.group.length > 0) {
+              console.log(json)
+              setGroup(json.group[0])
+              setLoad(false);
+            } else {
+              setLoad(false);
+            }
+          }
+        });
+    } else {
+      setLoad(false);
+    }
     if(group.timers.length == 0) {
       setGroup(props.group);
       setGroupName(props.group.name)
       setNewTimerName('Task 4');
     }
-    console.log(group)
   }, [])
 
   function closeModal() {
@@ -197,7 +230,21 @@ function DashNoLogin(props) {
 
     return (
       <div>
-      <Grid>
+        {load ? 
+        <div
+        display={load ? "flex" : "none"}
+        className="vertical-center">
+          <Container>
+            <ClockLoader
+            css={override}
+            size={150}
+            color={"#007bff"}
+            loading={load}
+          />
+          </Container>
+        </div>
+        :
+        <Grid>
           <Row>
           <Col size={1.5}></Col>
           <Col size={3}>
@@ -278,6 +325,7 @@ function DashNoLogin(props) {
           <Col size={1.5}></Col>
           </Row>
       </Grid>
+        }
     </div>
     )
 

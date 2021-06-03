@@ -18,9 +18,10 @@ function Login(props) {
   const onSignIn = (e) => {
     //turn this on when pushing
     e.preventDefault();
-    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signin`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/signin`, {
       method: 'POST',
       headers: {
+        'origin': 'https://group-timer.firebaseapp.com/',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -38,7 +39,6 @@ function Login(props) {
           props.closeModal();
         } else {
           console.log(json)
-          alert("Invalid signin")
         }
       });
   }

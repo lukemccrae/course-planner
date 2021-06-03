@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import TimeSum from './TimeSum.js';
+import Details from './Details.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
-import Box from './ForgetBox.js';
 import {getFromStorage} from '../utils/storage';
 import {Row, Col} from './Grid';
 import Slider from 'react-input-slider';
@@ -143,10 +143,11 @@ function EditGroup(props) {
   function saveNewGroup() {
     
     const token = JSON.parse(localStorage.the_main_app).token;
-      fetch(`https://banana-crumble-42815.herokuapp.com/group`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/group`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'origin': 'https://group-timer.firebaseapp.com/'
         },
         body: JSON.stringify({
           name: group.name,
@@ -280,40 +281,19 @@ function EditGroup(props) {
                 <Button style={{display: 'inline'}} disabled={group.timers.length >= 7 || props.timerStart} onClick={addItem}>Add</Button>
               </Col>
             </Row>
-          </div> : <div></div>}
+          </div> : <Details group={group} details={details} saveDetails={saveDetails}></Details>}
             
               <Divider></Divider>
-              {showDetails === true ? 
               <div>
-                <CheckBoxBox>
-                  <div onClick={() => {saveDetails("autoNext")}} style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={details.autoNext}/> Auto Next</div>
-                  <div onClick={() => {saveDetails("sound")}}  style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={details.sound}/> Sound</div>
-                  <div onClick={() => {saveDetails("restart")}} style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={details.restart}/> Restart</div>
-                </CheckBoxBox>
-
-                <Box boxContents={props.group.box} group={props.group}></Box>
-                <Divider></Divider>
-              </div> : null}
-              <Row style={{display: 'flex'}}>
-              <Col size={2}>
-                {/* if no token, show start button. if token, show save/add and delete
-                  this is so that editTimer appears different on signIn and Dash components */}
-                  {getFromStorage('the_main_app') ? (
-                    <div>
-                      {/* dont show button if its add group box */}
-                      {props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
-                        {/* show add group button if its new group box, save button if save box */}
-                      {props.group.hash === 'newgroup' ? 
-                      <Button className="five-px-margin-right" onClick={saveNewGroup}>Save</Button>
-                      :
-                      <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
-                      <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>
-                    </div>
-                  )
-                :
-                <div></div>}
-              </Col>
-              </Row>
+                    {/* dont show button if its add group box */}
+                    {props.group.hash === 'newgroup' ? null : <Button className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
+                    {/* show add group button if its new group box, save button if save box */}
+                    {props.group.hash === 'newgroup' ? 
+                    <Button className="five-px-margin-right" onClick={saveNewGroup}>Save</Button>
+                    :
+                    <Button className="five-px-margin-right" onClick={saveGroup}>Save</Button>}
+                    <Button onClick={() => setShowDetails(!showDetails)}>Details</Button>
+                </div>
 
         </EditBox>
         <Modal

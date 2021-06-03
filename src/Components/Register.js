@@ -46,7 +46,7 @@ function Register(props) {
   }
 
   function onSignUp() {
-    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
+    fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
