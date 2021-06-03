@@ -24,11 +24,20 @@ const Group = styled.div`
   height: 19px;
   display: ${(props) => props.timerOn ? ((props.g._id === props.startedGroup._id) ? 'inline-table' : 'none') : 'inline-table'};
 `
+
+const GroupNameParent = styled.div`
+  display: ${(props) => props.group == props.editingGroup ? 'none' : 'flex'};
+  justify-content: space-between;
+  white-space: nowrap;
+  min-width: 293px;
+` 
+
 Modal.setAppElement('#root')
 
 function Dash(props) {
   const [startIsOpen, setStart] = useState(false);
   const [startedGroup, setStartedGroup] = useState({});
+  const [editingGroup, setEditingGroup] = useState({});
 
   useEffect(() => {
     document.title = `Group Timer`;
@@ -80,6 +89,13 @@ function Dash(props) {
     }
   }
 
+  function toggleEdit(g) {
+    //if passed group is current group, set it to empty object
+    let tempGroup = g == editingGroup ? {} : g;
+    props.editGroup(tempGroup);
+    setEditingGroup(tempGroup);
+  }
+
 
     return (
       <div>
@@ -95,39 +111,36 @@ function Dash(props) {
               {props.groups.map(g => {
                 return (
                   <Group className="group" key={g._id} g={g} timerOn={startIsOpen} startedGroup={startedGroup}>
-                    <div className="groupNameParent">
+                    <GroupNameParent group={g} editingGroup={editingGroup}>
                       <h3>{g.name}</h3>
                       <ButtonWrapper>
                         {/* dont display start button if its new timer box */}
                         {g.hash === 'newgroup' ? 
                           null
                           :
-                          //show either start or
-                          startIsOpen ?
-                            <Button className="five-px-margin-right" onClick={stopTimer}>&#9632;</Button>
-                            :
                             <Button className="five-px-margin-right" onClick={() => startModal(g)}>&#9658;</Button>
                         }
 
-                        {/* downward unicode arrow is smaller than up, so i display the button rotated if edit menu opened */}
                         <EditButton timerOn={startIsOpen}>
                           {g.editOpen ? (
-                            <Button onClick={() => props.editGroup(g)}>&#8963;</Button>
+                            <Button onClick={() => toggleEdit(g, props)}>&#8963;</Button>
                           ) : (
-                            <Button id="dropdown-basic-button" onClick={() => props.editGroup(g)}>&#8963;</Button>
+                            <Button id="dropdown-basic-button" onClick={() => toggleEdit(g)}>&#8963;</Button>
                           )}
                         </EditButton>
 
                       </ButtonWrapper>
-                    </div>
+                    </GroupNameParent>
                     {g.editOpen === true ? (
                         <EditGroup
+                        toggleEdit={toggleEdit}
                         group={g}
                         colors={props.colors}
                         getTimers={props.getTimers}
                         deleteGroup={deleteGroup}
                         timeFormat={props.timeFormat}
-                        timers={g.timers}>
+                        timers={g.timers}
+                        setEditingGroup={setEditingGroup}>
                       </EditGroup>
                     ) :
                       g.hash === 'newgroup' ? <div>Use dropdown to add new Group</div> : (startIsOpen ? null : <TimeSum timers={g.timers}></TimeSum>)

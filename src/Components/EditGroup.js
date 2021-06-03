@@ -141,7 +141,6 @@ function EditGroup(props) {
   }
 
   function saveNewGroup() {
-    
     const token = JSON.parse(localStorage.the_main_app).token;
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/group`, {
         method: 'POST',
@@ -150,7 +149,7 @@ function EditGroup(props) {
           'origin': 'https://group-timer.firebaseapp.com/'
         },
         body: JSON.stringify({
-          name: group.name,
+          name: groupName,
           timers: group.timers,
           token: token,
           hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
@@ -232,7 +231,11 @@ function EditGroup(props) {
 
     return (
       <div>
-          {props.group.hash === 'newgroup' ? null : <GroupInput type="text" placeholder="Group Name" value={groupName} onChange={onTextboxChangeGroupName}/>}
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <GroupInput type="text" placeholder="Group Name" value={groupName} onChange={onTextboxChangeGroupName}/>
+          <Button onClick={() => props.toggleEdit(group)}>&#8963;</Button>
+        </div>
+          
         <EditBox>
 
           {showDetails == false ? <div>

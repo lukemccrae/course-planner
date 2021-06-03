@@ -81,7 +81,7 @@ function App(props) {
           setToken(obj);
           json.groups.push(addGroup);
 
-          //if account has no groups, push the AddGroup in
+          //if account has no groups, p the AddGroup in
           if(json.groups.length == 0) {
             setGroups([addGroup])
           } else {
@@ -89,7 +89,7 @@ function App(props) {
           }
           setLog(json.log);
           setUsername(json.email);
-          setIsLoading();
+          
         } else {
           setIsLoading(false);
         }
@@ -191,7 +191,7 @@ function App(props) {
     //
     return (
       <div>
-        {true ? 
+        {!loading ? 
         <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
