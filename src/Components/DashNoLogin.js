@@ -82,6 +82,7 @@ const Divider = styled.div`
 `
 
 function DashNoLogin(props) {
+  console.log(props)
   const [groupName, setGroupName] = useState("");
   const [timerLengthMins, setTimerLengthMins] = useState(5);
   const [newTimerName, setNewTimerName] = useState("Task 2");
@@ -135,6 +136,7 @@ function DashNoLogin(props) {
             if(json.group.length > 0) {
               console.log(json)
               setGroup(json.group[0])
+              props.setIsLoading(false);
               setLoad(false);
             } else {
               setLoad(false);

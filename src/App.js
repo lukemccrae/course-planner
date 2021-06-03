@@ -80,6 +80,8 @@ function App(props) {
         if (json.success) {
           setToken(obj);
           json.groups.push(addGroup);
+
+          //if account has no groups, push the AddGroup in
           if(json.groups.length == 0) {
             setGroups([addGroup])
           } else {
@@ -87,7 +89,7 @@ function App(props) {
           }
           setLog(json.log);
           setUsername(json.email);
-          setIsLoading(false);
+          setIsLoading();
         } else {
           setIsLoading(false);
         }
@@ -189,7 +191,7 @@ function App(props) {
     //
     return (
       <div>
-        {!loading ? 
+        {true ? 
         <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
@@ -223,7 +225,8 @@ function App(props) {
             </Container>
           </div>
           :
-          <DashNoLogin 
+          <DashNoLogin
+            setIsLoading={setIsLoading} 
             resetColors={resetColors} 
             colors={colors} 
             timeFormat={props.timeFormat}

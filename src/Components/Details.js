@@ -20,6 +20,7 @@ const Divider = styled.div`
 
 const Share = styled.input`
     width: 100%;
+    caret-color: transparent;
 `
 
 
