@@ -115,23 +115,26 @@ function App(props) {
   }
 
   function getTimers(token) {
-    fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => res.json())
-    .then(json => {
-      json.groups.push(addGroup);
+    if(token) {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(json => {
+        json.groups.push(addGroup);
+  
+        if(json.success) {
+          setGroups(json.groups)
+          setLog(json.log)
+        } else {
+          console.log("Error: ", json)
+        }
+      });
+    }
 
-      if(json.success) {
-        setGroups(json.groups)
-        setLog(json.log)
-      } else {
-        console.log("Error: ", json)
-      }
-    });
   }
 
   function resetColors() {

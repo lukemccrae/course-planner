@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import TimeSum from './TimeSum.js';
 import Details from './Details.js';
 import Button from 'react-bootstrap/Button';
@@ -93,13 +93,15 @@ function EditGroup(props) {
   const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState({})
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    //update hook state with passed group
     if(group.timers.length == 0) {
       setGroup(props.group);
       setGroupName(props.group.name)
       setNewTimerName('Task 4');
+      setDetails(props.group.details);
     }
-    setDetails(props.group.details);
+    
   })
 
   function editTimerLength(x, timer) {
@@ -233,13 +235,12 @@ function EditGroup(props) {
       <div>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <GroupInput type="text" placeholder="Group Name" value={groupName} onChange={onTextboxChangeGroupName}/>
-          <Button onClick={() => props.toggleEdit(group)}>&#8963;</Button>
+          <Button  onClick={() => props.toggleEdit(group)}>&#8963;</Button>
         </div>
           
         <EditBox>
 
           {showDetails == false ? <div>
-
             {group.timers.map(t => {
               return (
                 <Row key={t.id}>

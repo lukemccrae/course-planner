@@ -91,11 +91,11 @@ function Dash(props) {
 
   function toggleEdit(g) {
     //if passed group is current group, set it to empty object
+    //this sets editingObject to nothing and closes edit window
     let tempGroup = g == editingGroup ? {} : g;
     props.editGroup(tempGroup);
     setEditingGroup(tempGroup);
   }
-
 
     return (
       <div>
@@ -122,11 +122,7 @@ function Dash(props) {
                         }
 
                         <EditButton timerOn={startIsOpen}>
-                          {g.editOpen ? (
-                            <Button onClick={() => toggleEdit(g, props)}>&#8963;</Button>
-                          ) : (
-                            <Button id="dropdown-basic-button" onClick={() => toggleEdit(g)}>&#8963;</Button>
-                          )}
+                          <Button id="dropdown-basic-button" onClick={() => toggleEdit(g, props)}>&#8963;</Button>
                         </EditButton>
 
                       </ButtonWrapper>

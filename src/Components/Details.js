@@ -30,8 +30,8 @@ function Details(props) {
           <div>
             <CheckBoxBox>
                 <div onClick={() => {props.saveDetails("autoNext")}} style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={props.details.autoNext}/> Auto Next</div>
-                <div onClick={() => {props.saveDetails("sound")}}  style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={props.details.sound}/> Sound</div>
-                <div onClick={() => {props.saveDetails("restart")}} style={{display: "inline"}}><CheckBox type="checkbox" defaultChecked={props.details.restart}/> Restart</div>
+                <div onClick={() => {props.saveDetails("sound")}}  style={{display: "inline"}}><CheckBox disabled  type="checkbox" defaultChecked={props.details.sound}/> Sound</div>
+                <div onClick={() => {props.saveDetails("restart")}} style={{display: "inline"}}><CheckBox disabled type="checkbox" defaultChecked={props.details.restart}/> Restart</div>
             </CheckBoxBox>
             <div style={{margin: "10px 0 0 0"}}>Share this group: </div>
             <Share value={'group-timer.firebaseapp.com/g/' + props.group.hash}></Share>

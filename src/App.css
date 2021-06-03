@@ -43,6 +43,10 @@
   min-width: 293px;
 }
 
+.btn {
+  height: 40.72px;
+}
+
 .displayTime {
   margin: 0;
 }

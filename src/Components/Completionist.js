@@ -28,7 +28,6 @@ function Completionist(props) {
   function next() {
     const token = JSON.parse(localStorage.the_main_app).token;
     setLogging(true);
-    props.getTimers(token);
     props.nextTimer();
     if(token !== undefined) {
       logStats(token)
@@ -62,18 +61,19 @@ function Completionist(props) {
 
     return (
       <div>
-        <CompleteButton currentColor={props.currentColor} currentTimer={props.currentTimer} timers={props.group.timers} disabled={logging} onClick={next}>Next</CompleteButton>
-        {/* <Sound
-          url={soundfile}
-          playStatus={Sound.status.PLAYING}
-          onLoading={this.handleSongLoading}
-          onPlaying={this.handleSongPlaying}
-          onFinishedPlaying={this.handleSongFinishedPlaying}
-          loop={true}
-          ignoreMobileRestrictions={true}
-          volume={30}
-      /> */}
-      </div>
+        {props.group.details.autoNext && !logging ? next() : <CompleteButton currentColor={props.currentColor} currentTimer={props.currentTimer} timers={props.group.timers} disabled={logging} onClick={next}>Next</CompleteButton>}
+      
+      {/* <Sound
+        url={soundfile}
+        playStatus={Sound.status.PLAYING}
+        onLoading={this.handleSongLoading}
+        onPlaying={this.handleSongPlaying}
+        onFinishedPlaying={this.handleSongFinishedPlaying}
+        loop={true}
+        ignoreMobileRestrictions={true}
+        volume={30}
+    /> */}
+    </div>
     )
 
 }
