@@ -21,6 +21,7 @@ const EditButton = styled.div`
 
 const Group = styled.div`
   width: 100%;
+  max-width: 500px;
   height: 19px;
   display: ${(props) => props.timerOn ? ((props.g._id === props.startedGroup._id) ? 'inline-table' : 'none') : 'inline-table'};
 `
