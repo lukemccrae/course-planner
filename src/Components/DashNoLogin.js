@@ -11,18 +11,6 @@ import Slider from 'react-input-slider';
 import Container from 'react-bootstrap/Container';
 import ClockLoader from "react-spinners/ClockLoader";
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-
 const EditBox = styled.div`
 
 `
@@ -83,8 +71,6 @@ const Divider = styled.div`
 
 function DashNoLogin(props) {
   console.log(props)
-  const [groupName, setGroupName] = useState("");
-  const [timerLengthMins, setTimerLengthMins] = useState(5);
   const [newTimerName, setNewTimerName] = useState("Task 2");
   const [newTimerLength, setNewTimerLength] = useState(15);
   const [showDetails, setShowDetails] = useState(false);
@@ -122,7 +108,7 @@ function DashNoLogin(props) {
 
   useEffect(() => {
     let url = window.location.href.split('/');
-    if(url[url.length - 2] == 'g') {
+    if(url[url.length - 2] === 'g') {
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/g/${url[url.length - 1]}`, {
         method: 'GET',
         headers: {
@@ -146,9 +132,8 @@ function DashNoLogin(props) {
     } else {
       setLoad(false);
     }
-    if(group.timers.length == 0) {
+    if(group.timers.length === 0) {
       setGroup(props.group);
-      setGroupName(props.group.name)
       setNewTimerName('Task 4');
     }
   }, [])
@@ -319,7 +304,7 @@ function DashNoLogin(props) {
 
               {startIsOpen ? (
                 <div>
-                  <Start colors={props.colors} timerStart={true} boxContents={group.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={group}></Start>
+                  <Start colors={props.colors} timerStart={true} boxContents={group.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} group={group}></Start>
                 </div>
                 ) : <div></div>}
             </Group>

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Logout from './Logout';
 import Stats from './Stats';
 import Login from './Login';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,12 +6,6 @@ import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
 import {getFromStorage} from '../utils/storage';
-
-// import styled from 'styled-components';
-// const TitleLetter = styled.h4`
-//   display: inline;
-//   color: ${(props) => props.color};
-// `
 
 const customStyles = {
   content : {
@@ -27,11 +20,9 @@ const customStyles = {
 };
 
 function Nav(props) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [statPeriod, setStatPeriod] = useState('Week');
-  const [showRegister, setShowRegister] = useState(false);
   const [sortedLog, setSortedLog] = useState([]);
 
 
@@ -40,13 +31,8 @@ function Nav(props) {
   }
 
   function closeModal() {
-    setModalIsOpen(false);
     setStatsModalIsOpen(false);
     setLoginModalIsOpen(false);
-  }
-
-  function openModal() {
-    setModalIsOpen(true);
   }
 
   function openStatsModal() {
@@ -118,44 +104,26 @@ function Nav(props) {
           <Container>
             <div>{props.username}</div>
             <h4>Group Timer</h4>
-
-            {/* //colorful title? */}
-            {/* <div>
-              <TitleLetter color={"#428A79"}>G</TitleLetter>
-              <TitleLetter color={"#71AF55"}>r</TitleLetter>
-              <TitleLetter color={"#F00500"}>o</TitleLetter>
-              <TitleLetter color={"#E47043"}>u</TitleLetter>
-              <TitleLetter color={"#B63534"}>p</TitleLetter>
-              <TitleLetter color={"#428A79"}> T</TitleLetter>
-              <TitleLetter color={"#71AF55"}>i</TitleLetter>
-              <TitleLetter color={"#F00500"}>m</TitleLetter>
-              <TitleLetter color={"#E47043"}>e</TitleLetter>
-              <TitleLetter color={"#B63534"}>r</TitleLetter>
-            </div> */}
-            {/* <Button onClick={props.addModal}>Add Group</Button> */}
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={openStatsModal}>Stats</NavDropdown.Item>
               <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
               <NavDropdown.Divider/>
               <NavDropdown.Item>
               {getFromStorage("the_main_app") ? <div onClick={onLogout}>Logout</div> : <div onClick={openLoginModal}>Login</div>}
-                {/* <Logout openLoginModal={openLoginModal} loggedOut={props.loggedOut} token={props.token}></Logout> */}
               </NavDropdown.Item>
             </NavDropdown>
           </Container>
         </Navbar>
         <Modal
           isOpen={loginModalIsOpen}
-          // onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <Login closeModal={closeModal} showRegister={setShowRegister} loggedIn={props.loggedIn}></Login>
+          <Login closeModal={closeModal} loggedIn={props.loggedIn}></Login>
         </Modal>
         <Modal
           isOpen={statsModalIsOpen}
-          // onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"

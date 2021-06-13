@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import Nav from './Nav';
 import Start from './Start';
 import EditGroup from './EditGroup.js';
 import {Grid, Row, Col} from './Grid';
@@ -27,7 +26,7 @@ const Group = styled.div`
 `
 
 const GroupNameParent = styled.div`
-  display: ${(props) => props.group == props.editingGroup ? 'none' : 'flex'};
+  display: ${(props) => props.group === props.editingGroup ? 'none' : 'flex'};
   justify-content: space-between;
   white-space: nowrap;
   min-width: 293px;
@@ -93,7 +92,7 @@ function Dash(props) {
   function toggleEdit(g) {
     //if passed group is current group, set it to empty object
     //this sets editingObject to nothing and closes edit window
-    let tempGroup = g == editingGroup ? {} : g;
+    let tempGroup = g === editingGroup ? {} : g;
     props.editGroup(tempGroup);
     setEditingGroup(tempGroup);
   }
@@ -103,7 +102,6 @@ function Dash(props) {
         <Helmet>
           <title>Group Timer</title>
         </Helmet>
-        {/* <Nav log={props.log} username={props.username} getTimers={props.getTimers} loggedOut={props.loggedOut}></Nav> */}
         <Grid>
             <Row>
             {noGroups()}
@@ -144,7 +142,7 @@ function Dash(props) {
                     }
                     {startIsOpen ? (
                       <div>
-                        {startedGroup._id == g._id ? (<div>
+                        {startedGroup._id === g._id ? (<div>
                           <Start colors={props.colors} timerStart={true} boxContents={g.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} timeFormat={props.timeFormat} group={g}></Start>
                           <Box boxContents={g.box} group={g}></Box>
                         </div>) : <div></div>}

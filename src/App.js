@@ -9,9 +9,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from './Components/Nav';
 import ClockLoader from "react-spinners/ClockLoader";
 
-import {useSelector, useDispatch} from 'react-redux';
-import {storeData} from './actions';
-
 const override = css`
   display: flex;
   margin: 0 auto;
@@ -21,11 +18,9 @@ const override = css`
 
 function App(props) {
   const [token, setToken] = useState('');
-  const [timers, setTimers] = useState([]);
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState('');
   const [log, setLog] = useState([]);
-  const [showRegister, setShowRegister] = useState(false);
   const [groups, setGroups] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [colors, setColors] = useState([
@@ -66,7 +61,7 @@ function App(props) {
 
   useEffect(() => {
     const obj = getFromStorage('the_main_app');
-    if (obj && obj.token && groups.length == 0) {
+    if (obj && obj.token && groups.length === 0) {
       //verify token
       fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token, {
         method: 'GET',
@@ -82,7 +77,7 @@ function App(props) {
           json.groups.push(addGroup);
 
           //if account has no groups, p the AddGroup in
-          if(json.groups.length == 0) {
+          if(json.groups.length === 0) {
             setGroups([addGroup])
           } else {
             setGroups(json.groups)
@@ -101,7 +96,7 @@ function App(props) {
 
   function loggedIn(args) {
     setToken(args.token);
-    if(args.groups == []) args.groups = addGroup;
+    if(args.groups === []) args.groups = addGroup;
     args.groups.push(addGroup);
     setGroups(args.groups);
     setLog(args.log);
@@ -232,10 +227,8 @@ function App(props) {
             setIsLoading={setIsLoading} 
             resetColors={resetColors} 
             colors={colors} 
-            timeFormat={props.timeFormat}
             getTimers={getTimers}
-            timeFormat={props.timeFormat}
-            resetColors={resetColors}>
+          >
           </DashNoLogin>
          }
         </div>

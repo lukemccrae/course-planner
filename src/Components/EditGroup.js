@@ -4,7 +4,6 @@ import Details from './Details.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
-import {getFromStorage} from '../utils/storage';
 import {Row, Col} from './Grid';
 import Slider from 'react-input-slider';
 import Modal from 'react-modal';
@@ -20,17 +19,8 @@ const customStyles = {
   }
 };
 
-const CheckBox = styled.input`
-  display: inline;
-`
-
 const EditBox = styled.div`
 
-`
-
-const CheckBoxBox = styled.div`
-  display: flex;
-  justify-content: space-evenly;
 `
 
 const GroupInput = styled.input`
@@ -87,7 +77,6 @@ function EditGroup(props) {
 
   const [group, setGroup] = useState({timers: []});
   const [groupName, setGroupName] = useState("");
-  const [timerLengthMins, setTimerLengthMins] = useState(5);
   const [newTimerName, setNewTimerName] = useState("Task 2");
   const [newTimerLength, setNewTimerLength] = useState(15);
   const [showDetails, setShowDetails] = useState(false);
@@ -95,7 +84,7 @@ function EditGroup(props) {
 
   useLayoutEffect(() => {
     //update hook state with passed group
-    if(group.timers.length == 0) {
+    if(group.timers.length === 0) {
       setGroup(props.group);
       setGroupName(props.group.name)
       setNewTimerName('Task 4');
@@ -240,7 +229,7 @@ function EditGroup(props) {
           
         <EditBox>
 
-          {showDetails == false ? <div>
+          {showDetails === false ? <div>
             {group.timers.map(t => {
               return (
                 <Row key={t.id}>

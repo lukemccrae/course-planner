@@ -5,33 +5,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 function Register(props) {
-  console.log(props)
-  // constructor(props) {
-  //   super(props)
-
-  //   state = {
-  //     signInError: '',
-  //     signInEmail: '',
-  //     signInPassword: '',
-  //     signUpFirstName: '',
-  //     signUpLastName: '',
-  //     signUpEmail: '',
-  //     signUpPassword: '',
-  //   }
-  //   onSignUp = onSignUp.bind(this)
-  //   onTextboxChangeSignUpEmail = onTextboxChangeSignUpEmail.bind(this)
-  //   onTextboxChangeSignUpPassword = onTextboxChangeSignUpPassword.bind(this)
-  //   onTextboxChangeSignUpFirstName = onTextboxChangeSignUpFirstName.bind(this)
-  //   onTextboxChangeSignUpLastName = onTextboxChangeSignUpLastName.bind(this)
-  // }
-
-  const [signInEmail, setSignInEmail] = useState('');
-  const [signInPassword, setSignInPassword] = useState('');
-
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
   const [signUpFirstName, setSignUpFirstName] = useState('');
-  const [signUpLastName, setSignUpLastName] = useState('');
 
   function onTextboxChangeSignUpEmail(event) {
     setSignUpEmail(event.target.value);
@@ -53,7 +29,7 @@ function Register(props) {
       },
       body: JSON.stringify({
         firstName: signUpFirstName,
-        lastName: signUpLastName,
+        lastName: 'lastname',
         email: signUpEmail,
         password: signUpPassword
       })
@@ -67,7 +43,6 @@ function Register(props) {
           setSignUpPassword('');
           setSignUpFirstName('');
 
-          // props.showRegister();
         } else {
           console.log("error signing up")
           console.log(json);

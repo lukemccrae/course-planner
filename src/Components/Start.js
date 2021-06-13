@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Countdown from 'react-countdown-now';
 import Completionist from './Completionist';
 import CountdownCircle from './CountdownCircle';
@@ -15,12 +15,7 @@ const CountdownBox = styled.div`
 `
 
 function Start(props) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentTimerIndex, setCurrentTimerIndex] = useState(0);
-  const [percentDone, setPercentDone] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const [forgetBox, setForgetBox] = useState([]);
   const [colors, setColors] = useState([
     "#428A79",
     "#71AF55",
@@ -30,19 +25,10 @@ function Start(props) {
     "#B63534",
     "#9598AB",]);
 
-
-  function openModal() {
-    setModalIsOpen(true);
-  }
-
   function closeModal() {
     props.getTimers();
     props.closeModal();
     setCurrentTimerIndex(0);
-  }
-
-  function start() {
-    openModal()
   }
 
   function routineEnded() {

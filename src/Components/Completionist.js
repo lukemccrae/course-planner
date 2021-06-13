@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import soundfile from '../Ding.mp3';
+// import soundfile from '../Ding.mp3';
 import styled from 'styled-components';
-import Sound from 'react-sound';
+// import Sound from 'react-sound';
 
 const CompleteButton = styled.button`
   width: ${(props) => 145 - props.timers.indexOf(props.currentTimer) * 10 + "px"};
@@ -13,6 +13,7 @@ const CompleteButton = styled.button`
   color: black;
   padding: 0;
   border: none;
+  disabled: ${(props) => props.logging};
   &:focus {
     outline: 0;
     background-color: #D3D3D3;
@@ -26,8 +27,9 @@ function Completionist(props) {
   const [logging, setLogging] = useState(false);
 
   function next() {
-    const token = JSON.parse(localStorage.the_main_app).token;
     setLogging(true);
+
+    const token = JSON.parse(localStorage.the_main_app).token;
     props.nextTimer();
     if(token !== undefined) {
       logStats(token)
@@ -50,6 +52,7 @@ function Completionist(props) {
         userId: props.userId
       })
     }).then(res => res.json()).then(json => {
+      
       setLogging(false)
       if (json.success) {
       } else {

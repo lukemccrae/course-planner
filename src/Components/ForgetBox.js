@@ -22,7 +22,6 @@ const ClearButton = styled.div`
 
 function ForgetBox(props) {
   const [forgetBox, setBox] = useState("");
-  const [lastUpdated, setLastUpdated] = useState();
   const [saved, setSaved] = useState(true);
   const [timer, setTimer] = useState(null);
 
@@ -38,7 +37,7 @@ function ForgetBox(props) {
   }
 
   function updateBox(box) {
-    fetch(`https://banana-crumble-42815.herokuapp.com/box`, {
+    fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/box`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

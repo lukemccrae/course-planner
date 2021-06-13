@@ -52,7 +52,7 @@ function Login(props) {
     return (
         <div>
             {showRegister ? 
-            <Register setLogin={setLogin} showRegisterr={props.showRegister}></Register>
+            <Register setLogin={setLogin}></Register>
 
         :
         <Box>

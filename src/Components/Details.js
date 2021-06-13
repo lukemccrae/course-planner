@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Box from './ForgetBox.js';
 import {Row, Col} from './Grid';
-import Button from 'react-bootstrap/Button';
 
 const CheckBox = styled.input`
   display: inline;
