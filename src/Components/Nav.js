@@ -103,7 +103,7 @@ function Nav(props) {
         <Navbar bg="light">
           <Container>
             <div>{props.username}</div>
-            <h4>Group Timer</h4>
+            <h4>Course Planner</h4>
             <NavDropdown title="More" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={openStatsModal}>Stats</NavDropdown.Item>
               <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
