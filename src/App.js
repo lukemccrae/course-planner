@@ -7,7 +7,7 @@ import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
 import Nav from './Components/Nav';
-import ClockLoader from "react-spinners/ClockLoader";
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
 const override = css`
   display: flex;
@@ -21,7 +21,7 @@ function App(props) {
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState('');
   const [log, setLog] = useState([]);
-  const [groups, setGroups] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [colors, setColors] = useState([
     "#428A79",
@@ -34,36 +34,53 @@ function App(props) {
     
 
     //add object for creating more groups
-    let addGroup = {
+    let addCourse = {
       box: [""],
+      details: {
+        calories: 2000,
+        pace: 10
+      },
+      route: {
+        geoJSON: {
+          properties: {
+            name: "no route stored"
+          }
+        },
+        vert: 1,
+        distance: 1
+      },
       editOpen: false,
-      hash: "newgroup",
-      name: "New Group",
-      timers: [
+      hash: "newcourse",
+      name: "New Course",
+      stops: [
         {
-          name: "Task 1",
-          length: 900,
-          id: '1'
+          name: "Stop 1",
+          cals: 400,
+          miles: 8,
+          id: 1
         },
         {
-          name: "Task 2",
-          length: 900,
-          id: '2',
+          name: "Stop 2",
+          cals: 400,
+          miles: 12,
+          id: 2
         },
         {
-          name: "Task 3",
-          length: 900,
-          id: '3',
+          name: "Stop 3",
+          cals: 700,
+          miles: 16,
+          id: 3
         }
       ],
       user: "current user"
     }
 
   useEffect(() => {
-    const obj = getFromStorage('the_main_app');
-    if (obj && obj.token && groups.length === 0) {
+    const obj = getFromStorage('course_planner');
+    if (obj && obj.token && courses.length === 0) {
       //verify token
-      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/verify?token=' + obj.token, {
+      // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
+        fetch('http://localhost:3000/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -73,14 +90,15 @@ function App(props) {
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
+          console.log(json)
           setToken(obj);
-          json.groups.push(addGroup);
+          json.courses.push(addCourse);
 
-          //if account has no groups, p the AddGroup in
-          if(json.groups.length === 0) {
-            setGroups([addGroup])
+          //if account has no courses, p the AddGroup in
+          if(json.courses.length === 0) {
+            setCourses([addCourse])
           } else {
-            setGroups(json.groups)
+            setCourses(json.courses)
           }
           setLog(json.log);
           setUsername(json.email);
@@ -96,10 +114,8 @@ function App(props) {
 
   function loggedIn(args) {
     setToken(args.token);
-    if(args.groups === []) args.groups = addGroup;
-    args.groups.push(addGroup);
-    setGroups(args.groups);
-    setLog(args.log);
+    if(args.course === []) args.courses = addCourse;
+    setCourses(args.courses);
     setUsername(args.user);
     setUserId(args.id);
   }
@@ -109,9 +125,10 @@ function App(props) {
     setToken('');
   }
 
-  function getTimers(token) {
+  function getCourses(token) {
     if(token) {
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/timer?token=${token}`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}`, {
+        fetch(`http://localhost:3000/course?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -119,10 +136,10 @@ function App(props) {
       })
       .then(res => res.json())
       .then(json => {
-        json.groups.push(addGroup);
+        json.courses.push(addCourse);
   
         if(json.success) {
-          setGroups(json.groups)
+          setCourses(json.courses)
           setLog(json.log)
         } else {
           console.log("Error: ", json)
@@ -147,42 +164,45 @@ function App(props) {
   }
 
   //enable group to be editable
-  function editGroup(g) {
+  function editCourse(c) {
     resetColors();
-    let currentGroups = groups;
-    //loop through groups
-    for (let i = 0; i < currentGroups.length; i++) {
-      //if the passed group matches passed group
-      if(g.hash === currentGroups[i].hash) {
+    let currentCourses = courses;
+    //loop through courses
+    for (let i = 0; i < currentCourses.length; i++) {
+      //if the passed course matches passed group
+      if(c.hash === currentCourses[i].hash) {
         //toggle the editOpen boolean value
-        currentGroups[i].editOpen = !currentGroups[i].editOpen;
+        currentCourses[i].editOpen = !currentCourses[i].editOpen;
       } else {
         //otherwise make it false
-        currentGroups[i].editOpen = false;
+        currentCourses[i].editOpen = false;
       }
     }
-    setGroups(currentGroups);
+    setCourses(currentCourses);
+  }
+
+  function removeRoute(c) {
+    let currentCourses = courses;
+    //loop through courses
+    for (let i = 0; i < currentCourses.length; i++) {
+      //if the passed course matches passed course
+      if(c.hash === currentCourses[i].hash) {
+        //change its route to empty route
+        currentCourses[i].route.geoJSON = { properties: {name: "no route stored"} }
+      }
+    }
+    setCourses(currentCourses);
+    console.log(currentCourses)
   }
 
   function editOff() {
-    let currentGroups = groups;
+    let currentCourses = courses;
     //loop through groups
-    for (let i = 0; i < currentGroups.length; i++) {
+    for (let i = 0; i < currentCourses.length; i++) {
       //turn off
-      currentGroups[i].editOpen = false;
+      currentCourses[i].editOpen = false;
     }
-    setGroups(currentGroups);  
-  }
-
-  function timeFormat(time, str) {
-    var minutes = Math.floor(time / 60);
-    time -= minutes * 60;
-    var seconds = parseInt(time % 60, 10);
-
-    if(str === 'str') return (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-    if(str === 'num') return [minutes, seconds];
-    return null;
-
+    setCourses(currentCourses);  
   }
 
     //if token, return dash, and show spinner
@@ -190,33 +210,33 @@ function App(props) {
     return (
       <div>
         {!loading ? 
-        <Nav token={getFromStorage("the_main_app")} loggedIn={loggedIn} log={log} username={username} getTimers={props.getTimers} loggedOut={loggedOut}></Nav>
+        <Nav token={getFromStorage("course_planner")} loggedIn={loggedIn} log={log} username={username} getCourses={props.getCourses} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
         {token ? 
           <Dash
           resetColors={resetColors}
+          removeRoute={removeRoute}
           colors={colors}
-          groups={groups}
+          courses={courses}
           username={username}
-          getTimers={getTimers}
+          getCourses={getCourses}
           loggedOut={loggedOut}
           log={log}
           userId={userId}
-          editGroup={editGroup}
+          editCourse={editCourse}
           editOff={editOff}
-          timeFormat={timeFormat}
         >
         </Dash>
         :
         <div>
-          {getFromStorage('the_main_app') ? 
+          {getFromStorage('course_planner') ? 
           <div
           className="vertical-center">
             <Container>
-              <ClockLoader
+              <ClimbingBoxLoader
               css={override}
-              size={150}
+              size={15}
               color={"#007bff"}
               loading={loading}
             />
@@ -227,7 +247,7 @@ function App(props) {
             setIsLoading={setIsLoading} 
             resetColors={resetColors} 
             colors={colors} 
-            getTimers={getTimers}
+            getCourses={getCourses}
           >
           </DashNoLogin>
          }

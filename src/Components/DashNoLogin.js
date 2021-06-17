@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import TimeSum from './TimeSum.js';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
 import Box from './ForgetBox.js';
 import { css } from "@emotion/core";
-import Start from './Start';
 import {Grid, Row, Col} from './Grid';
 import Slider from 'react-input-slider';
 import Container from 'react-bootstrap/Container';
-import ClockLoader from "react-spinners/ClockLoader";
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
 const EditBox = styled.div`
 
@@ -70,7 +68,6 @@ const Divider = styled.div`
 `
 
 function DashNoLogin(props) {
-  console.log(props)
   const [newTimerName, setNewTimerName] = useState("Task 2");
   const [newTimerLength, setNewTimerLength] = useState(15);
   const [showDetails, setShowDetails] = useState(false);
@@ -109,7 +106,7 @@ function DashNoLogin(props) {
   useEffect(() => {
     let url = window.location.href.split('/');
     if(url[url.length - 2] === 'g') {
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/g/${url[url.length - 1]}`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/g/${url[url.length - 1]}`, {
         method: 'GET',
         headers: {
           'origin': 'https://group-timer.firebaseapp.com/',
@@ -222,7 +219,7 @@ function DashNoLogin(props) {
         display={load ? "flex" : "none"}
         className="vertical-center">
           <Container>
-            <ClockLoader
+            <ClimbingBoxLoader
             css={override}
             size={150}
             color={"#007bff"}
@@ -279,7 +276,6 @@ function DashNoLogin(props) {
                 <Divider></Divider>
                 <Row>
                   <Col size={1}>
-                    <TimeSum timers={group.timers}></TimeSum>
                   </Col>
                   <Col size={3}>
                     <TimerInputNew style={{margin: '5px 0 0 0'}} type="text" placeholder={'name'} value={newTimerName} onChange={(e, t) => onTextboxChangeNewTimerName(e)}/>
@@ -304,7 +300,6 @@ function DashNoLogin(props) {
 
               {startIsOpen ? (
                 <div>
-                  <Start colors={props.colors} timerStart={true} boxContents={group.box} userId={props.userId} getTimers={props.getTimers} closeModal={closeModal} group={group}></Start>
                 </div>
                 ) : <div></div>}
             </Group>

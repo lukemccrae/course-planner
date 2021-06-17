@@ -4,7 +4,7 @@ export function addTimer() {
       timerLength
     } = this.state;
 
-    const token = JSON.parse(localStorage.the_main_app).token;
+    const token = JSON.parse(localStorage.course_planner).token;
 
     this.setState({
       isLoading: true,

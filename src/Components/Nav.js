@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Stats from './Stats';
 import Login from './Login';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
@@ -105,11 +104,10 @@ function Nav(props) {
             <div>{props.username}</div>
             <h4>Course Planner</h4>
             <NavDropdown title="More" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={openStatsModal}>Stats</NavDropdown.Item>
-              <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/routine-timer">Github</NavDropdown.Item>
+              <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/course-planner">Github</NavDropdown.Item>
               <NavDropdown.Divider/>
               <NavDropdown.Item>
-              {getFromStorage("the_main_app") ? <div onClick={onLogout}>Logout</div> : <div onClick={openLoginModal}>Login</div>}
+              {getFromStorage("course_planner") ? <div onClick={onLogout}>Logout</div> : <div onClick={openLoginModal}>Login</div>}
               </NavDropdown.Item>
             </NavDropdown>
           </Container>
@@ -128,7 +126,6 @@ function Nav(props) {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <Stats token={getFromStorage("the_main_app")} statPeriod={statPeriod} changePeriod={changePeriod} log={sortedLog}></Stats>
         </Modal>
       </div>
     )

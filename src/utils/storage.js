@@ -20,7 +20,7 @@ export function logout(hey) {
   this.setState({
     isLoading: true
   })
-  const obj = getFromStorage('the_main_app');
+  const obj = getFromStorage('course_planner');
   if(obj && obj.token) {
     //verify token
     fetch('/api/account/logout?token=' + obj.token)
