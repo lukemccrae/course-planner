@@ -1,5 +1,6 @@
 import React, {useState, useLayoutEffect} from 'react';
 import Route from './Route';
+import Profile from './Profile';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
@@ -19,7 +20,6 @@ const customStyles = {
 };
 
 const EditBox = styled.div`
-
 `
 
 const CourseInput = styled.input`
@@ -282,7 +282,6 @@ function EditCourse(props) {
       }
     }
 
-
     return (
       <div>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -293,13 +292,15 @@ function EditCourse(props) {
           {props.course.route.geoJSON.properties.name === "no route stored" ? (
             props.course.hash === 'newcourse' ? null : <Route updateRoute={updateRoute}></Route>
           ) : 
-          <Row>
+          <Row style={{display: "inline"}}>
+            <Profile route={props.course.route.geoJSON}></Profile>
             <button onClick={()=>{props.removeRoute(course)}} type="button" className="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <Col size={.5}>
-              <div style={{margin: "0 0 0 5px"}}>{props.course.route.geoJSON.properties.name}</div>
-            </Col>
+            <div style={{margin: "0 0 0 5px"}}>{props.course.route.geoJSON.properties.name}</div>
+            <div style={{margin: "0 0 0 5px"}}>{Math.round(props.course.route.geoJSON.properties.distance * 100 + Number.EPSILON ) / 100} miles</div>
+            <div style={{margin: "0 0 0 5px"}}>{props.course.route.geoJSON.properties.vert} ft. gain</div>
+            <div style={{margin: "0 0 0 5px"}}>{} gain per mile</div>
           </Row>}
             {course.stops.map(s => {
               return (

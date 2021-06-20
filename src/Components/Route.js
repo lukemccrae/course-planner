@@ -14,7 +14,8 @@ function Route(props) {
   const [selected, setIsSelected] = useState(false);
 
   function gpxToJson(gpx) {
-    fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+    // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        fetch('http://localhost:3000/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -23,6 +24,7 @@ function Route(props) {
       })
       .then((response) => response.json())
       .then((data) => {
+          console.log(data)
           //pass parsed geoJSON up to parent as JS object
           let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])
           console.log(parsedJson)

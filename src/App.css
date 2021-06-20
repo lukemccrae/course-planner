@@ -51,6 +51,10 @@
   margin: 0;
 }
 
+.Dropdown-placeholder {
+  content: 'More';
+}
+
 .startNav {
   display: inline;
 }

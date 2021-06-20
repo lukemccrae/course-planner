@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Login from './Login';
 import Navbar from 'react-bootstrap/Navbar';
+import 'react-dropdown/style.css';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
@@ -19,6 +20,7 @@ const customStyles = {
 };
 
 function Nav(props) {
+  console.log(props)
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [statPeriod, setStatPeriod] = useState('Week');
@@ -34,47 +36,20 @@ function Nav(props) {
     setLoginModalIsOpen(false);
   }
 
-  function openStatsModal() {
-    //create two arrays of stats for user to select between
-    let sortedLog = {
-      dayStats: [],
-      weekStats: []
+
+  function onSelect(e) {
+    console.log(e)
+    switch(e.value){
+      case 'github':
+        window.open('https://github.com/lukemccrae/course-planner', '_blank');
+        break;
+      case 'Login': 
+        openLoginModal();
+        break;
+      case 'Logout': 
+        onLogout();
+        break;
     }
-      //is this log entry already in the counter?
-      function findLog(entry) {
-        //all day stats are in week
-        return sortedLog.weekStats.map(function(l) { return l.name; }).indexOf(entry); 
-    };
-
-  let oneDayAgo = 86400000;
-
-    for (let i = 0; i < props.log.length; i++) {
-
-      //if its not there,
-      if(findLog(props.log[i].name) === -1) {
-
-          //if the activity was done in the past 24 hours, push it into dayStat array
-          if(Date.now() - props.log[i].date <= oneDayAgo) {
-            sortedLog.dayStats.push(props.log[i])
-          }
-          
-          //push it into weekStat array regardless
-          sortedLog.weekStats.push(props.log[i]);
-      } else {
-          //increment hash map log value
-          sortedLog.weekStats[findLog(props.log[i].name)].length += props.log[i].length
-
-          if(Date.now() - props.log[i].date <= oneDayAgo) {
-              sortedLog.dayStats[findLog(props.log[i].name)].length += props.log[i].length 
-          }
-      }
-  }
-    //sort logs according to most time done
-    sortedLog.weekStats.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
-    sortedLog.dayStats.sort((a, b) => parseFloat(b.length) - parseFloat(a.length));
-
-    setStatsModalIsOpen(true)
-    setSortedLog(sortedLog);
   }
 
   function onLogout() {
@@ -101,15 +76,10 @@ function Nav(props) {
       <div>
         <Navbar bg="light">
           <Container>
-            <div>{props.username}</div>
+            <a href="'https://github.com/lukemccrae/course-planner', '_blank'">Github</a>
             <h4>Course Planner</h4>
-            <NavDropdown title="More" id="basic-nav-dropdown">
-              <NavDropdown.Item target="_blank" href="https://github.com/lukemccrae/course-planner">Github</NavDropdown.Item>
-              <NavDropdown.Divider/>
-              <NavDropdown.Item>
-              {getFromStorage("course_planner") ? <div onClick={onLogout}>Logout</div> : <div onClick={openLoginModal}>Login</div>}
-              </NavDropdown.Item>
-            </NavDropdown>
+            {getFromStorage("course_planner") ? <a href="#" onClick={onLogout}>Logout</a> : <a href="#" onClick={openLoginModal}>Login</a>}
+
           </Container>
         </Navbar>
         <Modal
