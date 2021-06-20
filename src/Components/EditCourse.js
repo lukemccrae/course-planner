@@ -1,7 +1,8 @@
 import React, {useState, useLayoutEffect} from 'react';
 import Route from './Route';
 import Profile from './Profile';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import cloneDeep from 'lodash.clonedeep';
 import {Row, Col} from './Grid';
@@ -117,6 +118,7 @@ function EditCourse(props) {
       setCalories(props.course.details.calories);
       setPace(props.course.details.pace)
       setDistance(props.course.route.distance);
+      setVert(props.course.route.geoJSON.properties.vert);
     }
   })
 
@@ -264,7 +266,8 @@ function EditCourse(props) {
           body: JSON.stringify({
             name: courseName,
             stops: course.stops,
-            distance: distance,
+            distance: parseInt(distance),
+            vert: parseInt(vert),
             calories: calories,
             pace: pace,
             geoJSON: Object.keys(geoJSON).length > 0 ? geoJSON : props.course.route.geoJSON
@@ -286,7 +289,7 @@ function EditCourse(props) {
       <div>
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <CourseInput type="text" placeholder="Course Name" value={courseName} onChange={onTextboxChangeCourseName}/>
-          <Button onClick={() => props.toggleEdit(course)}>&#8963;</Button>
+          <Button variant="outlined" onClick={() => props.toggleEdit(course)}>&#8963;</Button>
         </div>
         <EditBox>
           {props.course.route.geoJSON.properties.name === "no route stored" ? (
@@ -295,12 +298,12 @@ function EditCourse(props) {
           <Row style={{display: "inline"}}>
             <Profile route={props.course.route.geoJSON}></Profile>
             <button onClick={()=>{props.removeRoute(course)}} type="button" className="close" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <Button variant="outlined" className="five-px-margin-right" onClick={() => {}}>Remove GPX</Button>
             </button>
             <div style={{margin: "0 0 0 5px"}}>{props.course.route.geoJSON.properties.name}</div>
-            <div style={{margin: "0 0 0 5px"}}>{Math.round(props.course.route.geoJSON.properties.distance * 100 + Number.EPSILON ) / 100} miles</div>
+            <div style={{margin: "0 0 0 5px"}}>{Math.round(props.course.route.distance * 100 + Number.EPSILON ) / 100} miles</div>
             <div style={{margin: "0 0 0 5px"}}>{props.course.route.geoJSON.properties.vert} ft. gain</div>
-            <div style={{margin: "0 0 0 5px"}}>{} gain per mile</div>
+            <div style={{margin: "0 0 0 5px"}}>{Math.round( (props.course.route.geoJSON.properties.vert / props.course.route.distance) * 100 + Number.EPSILON ) / 100} ft. gain per mile</div>
           </Row>}
             {course.stops.map(s => {
               return (
@@ -323,7 +326,7 @@ function EditCourse(props) {
                   <Col size={.1}></Col>
               </Col>
               <Col size={.5}>
-                <Button style={{display: 'inline'}} onClick={addItem}>Add</Button>
+                <Button variant="outlined" style={{display: 'inline'}} onClick={addItem}>Add</Button>
               </Col>
             </Row>
             <Divider></Divider>
@@ -331,6 +334,11 @@ function EditCourse(props) {
               <div>Cals: {sumCal(course.stops)}</div>
               <div>Distance: </div>
               <CourseInfoInput placeholder="Distance" type="text" value={distance} onChange={(e) => setDistance(e.target.value)}/>
+              <div>Vert: </div>
+              <CourseInfoInput placeholder="Vert" type="text" value={vert} onChange={(e) => setVert(e.target.value)}/>
+
+              {/* <StopNameInput placeholder="Name" type="text"  stops={course.stops} s={s} value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}
+
               <div>Pace: </div>
               <CourseInfoInput placeholder="Pace" type="text" value={pace} onChange={(e) => setPace(e.target.value)}/>
               <div>/ mile</div> 
@@ -339,12 +347,12 @@ function EditCourse(props) {
               <Divider></Divider>
               <div>
                     {/* dont show button if its add course box */}
-                    {props.course.hash === 'newcourse' ? null : <Button className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
+                    {props.course.hash === 'newcourse' ? null : <Button variant="outlined" className="five-px-margin-right" onClick={deleteModal}>Delete</Button>}
                     {/* show add course button if its new course box, save button if save box */}
                     {props.course.hash === 'newcourse' ? 
-                    <Button className="five-px-margin-right" onClick={saveNewCourse}>Save</Button>
+                    <Button variant="outlined" className="five-px-margin-right" onClick={saveNewCourse}>Save</Button>
                     :
-                    <Button className="five-px-margin-right" onClick={saveCourse}>Save</Button>}
+                    <Button variant="outlined" className="five-px-margin-right" onClick={saveCourse}>Save</Button>}
                     
                 </div>
 
@@ -359,8 +367,8 @@ function EditCourse(props) {
             <h5 style={{margin: '0 10px 10px 0'}}>
             Are you sure?
             </h5>
-            <Button className="five-px-margin-right"  onClick={() => props.deleteCourse(props.course)}>Delete</Button>
-            <Button className="five-px-margin-right" onClick={closeDeleteModal}>Cancel</Button>
+            <Button variant="outlined" className="five-px-margin-right"  onClick={() => props.deleteCourse(props.course)}>Delete</Button>
+            <Button variant="outlined" className="five-px-margin-right" onClick={closeDeleteModal}>Cancel</Button>
           </div>
         </Modal>
         </div>

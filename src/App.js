@@ -149,23 +149,8 @@ function App(props) {
 
   }
 
-  function resetColors() {
-    const colors = [
-      "#428A79",
-      "#71AF55",
-      "#F00500",
-      "#E4BE67",
-      "#E47043",
-      "#B63534",
-      "#9598AB",
-  ]
-
-  setColors(colors);
-  }
-
   //enable group to be editable
   function editCourse(c) {
-    resetColors();
     let currentCourses = courses;
     //loop through courses
     for (let i = 0; i < currentCourses.length; i++) {
@@ -215,7 +200,6 @@ function App(props) {
         }
         {token ? 
           <Dash
-          resetColors={resetColors}
           removeRoute={removeRoute}
           colors={colors}
           courses={courses}
@@ -245,7 +229,6 @@ function App(props) {
           :
           <DashNoLogin
             setIsLoading={setIsLoading} 
-            resetColors={resetColors} 
             colors={colors} 
             getCourses={getCourses}
           >

@@ -1,16 +1,28 @@
 import React, {useState, useEffect} from 'react';
+import ReactDOM from 'react-dom';
 import EditCourse from './EditCourse.js';
 import {Grid, Row, Col} from './Grid';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import Box from './ForgetBox.js';
+import { css } from "@emotion/core";
+import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
+import PropagateLoader from "react-spinners/PropagateLoader";
 import styled from 'styled-components';
 import {Helmet} from "react-helmet";
+import { stubTrue } from 'lodash-es';
 
 const ButtonWrapper = styled.div`
   display: flex;
   margin-left: 20px;
 `
+
+const override = css`
+  display: flex;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 const EditButton = styled.div`
   display: ${(props) => props.timerOn ? 'none' : 'inline'};
@@ -18,7 +30,6 @@ const EditButton = styled.div`
 
 const Course = styled.div`
   width: 100%;
-  max-width: 500px;
   height: 19px;
   display: ${(props) => props.timerOn ? ((props.g._id === props.startedCourse._id) ? 'inline-table' : 'none') : 'inline-table'};
 `
@@ -35,6 +46,7 @@ Modal.setAppElement('#root')
 function Dash(props) {
   console.log(props)
   const [editingCourse, setEditingCourse] = useState({});
+  const [loading, setLoading] = useState(false);
 
   function closeModal() {
     props.getCourses();
@@ -73,20 +85,23 @@ function Dash(props) {
         </Helmet>
         <Grid>
             <Row>
-            <Col size={1.5}></Col>
-            <Col size={3}>
+            <Col size={1}></Col>
+            <Col size={4}>
               {props.courses.map(c => {
                 return (
                   <Course className="course" key={c._id} c={c}>
                     <CourseNameParent course={c} editingCourse={editingCourse}>
-                      <h3>{c.name}</h3>
-                      <ButtonWrapper>
-
+                      {loading ? <div>
+                          <PropagateLoader
+                          css={override}
+                          size={7}
+                          color={"#007bff"}
+                          loading={loading}
+                        />
+                      </div> : <h3>{c.name}</h3>}
                         <EditButton>
-                          <Button id="dropdown-basic-button" onClick={() => toggleEdit(c, props)}>&#8963;</Button>
+                          <Button variant="outlined" id="dropdown-basic-button" onClick={() => toggleEdit(c, props)}>&#8963;</Button>
                         </EditButton>
-
-                      </ButtonWrapper>
                     </CourseNameParent>
                     {c.editOpen === true ? (
                         <EditCourse
@@ -114,7 +129,7 @@ function Dash(props) {
                 )
               })}
             </Col>
-            <Col size={1.5}></Col>
+            <Col size={1}></Col>
             </Row>
         </Grid>
       </div>

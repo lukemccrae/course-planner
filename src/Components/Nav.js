@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import Login from './Login';
-import Navbar from 'react-bootstrap/Navbar';
+import AppBar from './AppBar';
 import 'react-dropdown/style.css';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
-import {getFromStorage} from '../utils/storage';
 
 const customStyles = {
   content : {
@@ -74,14 +73,15 @@ function Nav(props) {
 
     return (
       <div>
-        <Navbar bg="light">
+        <AppBar onSelect={onSelect} openLoginModal={openLoginModal} onLogout={onLogout}></AppBar>
+        {/* <Navbar bg="light">
           <Container>
             <a href="'https://github.com/lukemccrae/course-planner', '_blank'">Github</a>
             <h4>Course Planner</h4>
             {getFromStorage("course_planner") ? <a href="#" onClick={onLogout}>Logout</a> : <a href="#" onClick={openLoginModal}>Login</a>}
 
           </Container>
-        </Navbar>
+        </Navbar> */}
         <Modal
           isOpen={loginModalIsOpen}
           onRequestClose={closeModal}

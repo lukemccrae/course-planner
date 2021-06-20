@@ -51,10 +51,6 @@
   margin: 0;
 }
 
-.Dropdown-placeholder {
-  content: 'More';
-}
-
 .startNav {
   display: inline;
 }
@@ -84,4 +80,15 @@
 
 .css-166sbl1-Slider {
   max-width: 20vw !important;
+}
+
+
+/* MATERIAL UI STYLES */
+
+.nav {
+  background-color: #424242;
+}
+
+.background {
+  background-color: #121212;
 }
