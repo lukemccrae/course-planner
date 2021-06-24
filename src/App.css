@@ -36,6 +36,11 @@
   display: flex;
 }
 
+.makeStyles-root-5 {
+  display: inline-flex;
+  justify-contet: space-between;
+}
+
 .courseNameParent {
   display: flex;
   justify-content: space-between;
@@ -45,6 +50,10 @@
 
 .btn {
   height: 40.72px;
+}
+
+.pace-style {
+  width: 80px;
 }
 
 .displayTime {

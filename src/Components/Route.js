@@ -32,14 +32,34 @@ function Route(props) {
               name: "dummy gpx"
           }
           
-          props.updateRoute(parsedJson);
+          saveNewRoute(parsedJson)
       })
       .catch((error) => {
-          console.log("It looks that wasn't a valid gpx file.")
+          console.log("It looks like that wasn't a valid gpx file.")
       console.error('Error:', error);
     });
   }
 
+  function saveNewRoute(geoJSON) {
+    const token = JSON.parse(localStorage.course_planner).token;
+    fetch(`http://localhost:3000/course/new?courseId=${props.course._id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        geoJSON: geoJSON
+
+      })
+    }).then(res => res.json()).then(json => {
+      if (json.success) {
+          console.log(json)
+      } else {
+        console.log("Error: adding this course failed.")
+        console.log(json)
+      }
+    });
+  }
 
   const changeHandler = (event) => {
     const file = event.target.files[0]

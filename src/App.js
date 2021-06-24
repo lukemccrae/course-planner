@@ -44,6 +44,9 @@ function App(props) {
         geoJSON: {
           properties: {
             name: "no route stored"
+          },
+          geometry: {
+            coordinates: []
           }
         },
         vert: 1,
@@ -72,7 +75,9 @@ function App(props) {
           id: 3
         }
       ],
-      user: "current user"
+      user: "current user",
+      distance: 13,
+      vert: 500
     }
 
   useEffect(() => {

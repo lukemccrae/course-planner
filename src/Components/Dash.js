@@ -44,7 +44,6 @@ const CourseNameParent = styled.div`
 Modal.setAppElement('#root')
 
 function Dash(props) {
-  console.log(props)
   const [editingCourse, setEditingCourse] = useState({});
   const [loading, setLoading] = useState(false);
 
