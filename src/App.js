@@ -20,64 +20,34 @@ function App(props) {
   const [token, setToken] = useState('');
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState('');
-  const [log, setLog] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [courseToEdit, setCourseToEdit] = useState({});
+
+  const [details, setDetails] = useState({});
+  const [route, setRoute] = useState({});
+  const [stops, setStops] = useState();
+  const [distance, setDistance] = useState();
+  const [vert, setVert] = useState();
+  const [name, setName] = useState();
+  const [mileTimes, setMileTimes] = useState();
+  const [calories, setCalories] = useState();
+  const [goalHours, setGoalHours] = useState();
+  const [goalMinutes, setGoalMinutes] = useState();
+
   const [loading, setIsLoading] = useState(true);
-  const [colors, setColors] = useState([
-    "#428A79",
-    "#71AF55",
-    "#F00500",
-    "#E4BE67",
-    "#E47043",
-    "#B63534",
-    "#9598AB",]);
-    
+  const [saved, setSaved] = useState(true);
 
     //add object for creating more groups
+    //NOT USING THIS ANYMORE
     let addCourse = {
       box: [""],
       details: {
         calories: 2000,
-        pace: 10
-      },
-      route: {
-        geoJSON: {
-          properties: {
-            name: "no route stored"
-          },
-          geometry: {
-            coordinates: []
-          }
-        },
-        vert: 1,
-        distance: 1
+        mileTimes: [],
+        name: "New Course",
       },
       editOpen: false,
-      hash: "newcourse",
-      name: "New Course",
-      stops: [
-        {
-          name: "Stop 1",
-          cals: 400,
-          miles: 8,
-          id: 1
-        },
-        {
-          name: "Stop 2",
-          cals: 400,
-          miles: 12,
-          id: 2
-        },
-        {
-          name: "Stop 3",
-          cals: 700,
-          miles: 16,
-          id: 3
-        }
-      ],
-      user: "current user",
-      distance: 13,
-      vert: 500
+      hash: "newcourse"
     }
 
   useEffect(() => {
@@ -98,14 +68,15 @@ function App(props) {
           console.log(json)
           setToken(obj);
           json.courses.push(addCourse);
+          setIsLoading(false);
 
           //if account has no courses, p the AddGroup in
           if(json.courses.length === 0) {
             setCourses([addCourse])
+            setIsLoading(false);
           } else {
             setCourses(json.courses)
           }
-          setLog(json.log);
           setUsername(json.email);
           
         } else {
@@ -115,7 +86,38 @@ function App(props) {
     } else {
       setIsLoading(false);
     }
-  })
+  }, [])
+  //empty array means only runs once
+  //component did mount equivilant
+
+    //enable group to be editable
+    function editCourse(c) {
+      let currentCourses = courses;
+      //loop through courses
+      for (let i = 0; i < currentCourses.length; i++) {
+        //if the passed course matches passed group
+        if(c.hash === currentCourses[i].hash) {
+          //toggle the editOpen boolean value
+          currentCourses[i].editOpen = !currentCourses[i].editOpen;
+          if(currentCourses[i].editOpen === true) {
+            let c = currentCourses[i];
+            setCourseToEdit(c);
+            setName(c.details.name)
+            setDistance(c.details.distance)
+            setStops(c.stops)
+            setVert(c.details.vert)
+            setMileTimes(c.details.mileTimes)
+            setGoalHours(c.details.goalHours)
+            setGoalMinutes(c.details.goalMinutes)
+            setCalories(c.details.calories)
+          }
+        } else {
+          //otherwise make it false
+          currentCourses[i].editOpen = false;
+        }
+      }
+      setCourses(currentCourses);
+    }
 
   function loggedIn(args) {
     setToken(args.token);
@@ -142,10 +144,9 @@ function App(props) {
       .then(res => res.json())
       .then(json => {
         json.courses.push(addCourse);
-  
         if(json.success) {
           setCourses(json.courses)
-          setLog(json.log)
+          editOff()
         } else {
           console.log("Error: ", json)
         }
@@ -154,22 +155,7 @@ function App(props) {
 
   }
 
-  //enable group to be editable
-  function editCourse(c) {
-    let currentCourses = courses;
-    //loop through courses
-    for (let i = 0; i < currentCourses.length; i++) {
-      //if the passed course matches passed group
-      if(c.hash === currentCourses[i].hash) {
-        //toggle the editOpen boolean value
-        currentCourses[i].editOpen = !currentCourses[i].editOpen;
-      } else {
-        //otherwise make it false
-        currentCourses[i].editOpen = false;
-      }
-    }
-    setCourses(currentCourses);
-  }
+
 
   function removeRoute(c) {
     let currentCourses = courses;
@@ -195,29 +181,148 @@ function App(props) {
     setCourses(currentCourses);  
   }
 
+  function addStop() {
+    let updatedStops = stops;
+    
+    let newStop = {
+      name: "",
+      cal: 100,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
+      comments: ""
+    }
+
+      updatedStops.push(newStop);
+      setStops([...updatedStops])
+  }
+
+  function saveNewCourse() {
+    const token = JSON.parse(localStorage.course_planner).token;
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        fetch(`http://localhost:3000/course`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'origin': 'https://group-timer.firebaseapp.com/'
+        },
+        body: JSON.stringify({
+          token: token,
+          hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
+          //server sets inital course values
+        })
+      }).then(res => res.json()).then(json => {
+        if (json.success) {
+          getCourses(token)
+        } else {
+          console.log("Error: adding this course failed.")
+          console.log(json)
+        }
+      });
+  }
+
+  function saveCourse() {
+    setSaved(false)
+    let tempCourse = {
+      details: {
+        stops,
+        distance,
+        vert,
+        name,
+        mileTimes,
+        calories,
+        goalHours,
+        goalMinutes
+      },
+      stops: stops
+    }
+    const token = JSON.parse(localStorage.course_planner).token;
+    // if(props.course.route.geoJSON.properties.name === "no route stored") {
+    //   saveNewRoute();
+    // }
+      // fetch(`https://banana-crumble-42815.herokuapp.com/course?courseId=${props.course._id}`, {
+        fetch(`http://localhost:3000/course?courseId=${courseToEdit._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          details: tempCourse.details,
+          stops: tempCourse.stops
+        })
+      }).then(res => res.json()).then(json => {
+        if (json.success) {
+          setSaved(true)
+        } else {
+          console.log("Error: adding this course failed.")
+          console.log(json)
+        }
+      });
+  }
+
+  function deleteCourse(course) {
+    const token = JSON.parse(localStorage.course_planner).token;
+
+      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseToEdit._id}`, {
+        // fetch(`http://localhost:3000/course?token=${token}&courseId=${course._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json()).then(json => {
+      if (json.success) {
+        let tempCourses = courses;
+        getCourses(token)
+      } else {
+        console.log("error: ", json)
+      }
+    });
+  }
+
     //if token, return dash, and show spinner
     //
     return (
       <div>
         {!loading ? 
-        <Nav token={getFromStorage("course_planner")} loggedIn={loggedIn} log={log} username={username} getCourses={props.getCourses} loggedOut={loggedOut}></Nav>
+        <Nav token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} getCourses={props.getCourses} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
         {token ? 
           <Dash
+          saveNewCourse={saveNewCourse}
           removeRoute={removeRoute}
-          colors={colors}
           courses={courses}
           username={username}
           getCourses={getCourses}
           loggedOut={loggedOut}
-          log={log}
           userId={userId}
           editCourse={editCourse}
           editOff={editOff}
-        >
-        </Dash>
-        :
+          saveCourse={saveCourse}
+          deleteCourse={deleteCourse}
+          details={courseToEdit.details}
+          saved={saved}
+
+          setDetails={setDetails}
+          setRoute={setRoute}
+          addStop={addStop}
+          setDistance={setDistance}
+          setVert={setVert}
+          setName={setName}
+          setCalories={setCalories}
+          setGoalHours={setGoalHours}
+          setGoalMinutes={setGoalMinutes}
+          setMileTimes={setMileTimes}
+          setStops={setStops}
+          
+          stops={stops}
+          distance={distance}
+          vert={vert}
+          name={name}
+          mileTimes={mileTimes}
+          calories={calories}
+          goalHours={goalHours}
+          goalMinutes={goalMinutes}>
+          </Dash>
+          : 
         <div>
           {getFromStorage('course_planner') ? 
           <div
@@ -234,7 +339,6 @@ function App(props) {
           :
           <DashNoLogin
             setIsLoading={setIsLoading} 
-            colors={colors} 
             getCourses={getCourses}
           >
           </DashNoLogin>

@@ -42,7 +42,7 @@ function Route(props) {
 
   function saveNewRoute(geoJSON) {
     const token = JSON.parse(localStorage.course_planner).token;
-    fetch(`http://localhost:3000/course/new?courseId=${props.course._id}`, {
+    fetch(`http://localhost:3000/course/new?courseId=${props.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

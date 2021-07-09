@@ -1,22 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import ReactDOM from 'react-dom';
 import EditCourse from './EditCourse.js';
 import {Grid, Row, Col} from './Grid';
-// import Button from 'react-bootstrap/Button';
 import Button from '@material-ui/core/Button';
-import Box from './ForgetBox.js';
 import { css } from "@emotion/core";
-import Container from 'react-bootstrap/Container';
+import Profile from './Profile';
 import Modal from 'react-modal';
 import PropagateLoader from "react-spinners/PropagateLoader";
 import styled from 'styled-components';
 import {Helmet} from "react-helmet";
-import { stubTrue } from 'lodash-es';
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  margin-left: 20px;
-`
 
 const override = css`
   display: flex;
@@ -47,28 +38,6 @@ function Dash(props) {
   const [editingCourse, setEditingCourse] = useState({});
   const [loading, setLoading] = useState(false);
 
-  function closeModal() {
-    props.getCourses();
-  }
-
-  function deleteCourse(course) {
-    const token = JSON.parse(localStorage.course_planner).token;
-
-      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${course._id}`, {
-        // fetch(`http://localhost:3000/course?token=${token}&courseId=${course._id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json()).then(json => {
-      if (json.success) {
-        props.getCourses(token)
-      } else {
-        console.log("error: ", json)
-      }
-    });
-  }
-
   function toggleEdit(g) {
     //if passed course is current course, set it to empty object
     //this sets editingObject to nothing and closes edit window
@@ -97,33 +66,66 @@ function Dash(props) {
                           color={"#007bff"}
                           loading={loading}
                         />
-                      </div> : <h3>{c.name}</h3>}
+                      </div> : <h3>{c.details.name}</h3>}
+                        
+                        {c.hash === 'newcourse' ? <EditButton><Button onClick={props.saveNewCourse} variant="outlined">New Course</Button> </EditButton>
+                        : 
                         <EditButton>
                           <Button variant="outlined" id="dropdown-basic-button" onClick={() => toggleEdit(c, props)}>&#8963;</Button>
-                        </EditButton>
+                        </EditButton>}
                     </CourseNameParent>
                     {c.editOpen === true ? (
+                      <div>
                         <EditCourse
-                        toggleEdit={toggleEdit}
-                        removeRoute={props.removeRoute}
-                        course={c}
-                        colors={props.colors}
-                        getCourses={props.getCourses}
-                        deleteCourse={deleteCourse}
-                        timeFormat={props.timeFormat}
-                        timers={c.timers}
-                        setEditingCourse={setEditingCourse}>
-                      </EditCourse>
+                          hash={c.hash}
+                          id={c._id}
+                          deleteCourse={props.deleteCourse}
+                          toggleEdit={toggleEdit}
+                          removeRoute={props.removeRoute}
+                          details={props.details}
+                          stops={c.stops}
+                          vertInfo={c.route.geoJSON.properties.vertInfo}
+                          getCourses={props.getCourses}
+                          timeFormat={props.timeFormat}
+                          saveCourse={props.saveCourse}
+                          saved={props.saved}
+                          
+                          setRoute={props.setRoute}
+                          addStop={props.addStop}
+                          setDistance={props.setDistance}
+                          setVert={props.setVert}
+                          setName={props.setName}
+                          setCalories={props.setCalories}
+                          setGoalHours={props.setGoalHours}
+                          setGoalMinutes={props.setGoalMinutes}
+                          setMileTimes={props.setMileTimes}
+                          setStops={props.setStops}
+                          
+                          stops={props.stops}
+                          distance={props.distance}
+                          vert={props.vert}
+                          name={props.name}
+                          mileTimes={props.mileTimes}
+                          calories={props.calories}
+                          goalHours={props.goalHours}
+                          goalMinutes={props.goalMinutes}
+                          vertInfo={c.route.geoJSON.properties.vertInfo}>
+                        </EditCourse>
+                        {c.route.geoJSON.properties.distance > 0 ? 
+                        <div>
+                          <Profile route={c.route.geoJSON}></Profile>
+                          <div style={{display: "flex", justifyContent: "space-around"}}>
+                          <small>Approx. distance: {c.route.geoJSON.properties.distance.toFixed(2)} mi.</small>
+                          <small>Approx. vert: {Math.round(c.route.geoJSON.properties.vert)} ft.</small>
+                          <small>Avg Uphill Grade: {Math.round(c.details.vert / c.route.geoJSON.properties.vertInfo.totalUphillFeet * 100)}%</small>
+                          <small>Avg Max Grade: {c.route.geoJSON.properties.vertInfo.avgMaxGrade}%</small>
+                        </div>
+                        </div> : null}
+                      </div>
+                       
                     ) :
                       c.hash === 'newcourse' ? <div>Use dropdown to add new Course</div> : null
                     }
-                    {/* {startIsOpen ? (
-                      <div>
-                        {startedGroup._id === c._id ? (<div>
-                          <Box boxContents={c.box} course={c}></Box>
-                        </div>) : <div></div>}
-                      </div>
-                      ) : <div></div>} */}
                   </Course>
                 )
               })}

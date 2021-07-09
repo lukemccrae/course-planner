@@ -19,7 +19,6 @@ const customStyles = {
 };
 
 function Nav(props) {
-  console.log(props)
   const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [statPeriod, setStatPeriod] = useState('Week');
