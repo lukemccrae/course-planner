@@ -127,13 +127,20 @@ function onTextboxChangeStopName(event, s) {
     return sum;
   }
 
+  function minTommss(minutes){
+    var sign = minutes < 0 ? "-" : "";
+    var min = Math.floor(Math.abs(minutes));
+    var sec = Math.floor((Math.abs(minutes) * 60) % 60);
+    return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+}
+
 
 
     return (
         <div>
             {stops.map((s, index) => {
               return (
-                <div>
+                <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">
                     <Row key={s.id}>
                         <button style={{display: stops.length < 2 ? "none" : "inline"}} onClick={()=>{delItem(s)}} type="button" className="close" aria-label="Close">

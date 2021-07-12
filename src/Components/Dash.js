@@ -5,15 +5,8 @@ import Button from '@material-ui/core/Button';
 import { css } from "@emotion/core";
 import Profile from './Profile';
 import Modal from 'react-modal';
-import PropagateLoader from "react-spinners/PropagateLoader";
 import styled from 'styled-components';
 import {Helmet} from "react-helmet";
-
-const override = css`
-  display: flex;
-  margin: 0 auto;
-  border-color: red;
-`;
 
 const EditButton = styled.div`
   display: ${(props) => props.timerOn ? 'none' : 'inline'};
@@ -36,7 +29,10 @@ Modal.setAppElement('#root')
 
 function Dash(props) {
   const [editingCourse, setEditingCourse] = useState({});
-  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    props.setWhy(false)
+  }, [props.why])
 
   function toggleEdit(g) {
     //if passed course is current course, set it to empty object
@@ -58,22 +54,13 @@ function Dash(props) {
               {props.courses.map(c => {
                 return (
                   <Course className="course" key={c._id} c={c}>
-                    <CourseNameParent course={c} editingCourse={editingCourse}>
-                      {loading ? <div>
-                          <PropagateLoader
-                          css={override}
-                          size={7}
-                          color={"#007bff"}
-                          loading={loading}
-                        />
-                      </div> : <h3>{c.details.name}</h3>}
-                        
-                        {c.hash === 'newcourse' ? <EditButton><Button onClick={props.saveNewCourse} variant="outlined">New Course</Button> </EditButton>
-                        : 
-                        <EditButton>
-                          <Button variant="outlined" id="dropdown-basic-button" onClick={() => toggleEdit(c, props)}>&#8963;</Button>
-                        </EditButton>}
-                    </CourseNameParent>
+                    {c.editOpen ? null : 
+                      <CourseNameParent course={c} editingCourse={editingCourse}>
+                      <h3>{c.details.name}</h3>
+                      <EditButton>
+                        <Button variant="outlined" id="dropdown-basic-button" onClick={() => toggleEdit(c, props)}>&#8963;</Button>
+                      </EditButton>
+                    </CourseNameParent>}
                     {c.editOpen === true ? (
                       <div>
                         <EditCourse
@@ -82,13 +69,13 @@ function Dash(props) {
                           deleteCourse={props.deleteCourse}
                           toggleEdit={toggleEdit}
                           removeRoute={props.removeRoute}
-                          details={props.details}
                           stops={c.stops}
                           vertInfo={c.route.geoJSON.properties.vertInfo}
                           getCourses={props.getCourses}
                           timeFormat={props.timeFormat}
                           saveCourse={props.saveCourse}
                           saved={props.saved}
+                          deleteModalIsOpen={props.deleteModalIsOpen}
                           
                           setRoute={props.setRoute}
                           addStop={props.addStop}
@@ -100,8 +87,13 @@ function Dash(props) {
                           setGoalMinutes={props.setGoalMinutes}
                           setMileTimes={props.setMileTimes}
                           setStops={props.setStops}
-                          
+                          setVertMod={props.setVertMod}
+                          setTerrainMod={props.setTerrainMod}
+                          updateDeleteModalIsOpen={props.updateDeleteModalIsOpen}
+          
                           stops={props.stops}
+                          terrainMod={props.terrainMod}
+                          vertMod={props.vertMod}
                           distance={props.distance}
                           vert={props.vert}
                           name={props.name}
@@ -109,7 +101,7 @@ function Dash(props) {
                           calories={props.calories}
                           goalHours={props.goalHours}
                           goalMinutes={props.goalMinutes}
-                          vertInfo={c.route.geoJSON.properties.vertInfo}>
+                          vertInfo={c.route.geoJSON.properties.vertInfo.cumulativeGain}>
                         </EditCourse>
                         {c.route.geoJSON.properties.distance > 0 ? 
                         <div>
@@ -123,12 +115,13 @@ function Dash(props) {
                         </div> : null}
                       </div>
                        
-                    ) :
-                      c.hash === 'newcourse' ? <div>Use dropdown to add new Course</div> : null
-                    }
+                    ) : null}
                   </Course>
                 )
               })}
+              <div style={{display: "flex", justifyContent: "flex-end", margin: "10px"}}>
+                <Button onClick={props.saveNewCourse} variant="outlined">New Course</Button>
+              </div>
             </Col>
             <Col size={1}></Col>
             </Row>

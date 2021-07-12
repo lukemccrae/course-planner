@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Bar, Line, Pie} from 'react-chartjs-2';
+import React from 'react';
+import {Line} from 'react-chartjs-2';
 import styled from 'styled-components';
 
 const Chart = styled.div`
@@ -19,7 +19,7 @@ function Profile(props) {
         // labels: Array.from(Array(Math.round(props.route.properties.distance)).keys()),
         labels: Array(props.route.geometry.coordinates.length).fill("l"),
         datasets: [{
-            label: "pop",
+            label: "",
             data: fillPoints(props),
             backgroundColor: "blue",
             tension: 0.4,

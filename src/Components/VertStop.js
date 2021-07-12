@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
 
 
 function VertStop({distance, vertInfo, pastAid}) {
@@ -12,8 +11,8 @@ function VertStop({distance, vertInfo, pastAid}) {
         let result = 0;
         //start iteratig through vertInfo.cumulativeGain array starting from pastStop stop
         for (let i = pastAid - 1; i < pastAid + distance; i++) {
-            if(vertInfo.cumulativeGain[i] != undefined) {
-                result += vertInfo.cumulativeGain[i]
+            if(vertInfo[i] !== undefined) {
+                result += vertInfo[i]
             }
         }
         setVert(Math.round(result))

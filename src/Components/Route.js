@@ -7,12 +7,6 @@ const Input = styled.input`
 `
 
 function Route(props) {
-    console.log(props)
-  const [route, setRoute] = useState({});
-  const [routeName, setRouteName] = useState("");
-  const [isFilePicked, setIsFilePicked] = useState("");
-  const [selected, setIsSelected] = useState(false);
-
   function gpxToJson(gpx) {
     // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
         fetch('http://localhost:3000/gps/togeojson', {
@@ -69,7 +63,6 @@ function Route(props) {
         console.log(file)
         gpxToJson(file);
     }
-    setIsSelected(true);
 };
 
     return (

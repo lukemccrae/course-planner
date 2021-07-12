@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
 import VertStop from './VertStop';
 
 
@@ -18,7 +17,7 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
         let nextAid;
         
         //if last stop, use finish as a stop
-        if(stops[index + 1] != undefined) {
+        if(stops[index + 1] !== undefined) {
           nextAid = stops[index + 1].miles
         } else {
           nextAid = mileTimes.length + 1;
@@ -36,7 +35,7 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
 
       function timeVertToNextAid(diff) {
           let timeSum = 0;
-          for (let i = 0; i < diff; i++) {
+          for (let i = 0; i < diff - 1; i++) {
             timeSum += mileTimes[i]
           }
           setTime(timeSum)
@@ -56,7 +55,7 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
 
     return (
         <div>
-            <div>distance to {index < stops.length -1 ? "next aid" : "finish"}: {distance}</div>
+            <div>distance to {index < stops.length -1 ? "next aid" : "finish"}: {distance - 1}</div>
             <VertStop pastAid={pastAid} vertInfo={vertInfo} distance={distance}></VertStop>
             <div>time to next aid: {minTommss(time)}</div>
             <div>calorie needs: {calToConsume}</div>

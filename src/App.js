@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
+import Button from '@material-ui/core/Button';
 import Dash from './Components/Dash';
 import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
+import Modal from 'react-modal';
 import Nav from './Components/Nav';
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
@@ -14,6 +16,17 @@ const override = css`
   margin: 0 auto;
   border-color: red;
 `;
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 
 function App(props) {
@@ -33,22 +46,26 @@ function App(props) {
   const [calories, setCalories] = useState();
   const [goalHours, setGoalHours] = useState();
   const [goalMinutes, setGoalMinutes] = useState();
+  const [vertMod, setVertMod] = useState();
+  const [terrainMod, setTerrainMod] = useState();
 
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [why, setWhy] = useState(false);
 
     //add object for creating more groups
     //NOT USING THIS ANYMORE
-    let addCourse = {
-      box: [""],
-      details: {
-        calories: 2000,
-        mileTimes: [],
-        name: "New Course",
-      },
-      editOpen: false,
-      hash: "newcourse"
-    }
+    // let addCourse = {
+    //   box: [""],
+    //   details: {
+    //     calories: 2000,
+    //     mileTimes: [],
+    //     name: "New Course",
+    //   },
+    //   editOpen: false,
+    //   hash: "newcourse"
+    // }
 
   useEffect(() => {
     const obj = getFromStorage('course_planner');
@@ -65,14 +82,11 @@ function App(props) {
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          console.log(json)
           setToken(obj);
-          json.courses.push(addCourse);
           setIsLoading(false);
 
           //if account has no courses, p the AddGroup in
           if(json.courses.length === 0) {
-            setCourses([addCourse])
             setIsLoading(false);
           } else {
             setCourses(json.courses)
@@ -86,7 +100,7 @@ function App(props) {
     } else {
       setIsLoading(false);
     }
-  }, [])
+  }, [courses])
   //empty array means only runs once
   //component did mount equivilant
 
@@ -110,6 +124,8 @@ function App(props) {
             setGoalHours(c.details.goalHours)
             setGoalMinutes(c.details.goalMinutes)
             setCalories(c.details.calories)
+            setVertMod(c.details.vertMod)
+            setTerrainMod(c.details.terrainMod)
           }
         } else {
           //otherwise make it false
@@ -121,7 +137,6 @@ function App(props) {
 
   function loggedIn(args) {
     setToken(args.token);
-    if(args.course === []) args.courses = addCourse;
     setCourses(args.courses);
     setUsername(args.user);
     setUserId(args.id);
@@ -131,31 +146,6 @@ function App(props) {
     localStorage.clear();
     setToken('');
   }
-
-  function getCourses(token) {
-    if(token) {
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}`, {
-        fetch(`http://localhost:3000/course?token=${token}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(res => res.json())
-      .then(json => {
-        json.courses.push(addCourse);
-        if(json.success) {
-          setCourses(json.courses)
-          editOff()
-        } else {
-          console.log("Error: ", json)
-        }
-      });
-    }
-
-  }
-
-
 
   function removeRoute(c) {
     let currentCourses = courses;
@@ -185,8 +175,8 @@ function App(props) {
     let updatedStops = stops;
     
     let newStop = {
-      name: "",
-      cal: 100,
+      name: "Stop",
+      cals: 200,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
       comments: ""
     }
@@ -211,12 +201,21 @@ function App(props) {
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          getCourses(token)
+          let tempCourses = courses;
+          tempCourses.push(json.course)
+          setCourses(tempCourses)
+          setWhy(true);
         } else {
           console.log("Error: adding this course failed.")
           console.log(json)
         }
       });
+  }
+
+  function findCourse(hash) {
+    for (let i = 0; i < courses.length; i++) {
+      if(courses[i].hash === hash) return i;
+    }
   }
 
   function saveCourse() {
@@ -230,7 +229,9 @@ function App(props) {
         mileTimes,
         calories,
         goalHours,
-        goalMinutes
+        goalMinutes,
+        vertMod,
+        terrainMod
       },
       stops: stops
     }
@@ -250,6 +251,10 @@ function App(props) {
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
+          let index = findCourse(json.course.hash)
+          let tempCourses = courses;
+          if(index !== -1) tempCourses[index] = json.course;
+          setCourses(tempCourses)
           setSaved(true)
         } else {
           console.log("Error: adding this course failed.")
@@ -260,6 +265,7 @@ function App(props) {
 
   function deleteCourse(course) {
     const token = JSON.parse(localStorage.course_planner).token;
+    let index = findCourse(courseToEdit.hash);
 
       fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseToEdit._id}`, {
         // fetch(`http://localhost:3000/course?token=${token}&courseId=${course._id}`, {
@@ -270,38 +276,41 @@ function App(props) {
     }).then(res => res.json()).then(json => {
       if (json.success) {
         let tempCourses = courses;
-        getCourses(token)
+        tempCourses.splice(index, 1)
+        setCourses(tempCourses)
+        setDeleteModalIsOpen(false);
       } else {
         console.log("error: ", json)
       }
     });
   }
 
+  function updateDeleteModalIsOpen() {
+    setDeleteModalIsOpen(!deleteModalIsOpen)
+  }
+
     //if token, return dash, and show spinner
     //
     return (
-      <div>
+      <div key={courses.length}>
         {!loading ? 
-        <Nav token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} getCourses={props.getCourses} loggedOut={loggedOut}></Nav>
+        <Nav token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
         {token ? 
           <Dash
-          saveNewCourse={saveNewCourse}
           removeRoute={removeRoute}
           courses={courses}
-          username={username}
-          getCourses={getCourses}
-          loggedOut={loggedOut}
           userId={userId}
           editCourse={editCourse}
-          editOff={editOff}
           saveCourse={saveCourse}
           deleteCourse={deleteCourse}
           details={courseToEdit.details}
           saved={saved}
+          deleteModalIsOpen={deleteModalIsOpen}
+          saveNewCourse={saveNewCourse}
+          why={why}
 
-          setDetails={setDetails}
           setRoute={setRoute}
           addStop={addStop}
           setDistance={setDistance}
@@ -312,15 +321,21 @@ function App(props) {
           setGoalMinutes={setGoalMinutes}
           setMileTimes={setMileTimes}
           setStops={setStops}
+          setVertMod={setVertMod}
+          setTerrainMod={setTerrainMod}
+          updateDeleteModalIsOpen={updateDeleteModalIsOpen}
+          setWhy={setWhy}
           
           stops={stops}
+          terrainMod={terrainMod}
           distance={distance}
           vert={vert}
           name={name}
           mileTimes={mileTimes}
           calories={calories}
           goalHours={goalHours}
-          goalMinutes={goalMinutes}>
+          goalMinutes={goalMinutes}
+          vertMod={vertMod}>
           </Dash>
           : 
         <div>
@@ -339,12 +354,25 @@ function App(props) {
           :
           <DashNoLogin
             setIsLoading={setIsLoading} 
-            getCourses={getCourses}
           >
           </DashNoLogin>
          }
         </div>
       }
+        <Modal
+          isOpen={deleteModalIsOpen}
+          onRequestClose={updateDeleteModalIsOpen}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <div>
+            <h5 style={{margin: '0 10px 10px 0'}}>
+            Are you sure?
+            </h5>
+            <Button variant="outlined" className="five-px-margin-right"  onClick={deleteCourse}>Delete</Button>
+            <Button variant="outlined" className="five-px-margin-right" onClick={updateDeleteModalIsOpen}>Cancel</Button>
+          </div>
+        </Modal>
       </div>
     )
   }

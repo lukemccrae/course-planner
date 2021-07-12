@@ -1,11 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
 import Slider from 'react-input-slider';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 
 const MileBox = styled.div`
@@ -34,32 +29,45 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vert, details, goalHours, goalMinutes, distance, setMileTimes}) {
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, vert, details, goalHours, goalMinutes, distance, mileTimes, setMileTimes}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState()
-    const [terrainMod, setTerrainMod] = useState(1.2);
-    const [vertMod, setVertMod] = useState(300);
+
     useEffect(() => {
         resetPaces()
     }, [distance, goalHours, goalMinutes, terrainMod, vertMod])
 
     const classes = useStyles();
     
-    function calculatePace(gain) {
-        return parseFloat(((((parseInt(goalHours) * 60) + parseInt(goalMinutes)) / parseInt(distance)) * (Math.pow(terrainMod, gain / vertMod))).toFixed(2))
+    function calculatePace(gain, distance) {
+      let goalTime = ((parseInt(goalHours) * 60) + parseInt(goalMinutes))
+      let goalDistance = parseInt(distance)
+      let goalPace = goalTime / goalDistance;
+      
+      let vert = (Math.pow(terrainMod, gain / vertMod)).toFixed(2);
+        return goalPace * vert;
     }
 
     function resetPaces() {
-        let tempPace = []
+        let smartDistance = distance > vertInfo.length ? distance : vertInfo.length;
+        let tempPace = [];
         let tempTotalTime = 0;
-        for (let i = 0; i < distance; i++) {
+        for (let i = 0; i < smartDistance; i++) {
             // updateMileTimes(course.details.pace[0] * 60 + course.details.pace[1], i)
-            let newPace = calculatePace(vertInfo.cumulativeGain[i])
+            let newPace = calculatePace(vertInfo[i], smartDistance)
             tempPace[i] = newPace
         }
         setMileTimes(tempPace)
         setPaces(tempPace)
     }
+
+    //only update vertmod in increments of ten
+    //increase performance
+    // function updateVertMod(x) {
+    //   if(Math.abs(vertMod - x) > 10) {
+    //     setVertMod(x)
+    //   }
+    // }
 
     function minTommss(minutes){
         var sign = minutes < 0 ? "-" : "";
@@ -80,29 +88,13 @@ function MileTimes({vertInfo, vert, details, goalHours, goalMinutes, distance, s
                 x={vertMod}
                 onChange={({ x }) =>  setVertMod(x)}/>
             </SliderBox></div>
-
-
-            <FormControl className={classes.formControl}>
-            <InputLabel>Terrain Type</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                value={terrainMod}
-                onChange={(e) => setTerrainMod(e.target.value)}
-                className="cal-style"
-              >
-              <MenuItem value={1.05}>Road</MenuItem>
-              <MenuItem value={1.1}>Moderate</MenuItem>
-              <MenuItem value={1.2}>Rough</MenuItem>
-              <MenuItem value={1.3}>Extreme</MenuItem>
-              </Select>
-            </FormControl>
             </div>
             {paces.map((m, index) => {
                 return (
                 <MileBox key={index}>
                     <div>Mile: {index + 1}</div>
                     <div>{minTommss(m)}</div>
-                    <div>vert: {Math.round(vertInfo.cumulativeGain[index])}</div>
+                    <div style={{display: vertInfo.length > 0 ? "inline" : "none"}}>vert: {Math.round(vertInfo[index])}</div>
                 </MileBox>
                 )
              })}
