@@ -55,7 +55,6 @@ const StopInputNew = styled.input`
 
 
 function Stop({mileTimes, setMileTimes, setStops, addStop, stops, calories, vertInfo}) {
-    const [newStopName, setNewStopName] = useState("Stop 2");
 
     const classes = useStyles();
 
@@ -162,7 +161,7 @@ function onTextboxChangeStopName(event, s) {
               )
             })}
             <Row>
-                <div style={{paddingTop: "5px"}}>Resupply Cals: {sumCal(stops)}</div>
+                <h5 style={{paddingTop: "5px"}}>Resupply Cals: {sumCal(stops)}</h5>
                 <div style={{marginLeft: 'auto', marginRight: 0}}>
                     <Button variant="outlined" style={{display: 'inline'}} onClick={addStop}>Add Stop</Button>
                 </div>

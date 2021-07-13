@@ -47,7 +47,7 @@ function Route(props) {
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-          console.log(json)
+        props.saveCourse()
       } else {
         console.log("Error: adding this course failed.")
         console.log(json)

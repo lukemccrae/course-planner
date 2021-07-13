@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, vert, details, goalHours, goalMinutes, distance, mileTimes, setMileTimes}) {
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState()
 
@@ -43,9 +43,9 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, vert, details, go
       let goalTime = ((parseInt(goalHours) * 60) + parseInt(goalMinutes))
       let goalDistance = parseInt(distance)
       let goalPace = goalTime / goalDistance;
-      
+
       let vert = (Math.pow(terrainMod, gain / vertMod)).toFixed(2);
-        return goalPace * vert;
+      return goalPace * vert;
     }
 
     function resetPaces() {
@@ -56,18 +56,12 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, vert, details, go
             // updateMileTimes(course.details.pace[0] * 60 + course.details.pace[1], i)
             let newPace = calculatePace(vertInfo[i], smartDistance)
             tempPace[i] = newPace
+            tempTotalTime += tempPace[i]
         }
         setMileTimes(tempPace)
+        setTotalTime(tempTotalTime)
         setPaces(tempPace)
     }
-
-    //only update vertmod in increments of ten
-    //increase performance
-    // function updateVertMod(x) {
-    //   if(Math.abs(vertMod - x) > 10) {
-    //     setVertMod(x)
-    //   }
-    // }
 
     function minTommss(minutes){
         var sign = minutes < 0 ? "-" : "";
@@ -76,11 +70,31 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, vert, details, go
         return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
     }
 
+    var toHHMMSS = (secs) => {
+      var sec_num = parseInt(secs, 10)
+      var hours   = Math.floor(sec_num / 3600)
+      var minutes = Math.floor(sec_num / 60) % 60
+      var seconds = sec_num % 60
+  
+      return [hours,minutes,seconds]
+          .map(v => v < 10 ? "0" + v : v)
+          .filter((v,i) => v !== "00" || i > 0)
+          .join(":")
+  }
+
+    function updateTotalTime() {
+      let tempTime = totalTime;
+      for (let i = 0; i < paces.length; i++) {
+        tempTime += paces[i];
+      }
+      setTotalTime(tempTime);
+    }
+
 
     return (
         <div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
-            <div style={{margin: "10px 0 0 0"}}>Equalize pace: <SliderBox>
+            <div style={{margin: "10px 0 0 0", display: vertInfo.length > 0 ? "block" : "none"}}>Equalize pace: <SliderBox>
                 <Slider
                 axis="x"
                 xmax = {700}
@@ -98,8 +112,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, vert, details, go
                 </MileBox>
                 )
              })}
-             <div>{totalTime}</div>
-             {/* <Button onClick={resetPaces}>Click me to reset pace</Button> */}
+             <div>Total time: {toHHMMSS(totalTime*60)}</div>
         </div>
     )
 }

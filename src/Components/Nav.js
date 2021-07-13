@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import Login from './Login';
 import AppBar from './AppBar';
 import 'react-dropdown/style.css';
-import Container from 'react-bootstrap/Container';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-modal';
+import { useEffect } from 'react';
 
 const customStyles = {
   content : {
@@ -19,19 +18,10 @@ const customStyles = {
 };
 
 function Nav(props) {
-  const [statsModalIsOpen, setStatsModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
-  const [statPeriod, setStatPeriod] = useState('Week');
-  const [sortedLog, setSortedLog] = useState([]);
-
-
-  function changePeriod(period) {
-    setStatPeriod(period.value)
-  }
 
   function closeModal() {
-    setStatsModalIsOpen(false);
-    setLoginModalIsOpen(false);
+    setLoginModalIsOpen(false)
   }
 
 
@@ -88,13 +78,6 @@ function Nav(props) {
           contentLabel="Example Modal"
         >
           <Login closeModal={closeModal} loggedIn={props.loggedIn}></Login>
-        </Modal>
-        <Modal
-          isOpen={statsModalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
         </Modal>
       </div>
     )

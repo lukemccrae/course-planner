@@ -10,8 +10,8 @@ function VertStop({distance, vertInfo, pastAid}) {
     function calcVert() {
         let result = 0;
         //start iteratig through vertInfo.cumulativeGain array starting from pastStop stop
-        for (let i = pastAid - 1; i < pastAid + distance; i++) {
-            if(vertInfo[i] !== undefined) {
+        for (let i = pastAid; i < pastAid + distance; i++) {
+            if(vertInfo[i] !== undefined && vertInfo[i] > 0) {
                 result += vertInfo[i]
             }
         }

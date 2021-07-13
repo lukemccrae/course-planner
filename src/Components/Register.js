@@ -23,7 +23,8 @@ function Register(props) {
 
   function onSignUp() {
     // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/api/account/signup`, {
-    fetch(`https://thawing-eyrie-65129.herokuapp.com/course/api/account/signup`, {
+    // fetch(`https://thawing-eyrie-65129.herokuapp.com/course/api/account/signup`, {
+      fetch(`http://localhost:3000/course/api/account/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

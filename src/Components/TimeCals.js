@@ -24,7 +24,7 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
         }
 
         //distance between aid stations
-        let diff = parseInt(nextAid) - parseInt(pastAid)
+        let diff = parseInt(nextAid) - parseInt(pastAid) - (index > 0 ?  1 : 0)
 
         //display distance
         setDistance(diff)
@@ -35,7 +35,7 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
 
       function timeVertToNextAid(diff) {
           let timeSum = 0;
-          for (let i = 0; i < diff - 1; i++) {
+          for (let i = 0; i < diff - (index > 0 ? 1 : 0); i++) {
             timeSum += mileTimes[i]
           }
           setTime(timeSum)
@@ -46,18 +46,23 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
         setCalToConsume(Math.round(calories * (parseFloat(timeSum) / 60)))
     }
 
-      function minTommss(minutes){
-        var sign = minutes < 0 ? "-" : "";
-        var min = Math.floor(Math.abs(minutes));
-        var sec = Math.floor((Math.abs(minutes) * 60) % 60);
-        return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
-    }
+    var toHHMMSS = (secs) => {
+      var sec_num = parseInt(secs, 10)
+      var hours   = Math.floor(sec_num / 3600)
+      var minutes = Math.floor(sec_num / 60) % 60
+      var seconds = sec_num % 60
+  
+      return [hours,minutes,seconds]
+          .map(v => v < 10 ? "0" + v : v)
+          .filter((v,i) => v !== "00" || i > 0)
+          .join(":")
+  }
 
     return (
         <div>
-            <div>distance to {index < stops.length -1 ? "next aid" : "finish"}: {distance - 1}</div>
+            <div>distance to {index < stops.length -1 ? "next aid" : "finish"}: {distance}</div>
             <VertStop pastAid={pastAid} vertInfo={vertInfo} distance={distance}></VertStop>
-            <div>time to next aid: {minTommss(time)}</div>
+            <div>time to next aid: {toHHMMSS(time*60)}</div>
             <div>calorie needs: {calToConsume}</div>
         </div>
     )

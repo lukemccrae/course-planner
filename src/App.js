@@ -147,18 +147,17 @@ function App(props) {
     setToken('');
   }
 
-  function removeRoute(c) {
+  function removeRoute(hash) {
     let currentCourses = courses;
     //loop through courses
     for (let i = 0; i < currentCourses.length; i++) {
       //if the passed course matches passed course
-      if(c.hash === currentCourses[i].hash) {
+      if(hash === currentCourses[i].hash) {
         //change its route to empty route
-        currentCourses[i].route.geoJSON = { properties: {name: "no route stored"} }
+        currentCourses[i].route.geoJSON = { properties: {name: "no route stored"}, vertInfo: {cumulativeGain: []} }
       }
     }
     setCourses(currentCourses);
-    console.log(currentCourses)
   }
 
   function editOff() {
@@ -177,6 +176,7 @@ function App(props) {
     let newStop = {
       name: "Stop",
       cals: 200,
+      miles: 0,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
       comments: ""
     }

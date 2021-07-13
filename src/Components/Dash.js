@@ -107,10 +107,10 @@ function Dash(props) {
                         <div>
                           <Profile route={c.route.geoJSON}></Profile>
                           <div style={{display: "flex", justifyContent: "space-around"}}>
-                          <small>Approx. distance: {c.route.geoJSON.properties.distance.toFixed(2)} mi.</small>
+                          {/* <small>Approx. distance: {c.route.geoJSON.properties.distance.toFixed(2)} mi.</small>
                           <small>Approx. vert: {Math.round(c.route.geoJSON.properties.vert)} ft.</small>
                           <small>Avg Uphill Grade: {Math.round(c.details.vert / c.route.geoJSON.properties.vertInfo.totalUphillFeet * 100)}%</small>
-                          <small>Avg Max Grade: {c.route.geoJSON.properties.vertInfo.avgMaxGrade}%</small>
+                          <small>Avg Max Grade: {c.route.geoJSON.properties.vertInfo.avgMaxGrade}%</small> */}
                         </div>
                         </div> : null}
                       </div>
