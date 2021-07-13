@@ -71,12 +71,12 @@ function App(props) {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && courses.length === 0) {
       //verify token
-      // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
-        fetch('http://localhost:3000/course/api/account/verify?token=' + obj.token, {
+      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
+        // fetch('http://localhost:3000/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'origin': 'https://group-timer.firebaseapp.com/',
+          'origin': 'https://course-planner.firebaseapp.com/',
           'Accept': 'application/json'
 
         }
@@ -187,8 +187,8 @@ function App(props) {
 
   function saveNewCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        fetch(`http://localhost:3000/course`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        // fetch(`http://localhost:3000/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -239,8 +239,8 @@ function App(props) {
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
     //   saveNewRoute();
     // }
-      // fetch(`https://banana-crumble-42815.herokuapp.com/course?courseId=${props.course._id}`, {
-        fetch(`http://localhost:3000/course?courseId=${courseToEdit._id}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/course?courseId=${courseToEdit._id}`, {
+        // fetch(`http://localhost:3000/course?courseId=${courseToEdit._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
