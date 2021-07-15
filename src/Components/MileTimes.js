@@ -13,7 +13,7 @@ const MileTableHead = styled.th`
 
 const SliderBox = styled.div`
   width: 50%;
-  margin: 5px 0 0 0;
+  margin: 0 0 20px 0;
 
 `
 
@@ -107,14 +107,14 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     return (
         <div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
-            <div>Equalize pace: <SliderBox>
+            Equalize pace:<SliderBox>
                 <Slider
                 axis="x"
                 xmax = {700}
                 xmin = {200}
                 x={vertMod}
                 onChange={({ x }) =>  setVertMod(x)}/>
-            </SliderBox></div>
+            </SliderBox>
             </div>
             <section style={{margin: "0 auto"}}>
               <h3 style={{marginLeft: "30px"}}><span>Splits</span></h3>

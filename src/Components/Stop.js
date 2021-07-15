@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         width: '25ch',
       },
+      comments: {
+        position: "absolute"
+      },
     },
   }));
 
@@ -153,7 +156,7 @@ function onTextboxChangeStopName(event, s) {
 
                         <TextField style={{width: "50px"}} placeholder="Miles" type="number" min="0" step="1" label={index == 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => onTextboxChangeStopMiles(e, s)} />
                         <TextField style={{width: "50px"}} placeholder="Calories"  label={index == 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s)} />
-                        <TextField style={{width: "250px"}} placeholder="Comments" rowsMax={4} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, s)} />
+                        <TextField className={classes.comments} style={{width: "250px"}} placeholder="Comments" rowsMax={6} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, s)} />
                     </Row>
                 </form>
                 <TimeCals vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>
