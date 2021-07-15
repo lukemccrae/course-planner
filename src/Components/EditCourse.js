@@ -12,33 +12,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  textField: {
-    fontSize: "25px"
-  }
-}));
-
-
 const Divider = styled.div`
   border-top: 2px solid #D3D3D3;
   margin: 5px 0 10px 0;
 `
 
 function EditCourse(props) {
-  const classes = useStyles();
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
   }
@@ -58,14 +37,14 @@ function EditCourse(props) {
           {props.vertInfo.length === 0 ? (
             <Route saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></Route>
           ) : null}
-          <form className={classes.root} noValidate autoComplete="off">
+          <form noValidate autoComplete="off">
               {/* <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
               <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} /> */}
               <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
-              <div style={{fontSize: "35px", paddingTop: "11px"}}>:</div>
+              <div style={{fontSize: "35px", paddingTop: "11px", display: "inline-block"}}>:</div>
               <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
               {/* <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div> */}
-              <FormControl style={{display: props.vertInfo.length > 0 ? "inline-flex" : "none"}}>
+              <FormControl style={{display: props.vertInfo.length > 0 ? "inline-block" : "none"}}>
               <InputLabel>Terrain Type</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -79,7 +58,7 @@ function EditCourse(props) {
                 <MenuItem value={1.3}>Extreme</MenuItem>
                 </Select>
               </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl >
             <InputLabel>Calories per Hour</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
