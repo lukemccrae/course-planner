@@ -37,7 +37,6 @@ function EditCourse(props) {
           {props.vertInfo.length === 0 ? (
             <Route saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></Route>
           ) : null}
-          {/* <form noValidate autoComplete="off"> */}
               {/* <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
               <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} /> */}
               {/* <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div> */}
@@ -75,8 +74,7 @@ function EditCourse(props) {
                     </Select>
                 </FormControl>
               </div>
-              
-          {/* </form> */}
+            
 
           <div style={{display: props.mileTimes.length > 0 ? "inline" : "none"}}>
             <MileTimes setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
