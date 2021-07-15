@@ -9,7 +9,7 @@ const MileBox = styled.div`
 `
 
 const SliderBox = styled.div`
-  width: 30%;
+  width: 50%;
   margin: 5px 0 0 0;
 `
 
@@ -94,7 +94,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     return (
         <div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
-            <div style={{margin: "10px 0 0 0", display: vertInfo.length > 0 ? "block" : "none"}}>Equalize pace: <SliderBox>
+            <div style={{display: vertInfo.length > 0 ? "block" : "none"}}>Equalize pace: <SliderBox>
                 <Slider
                 axis="x"
                 xmax = {700}

@@ -37,41 +37,46 @@ function EditCourse(props) {
           {props.vertInfo.length === 0 ? (
             <Route saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></Route>
           ) : null}
-          <form noValidate autoComplete="off">
+          {/* <form noValidate autoComplete="off"> */}
               {/* <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
               <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} /> */}
-              <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
-              <div style={{fontSize: "35px", paddingTop: "11px", display: "inline-block"}}>:</div>
-              <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
               {/* <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div> */}
-              <FormControl style={{display: props.vertInfo.length > 0 ? "inline-block" : "none"}}>
-              <InputLabel>Terrain Type</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  value={props.terrainMod}
-                  onChange={(e) => props.setTerrainMod(e.target.value)}
-                  className="cal-style"
-                >
-                <MenuItem value={1.05}>Road</MenuItem>
-                <MenuItem value={1.1}>Moderate</MenuItem>
-                <MenuItem value={1.2}>Rough</MenuItem>
-                <MenuItem value={1.3}>Extreme</MenuItem>
-                </Select>
-              </FormControl>
-          <FormControl >
-            <InputLabel>Calories per Hour</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                value={props.calories}
-                onChange={(e) => props.setCalories(e.target.value)}
-                className="cal-style"
-              >
-              <MenuItem value={150}>150 (low)</MenuItem>
-              <MenuItem value={200}>200 (med)</MenuItem>
-              <MenuItem value={250}>250 (high)</MenuItem>
-              </Select>
-          </FormControl>
-          </form>
+              <div style={{display: "flex", justifyContent: "space-around", margin: "10px 0 0 0"}}>
+                <div style={{display: "flex"}}>
+                  <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
+                  <div style={{fontSize: "35px", padding: "5px 5px 15px 5px", display: "inline-block"}}>:</div>
+                  <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
+                </div>
+                <FormControl style={{display: props.vertInfo.length > 0 ? "inline-block" : "none"}}>
+                <InputLabel>Terrain Type</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    value={props.terrainMod}
+                    onChange={(e) => props.setTerrainMod(e.target.value)}
+                    className="cal-style"
+                  >
+                  <MenuItem value={1.05}>Road</MenuItem>
+                  <MenuItem value={1.1}>Moderate</MenuItem>
+                  <MenuItem value={1.2}>Rough</MenuItem>
+                  <MenuItem value={1.3}>Extreme</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl >
+                  <InputLabel>Calories per Hour</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      value={props.calories}
+                      onChange={(e) => props.setCalories(e.target.value)}
+                      className="cal-style"
+                    >
+                    <MenuItem value={150}>150 (low)</MenuItem>
+                    <MenuItem value={200}>200 (med)</MenuItem>
+                    <MenuItem value={250}>250 (high)</MenuItem>
+                    </Select>
+                </FormControl>
+              </div>
+              
+          {/* </form> */}
 
           <div style={{display: props.mileTimes.length > 0 ? "inline" : "none"}}>
             <MileTimes setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
