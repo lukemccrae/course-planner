@@ -63,7 +63,7 @@ function EditCourse(props) {
               <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
               <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} />
               <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
-              <div style={{fontSize: "35px", paddingTop: "11px"}}>:</div>
+              <div style={{fontSize: "35px", paddingTop: "11px", display: "inline"}}>:</div>
               <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
               <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div>
               <FormControl style={{display: props.vertInfo.length > 0 ? "inline" : "none"}} className={classes.formControl}>

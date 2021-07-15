@@ -8,6 +8,7 @@
     "add": "^2.0.6",
     "bootstrap": "^4.3.1",
     "chart.js": "^3.3.2",
+    "firebase-tools": "^9.16.0",
     "lodash": "^4.17.15",
     "lodash.clonedeep": "^4.5.0",
     "pretty-checkbox": "^3.0.3",
