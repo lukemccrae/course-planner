@@ -80,7 +80,6 @@ function EditCourse(props) {
                 <MenuItem value={1.3}>Extreme</MenuItem>
                 </Select>
               </FormControl>
-          </form>
           <FormControl className={classes.formControl}>
             <InputLabel>Calories per Hour</InputLabel>
               <Select
@@ -94,6 +93,7 @@ function EditCourse(props) {
               <MenuItem value={250}>250 (high)</MenuItem>
               </Select>
           </FormControl>
+          </form>
 
           <div style={{display: props.mileTimes.length > 0 ? "inline" : "none"}}>
             <MileTimes setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
