@@ -67,6 +67,7 @@ export default function MenuAppBar(props) {
           </Typography> 
           {auth && (
             <div>
+              <p style={{display: "inline", fontSize: "12px"}}> {props.username}</p>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"

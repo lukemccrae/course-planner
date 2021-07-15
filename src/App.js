@@ -145,6 +145,7 @@ function App(props) {
   function loggedOut() {
     localStorage.clear();
     setToken('');
+    setUsername('')
   }
 
   function removeRoute(hash) {
@@ -207,7 +208,6 @@ function App(props) {
           setWhy(true);
         } else {
           console.log("Error: adding this course failed.")
-          console.log(json)
         }
       });
   }
@@ -258,7 +258,6 @@ function App(props) {
           setSaved(true)
         } else {
           console.log("Error: adding this course failed.")
-          console.log(json)
         }
       });
   }

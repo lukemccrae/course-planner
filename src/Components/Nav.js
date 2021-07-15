@@ -62,11 +62,11 @@ function Nav(props) {
 
     return (
       <div>
-        <AppBar onSelect={onSelect} openLoginModal={openLoginModal} onLogout={onLogout}></AppBar>
+        <AppBar username={props.username} onSelect={onSelect} openLoginModal={openLoginModal} onLogout={onLogout}></AppBar>
         {/* <Navbar bg="light">
           <Container>
             <a href="'https://github.com/lukemccrae/course-planner', '_blank'">Github</a>
-            <h4>Course Planner</h4>
+            <h4>Course Plannerrrr</h4>
             {getFromStorage("course_planner") ? <a href="#" onClick={onLogout}>Logout</a> : <a href="#" onClick={openLoginModal}>Login</a>}
 
           </Container>

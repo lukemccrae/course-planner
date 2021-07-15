@@ -3,14 +3,27 @@ import styled from 'styled-components';
 import Slider from 'react-input-slider';
 import { makeStyles } from '@material-ui/core/styles';
 
-const MileBox = styled.div`
-    display: flex;
-    justify-content: space-evenly;
+const MileBox = styled.tr`
+  border-bottom: 1px solid #D3D3D3;
+`
+
+const MileTableHead = styled.th`
+  width: 60px;
 `
 
 const SliderBox = styled.div`
   width: 50%;
   margin: 5px 0 0 0;
+
+`
+
+const TableData = styled.td`
+  width: 50px;
+`
+
+const Divider = styled.div`
+  border-top: 2px solid #D3D3D3;
+  margin: 5px 0 10px 0;
 `
 
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +107,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     return (
         <div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
-            <div style={{display: vertInfo.length > 0 ? "block" : "none"}}>Equalize pace: <SliderBox>
+            <div>Equalize pace: <SliderBox>
                 <Slider
                 axis="x"
                 xmax = {700}
@@ -103,15 +116,25 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                 onChange={({ x }) =>  setVertMod(x)}/>
             </SliderBox></div>
             </div>
-            {paces.map((m, index) => {
-                return (
-                <MileBox key={index}>
-                    <div>Mile: {index + 1}</div>
-                    <div>{minTommss(m)}</div>
-                    <div style={{display: vertInfo.length > 0 ? "inline" : "none"}}>vert: {Math.round(vertInfo[index])}</div>
-                </MileBox>
-                )
-             })}
+            <section style={{margin: "0 auto"}}>
+              <h3 style={{marginLeft: "30px"}}><span>Splits</span></h3>
+              <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "300px"}}>
+              <thead>
+                <MileTableHead>Miles</MileTableHead>
+                <MileTableHead>Pace</MileTableHead>
+                <MileTableHead>Vert</MileTableHead>
+              </thead>
+              {paces.map((m, index) => {
+                  return (
+                  <MileBox key={index}>
+                      <TableData>{index + 1}</TableData>
+                      <TableData>{minTommss(m)}</TableData>
+                      <TableData>{Math.round(vertInfo[index])} ft.</TableData>
+                  </MileBox>
+                  )
+              })}
+            </table>
+            </section>
              {/* <h5>Total time: {toHHMMSS(totalTime*60)}</h5> */}
         </div>
     )
