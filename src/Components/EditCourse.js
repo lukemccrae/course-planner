@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '25ch'
+      width: '25ch',
+      display: 'inline'
     },
   },
   formControl: {
@@ -54,18 +55,17 @@ function EditCourse(props) {
           <Button variant="outlined" onClick={() => props.toggleEdit(props.hash)}>&#8963;</Button>
         </div>
         <div>
-
           {/* {true ? ( */}
           {props.vertInfo.length === 0 ? (
             <Route saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></Route>
           ) : null}
           <form className={classes.root} noValidate autoComplete="off">
-              <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
-              <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} />
+              {/* <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
+              <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} /> */}
               <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
               <div style={{fontSize: "35px", paddingTop: "11px", display: "inline"}}>:</div>
               <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
-              <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div>
+              {/* <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div> */}
               <FormControl style={{display: props.vertInfo.length > 0 ? "inline" : "none"}} className={classes.formControl}>
               <InputLabel>Terrain Type</InputLabel>
                 <Select

@@ -60,10 +60,13 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
 
     return (
         <div>
-            <div>distance to {index < stops.length -1 ? "next aid" : "finish"}: {distance}</div>
+          <ul>
+            <li>distance to {index < stops.length -1 ? "next aid" : "finish"}: {distance}</li>
             <VertStop pastAid={pastAid} vertInfo={vertInfo} distance={distance}></VertStop>
-            <div>time to next aid: {toHHMMSS(time*60)}</div>
-            <div>calorie needs: {calToConsume}</div>
+            <li>time to next aid: {toHHMMSS(time*60)}</li>
+            <li>calorie needs: {calToConsume}</li>
+          </ul>
+            
         </div>
     )
 }

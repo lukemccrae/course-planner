@@ -112,7 +112,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                 </MileBox>
                 )
              })}
-             <div>Total time: {toHHMMSS(totalTime*60)}</div>
+             {/* <h5>Total time: {toHHMMSS(totalTime*60)}</h5> */}
         </div>
     )
 }

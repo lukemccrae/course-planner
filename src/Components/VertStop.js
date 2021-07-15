@@ -20,7 +20,7 @@ function VertStop({distance, vertInfo, pastAid}) {
     
     return (
         <div>
-            <div>vert to next aid: {vert}</div>
+            <li>vert to next aid: {vert}</li>
         </div>
     )
 }
