@@ -1,13 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import styled from 'styled-components';
+import { css } from "@emotion/core";
+import BarLoader from "react-spinners/BarLoader";
 
 const Input = styled.input`
 
 `
+const override = css`
+  display: flex;
+`;
+
 
 function Route(props) {
+  const [uploading, setUploading] = useState(false)
+
   function gpxToJson(gpx) {
+    setUploading(true)
     fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
         // fetch('http://localhost:3000/gps/togeojson', {
       method: 'POST',
@@ -49,6 +58,7 @@ function Route(props) {
     }).then(res => res.json()).then(json => {
       if (json.success) {
         props.saveCourse()
+        setUploading(false)
       } else {
         console.log("Error: adding this course failed.")
         console.log(json)
@@ -68,6 +78,10 @@ function Route(props) {
 
     return (
         <div className='file-input'>
+          <BarLoader css={override}
+              size={15}
+              color={"#007bff"}
+              loading={uploading}></BarLoader>
             <input onChange={(e)=> changeHandler(e)} type='file'></input>
         </div>
     )
