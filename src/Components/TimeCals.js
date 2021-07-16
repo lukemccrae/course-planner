@@ -35,12 +35,10 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedSt
       }
 
       function timeVertToNextAid(diff) {
-        console.log(typeof miles)
           let timeSum = 0;
 
           for (let i = miles; i < diff + parseInt(miles); i++) {
             timeSum += mileTimes[i]
-            console.log(i)
           }
 
           setTime(timeSum)
