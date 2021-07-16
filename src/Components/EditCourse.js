@@ -79,7 +79,7 @@ function EditCourse(props) {
           <div style={{display: props.mileTimes.length > 0 ? "inline" : "none"}}>
             <MileTimes setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
             <Divider></Divider>
-            <Stop vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} stops={props.stops} setStops={props.setStops}></Stop>
+            <Stop vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop}></Stop>
             <Divider></Divider>
           </div>
 

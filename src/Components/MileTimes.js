@@ -117,7 +117,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
             </SliderBox>
             </div>
             <section style={{margin: "0 auto"}}>
-              <h3 style={{marginLeft: "30px"}}><span>Splits</span></h3>
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "300px"}}>
               <thead>
                 <MileTableHead>Miles</MileTableHead>

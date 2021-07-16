@@ -79,6 +79,7 @@ function Dash(props) {
                           
                           setRoute={props.setRoute}
                           addStop={props.addStop}
+                          delStop={props.delStop}
                           setDistance={props.setDistance}
                           setVert={props.setVert}
                           setName={props.setName}

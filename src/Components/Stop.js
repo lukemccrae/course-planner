@@ -57,12 +57,11 @@ const StopInputNew = styled.input`
 `
 
 
-function Stop({mileTimes, setMileTimes, setStops, addStop, stops, calories, vertInfo}) {
-
+function Stop({mileTimes, setMileTimes, delStop, setStops, addStop, stops, calories, vertInfo}) {
     const classes = useStyles();
 
     useEffect(() => {
-      }, [stops, mileTimes])
+      }, [stops])
 
 function onTextboxChangeStopName(event, s) {
     const updatedStops = cloneDeep(stops)
@@ -108,19 +107,6 @@ function onTextboxChangeStopName(event, s) {
     s.comments = event.target.value
   }
 
-  function delItem(item) {
-    let updatedStops;
-
-    function isStop(element) {
-      if(element.id === item.id) return element;
-    }
-
-    let index = stops.findIndex(isStop);
-    updatedStops = stops.splice(index, 1);
-    setStops(updatedStops)
-  }
-
-
   function sumCal(stops) {
     let sum = 0;
     for (let i = 0; i < stops.length; i++) {
@@ -145,7 +131,7 @@ function onTextboxChangeStopName(event, s) {
                 <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">
                     <Row key={s.id}>
-                        <button style={{display: stops.length < 2 ? "none" : "inline"}} onClick={()=>{delItem(s)}} type="button" className="close" aria-label="Close">
+                        <button style={{display: stops.length < 2 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         {/* <StopNameInput placeholder="Name" stops={stops} s={s} type="text" value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}
@@ -156,7 +142,7 @@ function onTextboxChangeStopName(event, s) {
 
                         <TextField style={{width: "50px"}} placeholder="Miles" type="number" min="0" step="1" label={index == 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => onTextboxChangeStopMiles(e, s)} />
                         <TextField style={{width: "50px"}} placeholder="Calories"  label={index == 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s)} />
-                        <TextField className={classes.comments} style={{width: "250px"}} placeholder="Comments" rowsMax={6} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, s)} />
+                        <TextField className={classes.comments} style={{width: "250px"}} placeholder="Comments" rowsMax={2} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, s)} />
                     </Row>
                 </form>
                 <TimeCals vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>

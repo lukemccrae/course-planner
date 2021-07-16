@@ -38,7 +38,7 @@ function App(props) {
 
   const [details, setDetails] = useState({});
   const [route, setRoute] = useState({});
-  const [stops, setStops] = useState();
+  const [stops, setStops] = useState([]);
   const [distance, setDistance] = useState();
   const [vert, setVert] = useState();
   const [name, setName] = useState();
@@ -68,6 +68,7 @@ function App(props) {
     // }
 
   useEffect(() => {
+    console.log("stops")
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && courses.length === 0) {
       //verify token
@@ -184,6 +185,13 @@ function App(props) {
 
       updatedStops.push(newStop);
       setStops([...updatedStops])
+  }
+
+
+  function delStop(index) {
+    let updatedStops = stops;
+    updatedStops.splice(index, 1)
+    setStops([...updatedStops])
   }
 
   function saveNewCourse() {
@@ -312,6 +320,7 @@ function App(props) {
 
           setRoute={setRoute}
           addStop={addStop}
+          delStop={delStop}
           setDistance={setDistance}
           setVert={setVert}
           setName={setName}
