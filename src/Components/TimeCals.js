@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
 
 
-function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
+function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedStops, setCountedStops}) {
     const [distance, setDistance] = useState();
     const [time, setTime] = useState();
     const [pastAid, setPastAid] = useState(0);
@@ -24,7 +24,8 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
         }
 
         //distance between aid stations
-        let diff = parseInt(nextAid) - parseInt(pastAid) - (index > 0 ?  1 : 0)
+        //take care of last stop condition with teriary
+        let diff = parseInt(nextAid) - parseInt(pastAid) - (index === stops.length - 1 ? 1 : 0)
 
         //display distance
         setDistance(diff)
@@ -34,10 +35,14 @@ function TimeCals({stops, mileTimes, index, calories, vertInfo}) {
       }
 
       function timeVertToNextAid(diff) {
+        console.log(typeof miles)
           let timeSum = 0;
-          for (let i = 0; i < diff - (index > 0 ? 1 : 0); i++) {
+
+          for (let i = miles; i < diff + parseInt(miles); i++) {
             timeSum += mileTimes[i]
+            console.log(i)
           }
+
           setTime(timeSum)
           caloriesToNextAid(timeSum)
       }

@@ -58,53 +58,34 @@ const StopInputNew = styled.input`
 
 
 function Stop({mileTimes, setMileTimes, delStop, setStops, addStop, stops, calories, vertInfo}) {
+  const [countedStops, setCountedStops] = useState(0);
     const classes = useStyles();
 
     useEffect(() => {
       }, [stops])
 
-function onTextboxChangeStopName(event, s) {
+function onTextboxChangeStopName(event, i) {
     const updatedStops = cloneDeep(stops)
-    for (var i = 0; i < updatedStops.length; i++) {
-      if(updatedStops[i].id === s.id) {
-        updatedStops[i].name = event.target.value
-      }
-    }
+    updatedStops[i].name = event.target.value
     setStops(updatedStops)
-    s.name = event.target.value
   }
 
-  function onTextboxChangeStopMiles(event, s) {
+  function onTextboxChangeStopMiles(event, i) {
     const updatedStops = cloneDeep(stops)
-    for (var i = 0; i < updatedStops.length; i++) {
-      if(updatedStops[i].id === s.id) {
-        updatedStops[i].miles = event.target.value
-      }
-    }
+    updatedStops[i].miles = event.target.value
     setStops(updatedStops)
-    s.miles = event.target.value
   }
 
-  function onTextboxChangeStopCals(event, s) {
+  function onTextboxChangeStopCals(event, i) {
     const updatedStops = cloneDeep(stops)
-    for (var i = 0; i < updatedStops.length; i++) {
-      if(updatedStops[i].id === s.id) {
-        updatedStops[i].cals = event.target.value
-      }
-    }
+    updatedStops[i].cals = event.target.value
     setStops(updatedStops)
-    s.cals = event.target.value
   }
 
-  function onTextboxChangeStopComments(event, s) {
+  function onTextboxChangeStopComments(event, i) {
     const updatedStops = cloneDeep(stops)
-    for (var i = 0; i < updatedStops.length; i++) {
-      if(updatedStops[i].id === s.id) {
-        updatedStops[i].comments = event.target.value
-      }
-    }
+    updatedStops[i].comments = event.target.value
     setStops(updatedStops)
-    s.comments = event.target.value
   }
 
   function sumCal(stops) {
@@ -135,17 +116,17 @@ function onTextboxChangeStopName(event, s) {
                             <span aria-hidden="true">&times;</span>
                         </button>
                         {/* <StopNameInput placeholder="Name" stops={stops} s={s} type="text" value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}
-                        <TextField style={{width: "100px"}} placeholder="Name"  label={index == 0 ? "Name" : ""} s={s} defaultValue={s.name} onChange={(e) => onTextboxChangeStopName(e, s)} />
+                        <TextField style={{width: "100px"}} placeholder="Name"  label={index == 0 ? "Name" : ""} s={s} defaultValue={s.name} onChange={(e) => onTextboxChangeStopName(e, index)} />
 
                         {/* <StopInput placeholder="Miles" stops={stops} s={s} type="number" value={s.miles} onChange={(e) => onTextboxChangeStopMiles(e, s)}/>
                         <StopInput placeholder="Calories" stops={stops} s={s} type="number" value={s.cals} onChange={(e) => onTextboxChangeStopCals(e, s)}/> */}
 
-                        <TextField style={{width: "50px"}} placeholder="Miles" type="number" min="0" step="1" label={index == 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => onTextboxChangeStopMiles(e, s)} />
-                        <TextField style={{width: "50px"}} placeholder="Calories"  label={index == 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s)} />
-                        <TextField className={classes.comments} style={{width: "250px"}} placeholder="Comments" rowsMax={2} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, s)} />
+                        <TextField style={{width: "50px"}} placeholder="Miles" type="number" min="0" step="1" label={index == 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => onTextboxChangeStopMiles(e, index)} />
+                        <TextField style={{width: "50px"}} placeholder="Calories"  label={index == 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} />
+                        <TextField className={classes.comments} style={{width: "250px"}} placeholder="Comments" rowsMax={2} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, index)} />
                     </Row>
                 </form>
-                <TimeCals vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>
+                <TimeCals miles={s.miles} countedStops={countedStops} setCountedStops={setCountedStops} vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>
                 </div>
               )
             })}
