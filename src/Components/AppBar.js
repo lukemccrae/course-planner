@@ -63,7 +63,7 @@ export default function MenuAppBar(props) {
             <MenuIcon />
           </IconButton> */}
           <Typography variant="h6" className={classes.title}>
-            Course Planner
+            Corsa
           </Typography> 
           {auth && (
             <div>
