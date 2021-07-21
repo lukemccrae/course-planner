@@ -39,7 +39,7 @@ function Login(props) {
           setInStorage('course_planner', { token: json.token })
 
           //close login modal
-          props.closeModal();
+          props.setLoginModalIsOpen(false);
         } else {
           console.log(json)
         }
@@ -59,6 +59,9 @@ function Login(props) {
 
         :
         <Box>
+          <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+              <h4 style={{margin: "0 0 15px 0"}}>Log in to Corsa</h4>
+            </div>
             <Form>
                 <Form.Group controlId="formBasicEmail">
                 <Form.Control

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Login from './Login';
+
 import AppBar from './AppBar';
 import 'react-dropdown/style.css';
 import Modal from 'react-modal';
@@ -62,23 +63,7 @@ function Nav(props) {
 
     return (
       <div>
-        <AppBar username={props.username} onSelect={onSelect} openLoginModal={openLoginModal} onLogout={onLogout}></AppBar>
-        {/* <Navbar bg="light">
-          <Container>
-            <a href="'https://github.com/lukemccrae/course-planner', '_blank'">Github</a>
-            <h4>Course Plannerrrr</h4>
-            {getFromStorage("course_planner") ? <a href="#" onClick={onLogout}>Logout</a> : <a href="#" onClick={openLoginModal}>Login</a>}
-
-          </Container>
-        </Navbar> */}
-        <Modal
-          isOpen={loginModalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <Login closeModal={closeModal} loggedIn={props.loggedIn}></Login>
-        </Modal>
+        <AppBar username={props.username} onSelect={onSelect} setLoginModalIsOpen={props.setLoginModalIsOpen} onLogout={onLogout}></AppBar>
       </div>
     )
 

@@ -4,6 +4,7 @@ import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
 import Button from '@material-ui/core/Button';
 import Dash from './Components/Dash';
+import Login from './Components/Login';
 import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
@@ -24,7 +25,8 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    width                 : '30vw'
   }
 };
 
@@ -53,6 +55,7 @@ function App(props) {
   const [saved, setSaved] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [why, setWhy] = useState(false);
+  const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
 
     //add object for creating more groups
     //NOT USING THIS ANYMORE
@@ -147,6 +150,10 @@ function App(props) {
     localStorage.clear();
     setToken('');
     setUsername('')
+  }
+
+  function closeLoginModal() {
+    setLoginModalIsOpen(false)
   }
 
   function removeRoute(hash) {
@@ -301,7 +308,7 @@ function App(props) {
     return (
       <div key={courses.length}>
         {!loading ? 
-        <Nav token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
+        <Nav setLoginModalIsOpen={setLoginModalIsOpen} token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
         {token ? 
@@ -362,6 +369,7 @@ function App(props) {
           :
           <DashNoLogin
             setIsLoading={setIsLoading} 
+            setLoginModalIsOpen={setLoginModalIsOpen}
           >
           </DashNoLogin>
          }
@@ -380,6 +388,14 @@ function App(props) {
             <Button variant="outlined" className="five-px-margin-right"  onClick={deleteCourse}>Delete</Button>
             <Button variant="outlined" className="five-px-margin-right" onClick={updateDeleteModalIsOpen}>Cancel</Button>
           </div>
+        </Modal>
+        <Modal
+          isOpen={loginModalIsOpen}
+          onRequestClose={closeLoginModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <Login setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}></Login>
         </Modal>
       </div>
     )

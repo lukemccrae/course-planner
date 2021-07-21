@@ -13,6 +13,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import logo from '../corsa.svg';
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +66,21 @@ export default function MenuAppBar(props) {
             <MenuIcon />
           </IconButton> */}
           <Typography variant="h6" className={classes.title}>
-            Corsa
+            <span>
+            <svg style={{marginBottom: "10px"}} version="1.0" xmlns="http://www.w3.org/2000/svg"
+              width="30.000000pt" height="30.000000pt" viewBox="0 0 295.000000 295.000000"
+              preserveAspectRatio="xMidYMid meet">
+
+              <g transform="translate(0.000000,295.000000) scale(0.100000,-0.100000)"
+              fill="white" stroke="none">
+              <path d="M1098 1815 c-189 -377 -345 -685 -348 -685 -3 0 -43 75 -88 166 -46
+              92 -85 165 -87 163 -5 -6 -505 -1009 -505 -1014 0 -3 633 -5 1406 -5 845 0
+              1404 4 1402 9 -12 33 -733 1481 -738 1481 -3 0 -51 -91 -107 -202 l-101 -203
+              -241 488 c-133 268 -243 487 -246 487 -3 0 -159 -308 -347 -685z"/>
+              </g>
+            </svg>
+            </span>
+            <h4 style={{margin: "0 0 0 15px", display: "inline"}}>Corsa</h4>
           </Typography> 
           {auth && (
             <div>
@@ -101,7 +118,7 @@ export default function MenuAppBar(props) {
                 open={open}
                 onClose={handleClose}
               >
-                {getFromStorage("course_planner") ? <MenuItem onClick={props.onLogout}>Logout</MenuItem> : <MenuItem onClick={props.openLoginModal}>Login</MenuItem>}
+                {getFromStorage("course_planner") ? <MenuItem onClick={props.onLogout}>Logout</MenuItem> : <MenuItem onClick={() => props.setLoginModalIsOpen(true)}>Login</MenuItem>}
               </Menu>
             </div>
           )}

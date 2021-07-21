@@ -15,6 +15,14 @@
   pointer-events: none;
 }
 
+.ReactModal__Overlay, .ReactModal__Overlay--after-open {
+  background-color: rgba(103, 128, 159, 0.2) !important;
+}
+
+.ReactModal__Content, .ReactModal__Content--after-open {
+  background-color: transparent;
+}
+
 .App-link {
   color: #61dafb;
 }

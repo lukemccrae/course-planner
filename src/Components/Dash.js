@@ -44,9 +44,6 @@ function Dash(props) {
 
     return (
       <div>
-        <Helmet>
-          <title>Course Planner</title>
-        </Helmet>
         <Grid>
             <Row>
             <Col size={1}></Col>
