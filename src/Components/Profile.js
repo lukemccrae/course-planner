@@ -67,14 +67,14 @@ function Profile(props) {
         }
     }
     return (
-        <Chart>
-            <Line
-            data={data}
-            width={100}
-            height={50}
-            options={data.options}>
-            </Line>
-        </Chart>
+            <Chart>
+                <Line
+                data={data}
+                width={100}
+                height={50}
+                options={data.options}>
+                </Line>
+            </Chart>
     )
 }
 

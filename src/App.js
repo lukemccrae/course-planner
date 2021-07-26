@@ -94,7 +94,6 @@ function App(props) {
             setIsLoading(false);
           } else {
             setCourses(json.courses)
-            setCourseToEdit(json.courses[0])
           }
           setUsername(json.email);
           
@@ -309,7 +308,7 @@ function App(props) {
     return (
       <div key={courses.length}>
         {!loading ? 
-        <Nav setLoginModalIsOpen={setLoginModalIsOpen} token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
+        <Nav saveNewCourse={saveNewCourse} courses={courses} editCourse={editCourse} setLoginModalIsOpen={setLoginModalIsOpen} token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
         {token ? 
@@ -351,7 +350,8 @@ function App(props) {
           calories={calories}
           goalHours={goalHours}
           goalMinutes={goalMinutes}
-          vertMod={vertMod}>
+          vertMod={vertMod}
+          c={courseToEdit}>
           </Dash>
           : 
         <div>

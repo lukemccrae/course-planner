@@ -42,14 +42,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes}) {
-  console.log(vertInfo)
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, }) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState()
 
     useEffect(() => {
         resetPaces()
-    }, [distance, goalHours, goalMinutes, terrainMod, vertMod])
+    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo])
 
     const classes = useStyles();
     
@@ -63,7 +62,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     }
 
     function resetPaces() {
-        let smartDistance = distance > vertInfo.length ? distance : vertInfo.length;
+        let smartDistance = vertInfo.length;
         let tempPace = [];
         let tempTotalTime = 0;
         for (let i = 0; i < smartDistance; i++) {
@@ -75,6 +74,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
         setMileTimes(tempPace)
         setTotalTime(tempTotalTime)
         setPaces(tempPace)
+        console.log(paces)
     }
 
     function minTommss(minutes){
@@ -118,7 +118,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
             </SliderBox>
             </div>
             <section style={{margin: "0 auto"}}>
-              <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "300px"}}>
+              <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
               <thead>
                 <MileTableHead>Miles</MileTableHead>
                 <MileTableHead>Pace</MileTableHead>

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Login from './Login';
 
 import AppBar from './AppBar';
 import 'react-dropdown/style.css';
@@ -57,13 +56,17 @@ function Nav(props) {
       });
   }
 
+  function toggleEdit(c) {
+    props.editCourse(c);
+  }
+
   function openLoginModal() {
     setLoginModalIsOpen(true)
   }
 
     return (
       <div>
-        <AppBar username={props.username} onSelect={onSelect} setLoginModalIsOpen={props.setLoginModalIsOpen} onLogout={onLogout}></AppBar>
+        <AppBar saveNewCourse={props.saveNewCourse} courses={props.courses} toggleEdit={toggleEdit} editCourse={props.editCourse} username={props.username} onSelect={onSelect} setLoginModalIsOpen={props.setLoginModalIsOpen} onLogout={onLogout}></AppBar>
       </div>
     )
 

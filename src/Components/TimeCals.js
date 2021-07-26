@@ -1,5 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
+import styled from 'styled-components';
+
+const List = styled.ul`
+  display: inline-flex;
+  list-style: none;
+  margin: 0 0 15px 5px;
+  padding: 0;
+  flex-wrap: wrap;
+`
+
+const Detail = styled.strong`
+  font-weight: 300;
+  font-size: 25px;
+`
+
+const Span = styled.span`
+  margin: 5px;
+`
 
 
 function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedStops, setCountedStops}) {
@@ -63,14 +81,19 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedSt
 
     return (
         <div>
-          <ul>
-            <li>distance to {index < stops.length -1 ? "next stop" : "finish"}: {distance}</li>
-            { distance ? <li>avg. pace to {index < stops.length -1 ? "next stop" : "finish"}: {toHHMMSS((time / distance) *60)}</li> : null}
-            <VertStop pastAid={pastAid} vertInfo={vertInfo} distance={distance}></VertStop>
-            <li>time to next aid: {toHHMMSS(time*60)}</li>
-            <li>calorie needs: {calToConsume}</li>
-          </ul>
-            
+          <List>
+            {/* <li>distance to {index < stops.length -1 ? "next stop" : "finish"}: {distance}</li> */}
+            <li><Detail>{distance}</Detail>mi</li>
+            <Span></Span>
+            {/* { distance ? <li>avg. pace to {index < stops.length -1 ? "next stop" : "finish"}: {toHHMMSS((time / distance) *60)}</li> : null} */}
+            <li><Detail>{toHHMMSS((time / distance) *60)}</Detail>/mi</li>
+            <Span></Span>
+            <VertStop Detail={Detail} pastAid={pastAid} vertInfo={vertInfo} distance={distance}></VertStop>
+            <Span></Span>
+            <li><Detail>{toHHMMSS(time*60)}</Detail>next</li>
+            <Span></Span>
+            <li><Detail>{calToConsume}</Detail>cals</li>
+          </List>            
         </div>
     )
 }

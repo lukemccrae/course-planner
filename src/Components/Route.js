@@ -11,6 +11,19 @@ const override = css`
   display: flex;
 `;
 
+const Description = styled.strong`
+  font-weight: 300;
+  font-size: 28px;
+`
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  with: 100vw;
+  height: 90vh;
+`
+
 
 function Route(props) {
   const [uploading, setUploading] = useState(false)
@@ -76,13 +89,18 @@ function Route(props) {
 };
 
     return (
-        <div className='file-input'>
-          <BarLoader css={override}
-              size={15}
-              color={"#007bff"}
-              loading={uploading}></BarLoader>
-            <input onChange={(e)=> changeHandler(e)} type='file'></input>
+      <Center>
+        <div style={{display: "block"}}>
+          <Description>Upload a GPX file</Description>
+          <div className='file-input'>
+            <BarLoader css={override}
+                size={15}
+                color={"#007bff"}
+                loading={uploading}></BarLoader>
+              <input onChange={(e)=> changeHandler(e)} type='file'></input>
+          </div>
         </div>
+      </Center>
     )
 }
 

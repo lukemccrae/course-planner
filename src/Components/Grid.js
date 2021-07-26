@@ -3,11 +3,15 @@ import styled from 'styled-components';
 
 export const Grid = styled.div`
   margin: 0 5vw 0 5vw;
+  max-width: 100vw;
 `;
 
 export const Row = styled.div`
     display: flex;
     height: 100%;
+    @media (max-width: 1090px) {
+      flex-direction: column;
+    }
 `;
 
 export const Col = styled.div`

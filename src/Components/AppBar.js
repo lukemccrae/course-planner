@@ -4,16 +4,15 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import {getFromStorage} from '../utils/storage';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import GithubIcon from '@material-ui/icons/GitHub';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import logo from '../corsa.svg';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 
 
@@ -81,6 +80,20 @@ export default function MenuAppBar(props) {
             </svg>
             </span>
             <h4 style={{margin: "0 0 0 15px", display: "inline"}}>Corsa</h4>
+            <FormControl color="white">
+                <InputLabel>Select course</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    className="cal-style"
+                  >
+                    {props.courses.map(c => {
+                      return (
+                        <MenuItem key={c.details.hash} onClick={() => props.toggleEdit(c)}>{c.details.name}</MenuItem>
+                      )
+                    })}
+                  </Select>
+              </FormControl>
+              <Button style={{color: "white", borderColor: "white"}} onClick={props.saveNewCourse} variant="outlined">New Course</Button>
           </Typography> 
           {auth && (
             <div>

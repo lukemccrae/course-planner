@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 
-function VertStop({distance, vertInfo, pastAid}) {
+function VertStop({distance, vertInfo, pastAid, Detail}) {
     const [vert, setVert] = useState(0);
     useEffect(() => {
         calcVert();
@@ -19,9 +19,7 @@ function VertStop({distance, vertInfo, pastAid}) {
     }
     
     return (
-        <div>
-            <li>vert to next aid: {vert}</li>
-        </div>
+        <li><Detail>{vert}</Detail>ft.</li>
     )
 }
 
