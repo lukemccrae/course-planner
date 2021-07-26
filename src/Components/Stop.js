@@ -107,7 +107,7 @@ function onTextboxChangeStopName(event, i) {
 
     return (
         <div>
-            {stops.map((s, index) => {
+            {stops.sort((a, b) => a.miles - b.miles).map((s, index) => {
               return (
                 <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">

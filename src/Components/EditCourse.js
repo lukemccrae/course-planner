@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 
+
 const Divider = styled.div`
   border-top: 2px solid #D3D3D3;
   margin: 5px 0 10px 0;
@@ -24,8 +25,8 @@ function EditCourse(props) {
 
     return (
       <div>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <TextField style={{width: "300px", fontSize: "25px"}} type="text" value={props.name} label="Course Name" onChange={(e) => props.setName(e.target.value)} />
+        <div style={{display: 'flex', justifyContent: 'space-between', maxWidth: "400px"}}>
+          <TextField style={{width: "150px", fontSize: "25px"}} type="text" value={props.name} label="Course Name" onChange={(e) => props.setName(e.target.value)} />
           {props.saved ? <div style={{display: "flex"}}>
             <Button variant="outlined" className="five-px-margin-right" onClick={props.updateDeleteModalIsOpen}>Delete</Button>
             <Button variant="outlined" className="five-px-margin-right" onClick={props.saveCourse}>Save</Button>
@@ -40,7 +41,7 @@ function EditCourse(props) {
               {/* <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
               <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} /> */}
               {/* <div style={{paddingTop: "30px", display: props.vertInfo.length > 0 ? "none" : "none"}}>{Math.round( (props.vert / props.distance))} ft/mi</div> */}
-              <div style={{display: "flex", justifyContent: "space-around", margin: "10px 0 0 0"}}>
+              <div style={{display: "flex", justifyContent: "space-around", margin: "10px 0 0 0",  maxWidth: "400px"}}>
                 <div style={{display: "flex"}}>
                   <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
                   <div style={{fontSize: "35px", padding: "5px 5px 15px 5px", display: "inline-block"}}>:</div>
@@ -68,9 +69,12 @@ function EditCourse(props) {
                       onChange={(e) => props.setCalories(e.target.value)}
                       className="cal-style"
                     >
+                    <MenuItem value={100}>100 (very low)</MenuItem>
                     <MenuItem value={150}>150 (low)</MenuItem>
-                    <MenuItem value={200}>200 (med)</MenuItem>
+                    <MenuItem value={200}>200 (moderate)</MenuItem>
+                    <MenuItem value={225}>225 (average)</MenuItem>
                     <MenuItem value={250}>250 (high)</MenuItem>
+                    <MenuItem value={300}>300 (ravenous)</MenuItem>
                     </Select>
                 </FormControl>
               </div>

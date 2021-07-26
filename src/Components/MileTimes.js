@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes}) {
+  console.log(vertInfo)
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState()
 

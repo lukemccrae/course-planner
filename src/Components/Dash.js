@@ -7,6 +7,10 @@ import Profile from './Profile';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import {Helmet} from "react-helmet";
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const EditButton = styled.div`
   display: ${(props) => props.timerOn ? 'none' : 'inline'};
@@ -28,6 +32,7 @@ const CourseNameParent = styled.div`
 Modal.setAppElement('#root')
 
 function Dash(props) {
+  console.log(props)
   const [editingCourse, setEditingCourse] = useState({});
 
   useEffect(() => {
@@ -48,6 +53,21 @@ function Dash(props) {
             <Row>
             <Col size={1}></Col>
             <Col size={4}>
+            <FormControl >
+                <InputLabel>Select course</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    value={props.name || "Select a course"}
+                    className="cal-style"
+                  >
+                    {props.courses.map(c => {
+                      console.log(c)
+                      return (
+                        <MenuItem onClick={() => toggleEdit(c, props)}>{c.details.name}</MenuItem>
+                      )
+                    })}
+                  </Select>
+              </FormControl>
               {props.courses.map(c => {
                 return (
                   <Course className="course" key={c._id} c={c}>

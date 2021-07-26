@@ -94,6 +94,7 @@ function App(props) {
             setIsLoading(false);
           } else {
             setCourses(json.courses)
+            setCourseToEdit(json.courses[0])
           }
           setUsername(json.email);
           
@@ -183,7 +184,7 @@ function App(props) {
     let updatedStops = stops;
     
     let newStop = {
-      name: "Stop",
+      name: "New Stop",
       cals: 200,
       miles: 0,
       id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),

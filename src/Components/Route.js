@@ -17,8 +17,8 @@ function Route(props) {
 
   function gpxToJson(gpx) {
     setUploading(true)
-    fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        // fetch('http://localhost:3000/gps/togeojson', {
+    // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -71,7 +71,6 @@ function Route(props) {
 
     //need to cmake sure valid gpx
     if(true) {
-        console.log(file)
         gpxToJson(file);
     }
 };
