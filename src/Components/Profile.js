@@ -7,17 +7,18 @@ const Chart = styled.div`
 `
 
 function Profile(props) {
+    console.log(props)
     function fillPoints(props) {
         let tempPoints = [];
-        for (let i = 0; i < props.route.geometry.coordinates.length; i++) {
-            tempPoints.push(Math.round(props.route.geometry.coordinates[i][2]))
+        for (let i = 0; i < props.coordinates.length; i++) {
+            tempPoints.push(Math.round(props.coordinates[i][2]))
         }
         return tempPoints;
     }
 
     const data = {
         // labels: Array.from(Array(Math.round(props.route.properties.distance)).keys()),
-        labels: Array(props.route.geometry.coordinates.length).fill("l"),
+        labels: Array(props.coordinates.length).fill("l"),
         datasets: [{
             label: "",
             data: fillPoints(props),
@@ -70,8 +71,8 @@ function Profile(props) {
             <Chart>
                 <Line
                 data={data}
-                width={100}
-                height={50}
+                width={50}
+                height={20}
                 options={data.options}>
                 </Line>
             </Chart>

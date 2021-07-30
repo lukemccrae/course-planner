@@ -36,6 +36,7 @@ function Login(props) {
       .then(json => {
         if(json.success) {
           props.loggedIn(json)
+          console.log(json)
           setInStorage('course_planner', { token: json.token })
 
           //close login modal

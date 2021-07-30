@@ -59,10 +59,13 @@ const StopInputNew = styled.input`
 
 function Stop({mileTimes, setMileTimes, delStop, setStops, addStop, stops, calories, vertInfo}) {
   const [countedStops, setCountedStops] = useState(0);
+  const [comments, setComments] = useState([]);
+  
     const classes = useStyles();
 
+
     useEffect(() => {
-      }, [stops])
+      }, [])
 
 function onTextboxChangeStopName(event, i) {
     const updatedStops = cloneDeep(stops)
@@ -85,7 +88,7 @@ function onTextboxChangeStopName(event, i) {
   function onTextboxChangeStopComments(event, i) {
     const updatedStops = cloneDeep(stops)
     updatedStops[i].comments = event.target.value
-    setStops(updatedStops)
+    // setStops(updatedStops)
   }
 
   function sumCal(stops) {
@@ -111,7 +114,7 @@ function onTextboxChangeStopName(event, i) {
               return (
                 <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">
-                    <div key={s.id}>
+                    <Row style={{display: "flex", flexDirection: "row"}} key={s.id}>
                         <button style={{display: stops.length < 2 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -124,7 +127,7 @@ function onTextboxChangeStopName(event, i) {
                         <TextField style={{width: "50px"}} placeholder="Miles" type="number" min="0" step="1" label={index == 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => onTextboxChangeStopMiles(e, index)} />
                         <TextField style={{width: "50px"}} placeholder="Calories"  label={index == 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} />
                         <TextField className={classes.comments} style={{width: "150px"}} placeholder="Comments" rowsMax={2} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, index)} />
-                    </div>
+                    </Row>
                 </form>
                 <TimeCals miles={s.miles} countedStops={countedStops} setCountedStops={setCountedStops} vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>
                 </div>

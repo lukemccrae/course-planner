@@ -23,7 +23,6 @@ function Dash(props) {
     return (
       <div>
         {props.details ? <EditCourse
-          hash={props.c.hash}
           id={props.c._id}
           deleteCourse={props.deleteCourse}
           toggleEdit={toggleEdit}
@@ -35,6 +34,7 @@ function Dash(props) {
           saveCourse={props.saveCourse}
           saved={props.saved}
           deleteModalIsOpen={props.deleteModalIsOpen}
+          editCourse={props.editCourse}
           
           setRoute={props.setRoute}
           addStop={props.addStop}
@@ -48,11 +48,17 @@ function Dash(props) {
           setMileTimes={props.setMileTimes}
           setStops={props.setStops}
           setVertMod={props.setVertMod}
+          setVertInfo={props.setVertInfo}
           setTerrainMod={props.setTerrainMod}
           updateDeleteModalIsOpen={props.updateDeleteModalIsOpen}
+          setWhy={props.setWhy}
+          coordinates={props.coordinates}
+          setCoordinates={props.setCoordinates}
+
 
           stops={props.stops}
           terrainMod={props.terrainMod}
+          setCourseToEdit={props.setCourseToEdit}
           vertMod={props.vertMod}
           distance={props.distance}
           vert={props.vert}
@@ -61,8 +67,8 @@ function Dash(props) {
           calories={props.calories}
           goalHours={props.goalHours}
           goalMinutes={props.goalMinutes}
-          route={props.c.route.geoJSON}
-          vertInfo={props.c.route.geoJSON.properties.vertInfo.cumulativeGain}>
+          route={props.route}
+          vertInfo={props.vertInfo}>
         </EditCourse> : null}
       </div>
     )

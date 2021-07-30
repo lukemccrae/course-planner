@@ -30,9 +30,14 @@ const Box = styled.div`
 `
 
 function EditCourse(props) {
+  console.log(props)
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
+  }
+
+  function toggleEdit(c) {
+    props.editCourse(c);
   }
 
     return (
@@ -90,7 +95,7 @@ function EditCourse(props) {
               <Stop vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop}></Stop>
           </Col>
           <Col>
-            <Profile style={{display: props.mileTimes.length > 0 ? "inline" : "none", height: "20%", width: "30%"}} route={props.route}></Profile>
+            <Profile style={{display: props.mileTimes.length > 0 ? "inline=" : "none", height: "20%", width: "30%"}} coordinates={props.coordinates} route={props.route}></Profile>
             <MileTimes setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
           </Col>
         </Row>
@@ -101,7 +106,7 @@ function EditCourse(props) {
         <div>
           {/* {true ? ( */}
           {props.vertInfo.length === 0 ? (
-            <Route saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></Route>
+            <Route setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></Route>
           ) : null}
               {/* <TextField style={{width: "50px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.distance} label="Miles"  onChange={(e) => props.setDistance(e.target.value)} />
               <TextField style={{width: "75px", display: props.vertInfo.length > 0 ? "none" : "none"}} type="number" value={props.vert} label="Vert" onChange={(e) => props.setVert(e.target.value)} /> */}

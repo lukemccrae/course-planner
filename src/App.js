@@ -42,7 +42,7 @@ function App(props) {
   const [route, setRoute] = useState({});
   const [stops, setStops] = useState([]);
   const [distance, setDistance] = useState();
-  const [vert, setVert] = useState();
+  const [vertInfo, setVertInfo] = useState();
   const [name, setName] = useState();
   const [mileTimes, setMileTimes] = useState();
   const [calories, setCalories] = useState();
@@ -50,6 +50,7 @@ function App(props) {
   const [goalMinutes, setGoalMinutes] = useState();
   const [vertMod, setVertMod] = useState();
   const [terrainMod, setTerrainMod] = useState();
+  const [coordinates, setCoordinates] = useState();
 
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
@@ -71,7 +72,6 @@ function App(props) {
     // }
 
   useEffect(() => {
-    console.log("stops")
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && courses.length === 0) {
       //verify token
@@ -86,6 +86,7 @@ function App(props) {
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
+          console.log(json)
           setToken(obj);
           setIsLoading(false);
 
@@ -110,6 +111,7 @@ function App(props) {
 
     //enable group to be editable
     function editCourse(c) {
+      console.log(c)
       let currentCourses = courses;
       //loop through courses
       for (let i = 0; i < currentCourses.length; i++) {
@@ -123,13 +125,15 @@ function App(props) {
             setName(c.details.name)
             setDistance(c.details.distance)
             setStops(c.stops)
-            setVert(c.details.vert)
             setMileTimes(c.details.mileTimes)
             setGoalHours(c.details.goalHours)
             setGoalMinutes(c.details.goalMinutes)
             setCalories(c.details.calories)
             setVertMod(c.details.vertMod)
             setTerrainMod(c.details.terrainMod)
+            setVertInfo(c.route.geoJSON.properties.vertInfo.cumulativeGain)
+            setRoute(c.route)
+            setCoordinates(c.route.geoJSON.geometry.coordinates)
           }
         } else {
           //otherwise make it false
@@ -239,7 +243,6 @@ function App(props) {
       details: {
         stops,
         distance,
-        vert,
         name,
         mileTimes,
         calories,
@@ -292,6 +295,7 @@ function App(props) {
         let tempCourses = courses;
         tempCourses.splice(index, 1)
         setCourses(tempCourses)
+        setCourseToEdit(tempCourses[tempCourses.length - 1])
         setDeleteModalIsOpen(false);
       } else {
         console.log("error: ", json)
@@ -329,7 +333,6 @@ function App(props) {
           addStop={addStop}
           delStop={delStop}
           setDistance={setDistance}
-          setVert={setVert}
           setName={setName}
           setCalories={setCalories}
           setGoalHours={setGoalHours}
@@ -340,16 +343,21 @@ function App(props) {
           setTerrainMod={setTerrainMod}
           updateDeleteModalIsOpen={updateDeleteModalIsOpen}
           setWhy={setWhy}
+          setCourseToEdit={setCourseToEdit}
+          setVertInfo={setVertInfo}
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
           
           stops={stops}
+          route={route}
           terrainMod={terrainMod}
           distance={distance}
-          vert={vert}
           name={name}
           mileTimes={mileTimes}
           calories={calories}
           goalHours={goalHours}
           goalMinutes={goalMinutes}
+          vertInfo={vertInfo}
           vertMod={vertMod}
           c={courseToEdit}>
           </Dash>
