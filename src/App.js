@@ -3,7 +3,7 @@ import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
 import Button from '@material-ui/core/Button';
-import Dash from './Components/Dash';
+import EditCourse from './Components/EditCourse';
 import Login from './Components/Login';
 import DashNoLogin from './Components/DashNoLogin';
 import { css } from "@emotion/core";
@@ -32,72 +32,47 @@ const customStyles = {
 
 
 function App(props) {
-  const [token, setToken] = useState('');
   const [username, setUsername] = useState('');
-  const [userId, setUserId] = useState('');
-  const [courses, setCourses] = useState([]);
-  const [courseToEdit, setCourseToEdit] = useState({});
 
-  const [details, setDetails] = useState({});
-  const [route, setRoute] = useState({});
+  const [courseList, setCourseList] = useState([]);
   const [stops, setStops] = useState([]);
-  const [distance, setDistance] = useState();
-  const [vertInfo, setVertInfo] = useState();
+
   const [name, setName] = useState();
-  const [mileTimes, setMileTimes] = useState();
-  const [calories, setCalories] = useState();
+  const [mileTimes, setMileTimes] = useState([]);
   const [goalHours, setGoalHours] = useState();
   const [goalMinutes, setGoalMinutes] = useState();
-  const [vertMod, setVertMod] = useState();
+  const [calories, setCalories] = useState();
   const [terrainMod, setTerrainMod] = useState();
-  const [coordinates, setCoordinates] = useState();
-
+  const [vertInfo, setVertInfo] = useState([]);
+  const [coordinates, setCoordinates] = useState([]);
+  const [vertMod, setVertMod] = useState();
+ 
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [why, setWhy] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
-
-    //add object for creating more groups
-    //NOT USING THIS ANYMORE
-    // let addCourse = {
-    //   box: [""],
-    //   details: {
-    //     calories: 2000,
-    //     mileTimes: [],
-    //     name: "New Course",
-    //   },
-    //   editOpen: false,
-    //   hash: "newcourse"
-    // }
 
   useEffect(() => {
     const obj = getFromStorage('course_planner');
-    if (obj && obj.token && courses.length === 0) {
+    if (obj && obj.token && username === '') {
       //verify token
       fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
         // fetch('http://localhost:3000/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'origin': 'https://course-planner.firebaseapp.com/',
-          'Accept': 'application/json'
+          'origin': 'https://group-timer.firebaseapp.com/',
+          "Accept": "*/*",
 
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
           console.log(json)
-          setToken(obj);
-          setIsLoading(false);
-
-          //if account has no courses, p the AddGroup in
-          if(json.courses.length === 0) {
-            setIsLoading(false);
-          } else {
-            setCourses(json.courses)
-          }
+          setCourseList(json.courseList);
           setUsername(json.email);
-          
+
+          loadCourse(json.course)
+          setIsLoading(false);
         } else {
           setIsLoading(false);
         }
@@ -105,82 +80,53 @@ function App(props) {
     } else {
       setIsLoading(false);
     }
-  }, [courses])
+  }, [username])
   //empty array means only runs once
   //component did mount equivilant
 
+
+  function loadCourse(c) {
+    setName(c.details.name)
+    setStops(c.stops)
+    setMileTimes(c.details.mileTimes)
+    setGoalHours(c.details.goalHours)
+    setGoalMinutes(c.details.goalMinutes)
+    setCalories(c.details.calories)
+    setVertMod(c.details.vertMod)
+    setTerrainMod(c.details.terrainMod)
+    setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
+  }
+
     //enable group to be editable
-    function editCourse(c) {
-      console.log(c)
-      let currentCourses = courses;
-      //loop through courses
-      for (let i = 0; i < currentCourses.length; i++) {
-        //if the passed course matches passed group
-        if(c.hash === currentCourses[i].hash) {
-          //toggle the editOpen boolean value
-          currentCourses[i].editOpen = !currentCourses[i].editOpen;
-          if(currentCourses[i].editOpen === true) {
-            let c = currentCourses[i];
-            setCourseToEdit(c);
-            setName(c.details.name)
-            setDistance(c.details.distance)
-            setStops(c.stops)
-            setMileTimes(c.details.mileTimes)
-            setGoalHours(c.details.goalHours)
-            setGoalMinutes(c.details.goalMinutes)
-            setCalories(c.details.calories)
-            setVertMod(c.details.vertMod)
-            setTerrainMod(c.details.terrainMod)
-            setVertInfo(c.route.geoJSON.properties.vertInfo.cumulativeGain)
-            setRoute(c.route)
-            setCoordinates(c.route.geoJSON.geometry.coordinates)
-          }
+    function editCourse(courseRef) {
+      const obj = getFromStorage('course_planner');
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
+      // fetch(`http://localhost:3005/course?token=${obj.token}&id=${c.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'origin': 'https://course-planner.firebaseapp.com/'
+        },
+      }).then(res => res.json()).then(json => {
+        if (json.success) {
+          loadCourse(json.course[0]);
         } else {
-          //otherwise make it false
-          currentCourses[i].editOpen = false;
+          console.log("Error: didnt get a course.")
         }
-      }
-      setCourses(currentCourses);
+      });
     }
 
   function loggedIn(args) {
-    setToken(args.token);
-    setCourses(args.courses);
     setUsername(args.user);
-    setUserId(args.id);
   }
 
   function loggedOut() {
     localStorage.clear();
-    setToken('');
     setUsername('')
   }
 
   function closeLoginModal() {
     setLoginModalIsOpen(false)
-  }
-
-  function removeRoute(hash) {
-    let currentCourses = courses;
-    //loop through courses
-    for (let i = 0; i < currentCourses.length; i++) {
-      //if the passed course matches passed course
-      if(hash === currentCourses[i].hash) {
-        //change its route to empty route
-        currentCourses[i].route.geoJSON = { properties: {name: "no route stored"}, vertInfo: {cumulativeGain: []} }
-      }
-    }
-    setCourses(currentCourses);
-  }
-
-  function editOff() {
-    let currentCourses = courses;
-    //loop through groups
-    for (let i = 0; i < currentCourses.length; i++) {
-      //turn off
-      currentCourses[i].editOpen = false;
-    }
-    setCourses(currentCourses);  
   }
 
   function addStop() {
@@ -221,35 +167,19 @@ function App(props) {
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          let tempCourses = courses;
-          tempCourses.push(json.course)
-          setCourses(tempCourses)
-          setWhy(true);
+          console.log(json)
+          setCourseList(json.courseList)
         } else {
           console.log("Error: adding this course failed.")
         }
       });
   }
 
-  function findCourse(hash) {
-    for (let i = 0; i < courses.length; i++) {
-      if(courses[i].hash === hash) return i;
-    }
-  }
-
-  function saveCourse() {
+  function saveCourse(course) {
     setSaved(false)
     let tempCourse = {
       details: {
-        stops,
-        distance,
-        name,
-        mileTimes,
-        calories,
-        goalHours,
-        goalMinutes,
-        vertMod,
-        terrainMod
+
       },
       stops: stops
     }
@@ -257,8 +187,8 @@ function App(props) {
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
     //   saveNewRoute();
     // }
-      fetch(`https://banana-crumble-42815.herokuapp.com/course?courseId=${courseToEdit._id}`, {
-        // fetch(`http://localhost:3000/course?courseId=${courseToEdit._id}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/course?courseId=${course._id}`, {
+        // fetch(`http://localhost:3000/course?courseId=${course._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -269,10 +199,6 @@ function App(props) {
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          let index = findCourse(json.course.hash)
-          let tempCourses = courses;
-          if(index !== -1) tempCourses[index] = json.course;
-          setCourses(tempCourses)
           setSaved(true)
         } else {
           console.log("Error: adding this course failed.")
@@ -282,9 +208,8 @@ function App(props) {
 
   function deleteCourse(course) {
     const token = JSON.parse(localStorage.course_planner).token;
-    let index = findCourse(courseToEdit.hash);
 
-      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseToEdit._id}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${course._id}`, {
         // fetch(`http://localhost:3000/course?token=${token}&courseId=${course._id}`, {
       method: 'DELETE',
       headers: {
@@ -292,10 +217,7 @@ function App(props) {
       }
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        let tempCourses = courses;
-        tempCourses.splice(index, 1)
-        setCourses(tempCourses)
-        setCourseToEdit(tempCourses[tempCourses.length - 1])
+        setCourseList(json.courseList)
         setDeleteModalIsOpen(false);
       } else {
         console.log("error: ", json)
@@ -310,57 +232,42 @@ function App(props) {
     //if token, return dash, and show spinner
     //
     return (
-      <div key={courses.length}>
-        {!loading ? 
-        <Nav saveNewCourse={saveNewCourse} courses={courses} editCourse={editCourse} setLoginModalIsOpen={setLoginModalIsOpen} token={getFromStorage("course_planner")} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
+      <div>
+        {!loading && username ? 
+        <Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
-        {token ? 
-          <Dash
-          removeRoute={removeRoute}
-          courses={courses}
-          userId={userId}
-          editCourse={editCourse}
-          saveCourse={saveCourse}
-          deleteCourse={deleteCourse}
-          details={courseToEdit.details}
-          saved={saved}
-          deleteModalIsOpen={deleteModalIsOpen}
-          saveNewCourse={saveNewCourse}
-          why={why}
+        {mileTimes.length > 0 && terrainMod && calories ? 
+          <EditCourse 
+            name={name}
+            stops={stops}
+            mileTimes={mileTimes}
+            goalHours={goalHours}
+            goalMinutes={goalMinutes}
+            calories={calories}
+            vertMod={vertMod}
+            terrainMod={terrainMod}
+            coordinates={coordinates}
+            vertInfo={vertInfo}
+            
+            setName={setName}
+            setStops={setStops}
+            setMileTimes={setMileTimes}
+            setGoalHours={setGoalHours}
+            setGoalMinutes={setGoalMinutes}
+            setCalories={setCalories}
+            setVertMod={setVertMod}
+            setTerrainMod={setTerrainMod}
+            setCoordinates={setCoordinates}
+            setVertInfo={setVertInfo}
 
-          setRoute={setRoute}
-          addStop={addStop}
-          delStop={delStop}
-          setDistance={setDistance}
-          setName={setName}
-          setCalories={setCalories}
-          setGoalHours={setGoalHours}
-          setGoalMinutes={setGoalMinutes}
-          setMileTimes={setMileTimes}
-          setStops={setStops}
-          setVertMod={setVertMod}
-          setTerrainMod={setTerrainMod}
-          updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-          setWhy={setWhy}
-          setCourseToEdit={setCourseToEdit}
-          setVertInfo={setVertInfo}
-          coordinates={coordinates}
-          setCoordinates={setCoordinates}
-          
-          stops={stops}
-          route={route}
-          terrainMod={terrainMod}
-          distance={distance}
-          name={name}
-          mileTimes={mileTimes}
-          calories={calories}
-          goalHours={goalHours}
-          goalMinutes={goalMinutes}
-          vertInfo={vertInfo}
-          vertMod={vertMod}
-          c={courseToEdit}>
-          </Dash>
+            saved={saved}
+
+            delStop={delStop}
+            addStop={addStop}
+            saveCourse={saveCourse}
+          >
+          </EditCourse>
           : 
         <div>
           {getFromStorage('course_planner') ? 
@@ -377,7 +284,7 @@ function App(props) {
           </div>
           :
           <DashNoLogin
-            setIsLoading={setIsLoading} 
+            // setIsLoading={setIsLoading}
             setLoginModalIsOpen={setLoginModalIsOpen}
           >
           </DashNoLogin>

@@ -1,24 +1,40 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import GithubIcon from '@material-ui/icons/GitHub';
+import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
-import AppBar from './AppBar';
-import 'react-dropdown/style.css';
-import Modal from 'react-modal';
-import { useEffect } from 'react';
+const Header = styled.header`
+  height: 60px;
+  display: flex;
+  background-color: grey;
+  justify-content: space-between;
+  align-items: center;
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '50vw'
-  }
-};
+`
 
 function Nav(props) {
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const [name, setName] = useState()
+
+
+  const handleMenu = (event) => {
+    console.log(event)
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   function closeModal() {
     setLoginModalIsOpen(false)
@@ -50,6 +66,7 @@ function Nav(props) {
       .then(callback => {
         if(callback.status === 200) {
           props.loggedOut();
+
         } else {
           console.log(callback);
         }
@@ -66,10 +83,85 @@ function Nav(props) {
 
     return (
       <div>
-        <AppBar saveNewCourse={props.saveNewCourse} courses={props.courses} toggleEdit={toggleEdit} editCourse={props.editCourse} username={props.username} onSelect={onSelect} setLoginModalIsOpen={props.setLoginModalIsOpen} onLogout={onLogout}></AppBar>
+        <Header>
+          <div>
+            <span style={{margin: "0 0 0 20px"}}>
+              <svg style={{paddingBottom: "10px"}} version="1.0" xmlns="http://www.w3.org/2000/svg"
+                width="30.000000pt" height="30.000000pt" viewBox="0 0 295.000000 295.000000"
+                preserveAspectRatio="xMidYMid meet">
+
+                <g transform="translate(0.000000,295.000000) scale(0.100000,-0.100000)"
+                fill="white" stroke="none">
+                <path d="M1098 1815 c-189 -377 -345 -685 -348 -685 -3 0 -43 75 -88 166 -46
+                92 -85 165 -87 163 -5 -6 -505 -1009 -505 -1014 0 -3 633 -5 1406 -5 845 0
+                1404 4 1402 9 -12 33 -733 1481 -738 1481 -3 0 -51 -91 -107 -202 l-101 -203
+                -241 488 c-133 268 -243 487 -246 487 -3 0 -159 -308 -347 -685z"/>
+                </g>
+              </svg>
+            </span>
+            <h4 style={{padding: "15px 0 0 15px", display: "inline-flex", color: "white", margin: "0 15px 0 0"}}>Corsa</h4>
+            <FormControl style={{width: "75px", color: "white"}}>
+              <InputLabel htmlFor="age-native-simple">Course</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    inputProps={{
+                      name: 'age',
+                      id: 'age-native-simple',
+                    }}
+                  >
+                    {props.courseList.map(c => {
+                      return (
+                        <MenuItem key={c.hash} onClick={() => toggleEdit(c)}>{c.name}</MenuItem>
+                      )
+                    })}
+                  </Select>
+              </FormControl>
+          <Button style={{color: "white", borderColor: "white", margin: "0 15px 0 15px"}} onClick={() => props.saveNewCourse()} variant="outlined">New Course</Button>
+          </div>
+          <div>
+          <p style={{display: "inline", fontSize: "12px"}}> {props.username}</p>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={(e) => {e.preventDefault(); window.open('https://github.com/lukemccrae/course-planner', '_blank')}}
+                color="inherit"
+              >
+                <GithubIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={props.onLogout}>Logout</MenuItem>
+              </Menu>
+            {/* <MenuItem onClick={() => onLogout()}>Logout</MenuItem> */}
+          </div>
+        </Header>
+        {/* {username ? <AppBar style={{dispay: username ? "block" : "none"}} saveNewCourse={saveNewCourse} courses={courses} toggleEdit={toggleEdit} editCourse={editCourse} username={username} onSelect={onSelect} setLoginModalIsOpen={setLoginModalIsOpen} onLogout={onLogout}></AppBar>
+         : null} */}
       </div>
     )
-
 }
 
 export default Nav;

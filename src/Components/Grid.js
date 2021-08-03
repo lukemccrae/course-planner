@@ -9,7 +9,7 @@ export const Grid = styled.div`
 export const Row = styled.div`
     display: flex;
     height: 100%;
-    @media (max-width: 1090px) {
+    @media (max-width: 700px) {
       flex-direction: column;
     }
 `;

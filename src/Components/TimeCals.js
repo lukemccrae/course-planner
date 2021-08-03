@@ -2,6 +2,16 @@ import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
 import styled from 'styled-components';
 
+const colors = [
+  "#428A79",
+  "#71AF55",
+  "#F00500",
+  "#E4BE67",
+  "#E47043",
+  "#B63534",
+  "#9598AB"]
+
+
 const List = styled.ul`
   display: inline-flex;
   list-style: none;
@@ -19,12 +29,19 @@ const Span = styled.span`
   margin: 5px;
 `
 
+const Color = styled.li`
+  margin-right: 5px;
+  background-color: ${(props) => colors[props.index + 1]};;
+  width: 10px;
+  height: 5vh;
+`
+
 
 function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedStops, setCountedStops}) {
     const [distance, setDistance] = useState();
     const [time, setTime] = useState();
     const [pastAid, setPastAid] = useState(0);
-    const [calToConsume, setCalToConsume] = useState()
+    const [calToConsume, setCalToConsume] = useState('')
     useEffect(() => {
         distanceToNextAid()
     }, [mileTimes, stops, calories, pastAid])
@@ -60,7 +77,7 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedSt
           }
 
           setTime(timeSum)
-          caloriesToNextAid(timeSum)
+          if(calories && timeSum) caloriesToNextAid(timeSum)
       }
 
       function caloriesToNextAid(timeSum) {
@@ -82,6 +99,7 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedSt
     return (
         <div>
           <List>
+            <Color index={index}></Color>
             {/* <li>distance to {index < stops.length -1 ? "next stop" : "finish"}: {distance}</li> */}
             <li><Detail>{distance}</Detail>mi</li>
             <Span></Span>

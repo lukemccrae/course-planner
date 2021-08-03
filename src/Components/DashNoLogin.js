@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import splash from '../splash1280.jpg';
 import splashsky from '../splashsky.jpg'
-import Button from '@material-ui/core/Button';
 
 function DashNoLogin(props) {
 

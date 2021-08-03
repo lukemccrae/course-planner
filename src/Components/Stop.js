@@ -57,15 +57,10 @@ const StopInputNew = styled.input`
 `
 
 
-function Stop({mileTimes, setMileTimes, delStop, setStops, addStop, stops, calories, vertInfo}) {
+function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo}) {
   const [countedStops, setCountedStops] = useState(0);
-  const [comments, setComments] = useState([]);
   
     const classes = useStyles();
-
-
-    useEffect(() => {
-      }, [])
 
 function onTextboxChangeStopName(event, i) {
     const updatedStops = cloneDeep(stops)
@@ -115,7 +110,7 @@ function onTextboxChangeStopName(event, i) {
                 <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">
                     <Row style={{display: "flex", flexDirection: "row"}} key={s.id}>
-                        <button style={{display: stops.length < 2 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
+                        <button style={{display: parseFloat(s.miles) === 0 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         {/* <StopNameInput placeholder="Name" stops={stops} s={s} type="text" value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}

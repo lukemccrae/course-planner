@@ -1,61 +1,102 @@
 import React from 'react';
-import {Line} from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
+import {Line, Scatter} from 'react-chartjs-2';
 import styled from 'styled-components';
 
 const Chart = styled.div`
     display: inline;
+    max-width: 80vw;
 `
 
-function Profile(props) {
-    console.log(props)
-    function fillPoints(props) {
+const colors = [
+    "#428A79",
+    "#71AF55",
+    "#F00500",
+    "#E4BE67",
+    "#E47043",
+    "#B63534",
+    "#9598AB",]
+
+function Profile({stops, coordinates, mileTimes}) {
+
+    const [labels, setLabels] = useState([]);
+
+    useEffect(() => {
+        buildDataset()
+        fillLabels()
+    }, [stops, coordinates, mileTimes])
+
+    function buildDataset() {
         let tempPoints = [];
-        for (let i = 0; i < props.coordinates.length; i++) {
-            tempPoints.push(Math.round(props.coordinates[i][2]))
+        for (let i = -1; i < stops.length; i++) {
+            //percentages of each stop beginning and end
+            //account for starting from before the first stop with i = -1
+            let startPercent = (i === -1 ? 0 : parseFloat(stops[i].miles)) / mileTimes.length
+            let coordStart = Math.round(coordinates.length * startPercent)
+
+            //make sure we dont index past the final stop
+            let endPercent = (stops.length > i + 1 ? parseFloat(stops[i + 1].miles) : mileTimes.length) / mileTimes.length
+            let coordEnd = Math.round(coordinates.length * endPercent)
+
+            tempPoints.push(fillPoints(coordStart, coordEnd, i + 1))
+
+            // console.log(coordStart, coordEnd)
+
         }
+        if(stops[0].miles === 0) tempPoints.shift()
         return tempPoints;
+
+    }
+
+    function fillPoints(coordStart, coordEnd, index) {
+        let points = [];
+
+        for (let i = coordStart; i < coordEnd; i++) {
+            points.push({x: i, y: Math.round(coordinates[i][2])})
+        }
+
+        let obj = {
+            label: stops[0].miles == 0 ? index : index + 1,
+            data: points,
+            backgroundColor: colors[index],
+            tension: 0.4,
+            fill: true
+        }
+        return obj;
+    }
+
+    function fillLabels() {
+        let result = []
+        for (let i = 0; i < coordinates.length; i++) {
+            result.push(i)
+        }
+        setLabels(result)
+        console.log(labels)
     }
 
     const data = {
-        // labels: Array.from(Array(Math.round(props.route.properties.distance)).keys()),
-        labels: Array(props.coordinates.length).fill("l"),
-        datasets: [{
-            label: "",
-            data: fillPoints(props),
-            backgroundColor: "blue",
-            tension: 0.4,
-            fill: true
-        }],
+        labels: labels,
+        datasets: buildDataset(),
         options: {
             animation: false,
+            scales: {
+                x: {
+                    type: 'linear'
+                  },
+                  xAxes: [{
+                    ticks: {
+                        display: false //this will remove only the label
+                    },
+                    gridLines: { tickMarkLength: 0 }
+                }],
+            },
             legend: {
                 display: false
             },
             tooltips: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return tooltipItem.yLabel;
-                    }
-                }
             },
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             scales: {
-                // y: {
-                //     ticks: {
-                //         color: "white",
-                //         font: {
-                //             size: 18
-                //         }
-                //     }
-                // },
-                // x: {
-                //     ticks: {
-                //         color: "white",
-                //         font: {
-                //             size: 18
-                //         }
-                //     }
-                // },
                 myScale: {
                     position: 'left',
                 }
@@ -69,6 +110,7 @@ function Profile(props) {
     }
     return (
             <Chart>
+                <h5>Elevation</h5>
                 <Line
                 data={data}
                 width={50}
