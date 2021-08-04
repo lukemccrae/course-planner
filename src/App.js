@@ -46,18 +46,21 @@ function App(props) {
   const [vertInfo, setVertInfo] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
   const [vertMod, setVertMod] = useState();
+
  
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
 
+  const [courseId, setCourseId] = useState();
+
   useEffect(() => {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
       //verify token
-      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
-        // fetch('http://localhost:3000/course/api/account/verify?token=' + obj.token, {
+      // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
+        fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -70,6 +73,7 @@ function App(props) {
           console.log(json)
           setCourseList(json.courseList);
           setUsername(json.email);
+          setCourseId(json.course._id)
 
           loadCourse(json.course)
           setIsLoading(false);
@@ -100,8 +104,8 @@ function App(props) {
     //enable group to be editable
     function editCourse(courseRef) {
       const obj = getFromStorage('course_planner');
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
-      // fetch(`http://localhost:3005/course?token=${obj.token}&id=${c.id}`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
+      fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -109,6 +113,7 @@ function App(props) {
         },
       }).then(res => res.json()).then(json => {
         if (json.success) {
+          setCourseId(json.course[0]._id)
           loadCourse(json.course[0]);
         } else {
           console.log("Error: didnt get a course.")
@@ -153,8 +158,8 @@ function App(props) {
 
   function saveNewCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        // fetch(`http://localhost:3000/course`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        fetch(`http://localhost:3005/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -175,11 +180,19 @@ function App(props) {
       });
   }
 
-  function saveCourse(course) {
+  function saveCourse() {
     setSaved(false)
     let tempCourse = {
       details: {
-
+        name,
+        calories,
+        goalHours,
+        goalMinutes,
+        calories,
+        name,
+        vertMod,
+        terrainMod,
+        mileTimes
       },
       stops: stops
     }
@@ -187,11 +200,12 @@ function App(props) {
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
     //   saveNewRoute();
     // }
-      fetch(`https://banana-crumble-42815.herokuapp.com/course?courseId=${course._id}`, {
-        // fetch(`http://localhost:3000/course?courseId=${course._id}`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?courseId=${course._id}`, {
+        fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'origin': 'https://corsa.run'
         },
         body: JSON.stringify({
           details: tempCourse.details,
@@ -200,17 +214,18 @@ function App(props) {
       }).then(res => res.json()).then(json => {
         if (json.success) {
           setSaved(true)
+          setCourseList(json.courseList)
         } else {
           console.log("Error: adding this course failed.")
         }
       });
   }
 
-  function deleteCourse(course) {
+  function deleteCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
 
-      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${course._id}`, {
-        // fetch(`http://localhost:3000/course?token=${token}&courseId=${course._id}`, {
+      // fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
+        fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -219,6 +234,7 @@ function App(props) {
       if (json.success) {
         setCourseList(json.courseList)
         setDeleteModalIsOpen(false);
+        editCourse(json.courseList[0])
       } else {
         console.log("error: ", json)
       }
@@ -237,7 +253,7 @@ function App(props) {
         <Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
-        {mileTimes.length > 0 && terrainMod && calories ? 
+        {terrainMod && calories ? 
           <EditCourse 
             name={name}
             stops={stops}
@@ -266,6 +282,11 @@ function App(props) {
             delStop={delStop}
             addStop={addStop}
             saveCourse={saveCourse}
+            updateDeleteModalIsOpen={updateDeleteModalIsOpen}
+            editCourse={editCourse}
+            loadCourse={loadCourse}
+
+            id={courseId}
           >
           </EditCourse>
           : 
@@ -301,7 +322,7 @@ function App(props) {
             <h5 style={{margin: '0 10px 10px 0'}}>
             Are you sure?
             </h5>
-            <Button variant="outlined" className="five-px-margin-right"  onClick={deleteCourse}>Delete</Button>
+            <Button disabled={courseList.length < 2} variant="outlined" className="five-px-margin-right"  onClick={deleteCourse}>Delete</Button>
             <Button variant="outlined" className="five-px-margin-right" onClick={updateDeleteModalIsOpen}>Cancel</Button>
           </div>
         </Modal>

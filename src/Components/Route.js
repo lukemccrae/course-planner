@@ -3,6 +3,7 @@ import cloneDeep from 'lodash.clonedeep';
 import styled from 'styled-components';
 import { css } from "@emotion/core";
 import BarLoader from "react-spinners/BarLoader";
+import Button from '@material-ui/core/Button';
 
 const Input = styled.input`
 
@@ -30,8 +31,8 @@ function Route(props) {
 
   function gpxToJson(gpx) {
     setUploading(true)
-    fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        // fetch('http://localhost:3005/gps/togeojson', {
+    // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -59,8 +60,8 @@ function Route(props) {
 
   function saveNewRoute(geoJSON) {
     const token = JSON.parse(localStorage.course_planner).token;
-    // fetch(`http://localhost:3005/course/new?courseId=${props.id}`, {
-      fetch(`https://banana-crumble-42815.herokuapp.com/course/new?courseId=${props.id}`, {
+    fetch(`http://localhost:3005/course/new?courseId=${props.id}`, {
+      // fetch(`https://banana-crumble-42815.herokuapp.com/course/new?courseId=${props.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -71,7 +72,6 @@ function Route(props) {
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        props.editCourse(json.course)
         setUploading(false)
       } else {
         console.log("Error: adding this course failed.")
@@ -101,6 +101,7 @@ function Route(props) {
               <input onChange={(e)=> changeHandler(e)} type='file'></input>
           </div>
         </div>
+        <Button variant="outlined" className="five-px-margin-right" onClick={props.updateDeleteModalIsOpen}>Delete</Button>
       </Center>
     )
 }

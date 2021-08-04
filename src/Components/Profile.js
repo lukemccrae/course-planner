@@ -15,7 +15,8 @@ const colors = [
     "#E4BE67",
     "#E47043",
     "#B63534",
-    "#9598AB",]
+    "#9598AB"
+]
 
 function Profile({stops, coordinates, mileTimes}) {
 
@@ -23,7 +24,6 @@ function Profile({stops, coordinates, mileTimes}) {
 
     useEffect(() => {
         buildDataset()
-        fillLabels()
     }, [stops, coordinates, mileTimes])
 
     function buildDataset() {
@@ -70,12 +70,12 @@ function Profile({stops, coordinates, mileTimes}) {
         for (let i = 0; i < coordinates.length; i++) {
             result.push(i)
         }
-        setLabels(result)
-        console.log(labels)
+        // setLabels(result)
+        return result;
     }
 
     const data = {
-        labels: labels,
+        labels: fillLabels(),
         datasets: buildDataset(),
         options: {
             animation: false,
@@ -110,7 +110,7 @@ function Profile({stops, coordinates, mileTimes}) {
     }
     return (
             <Chart>
-                <h5>Elevation</h5>
+                <div>what</div>
                 <Line
                 data={data}
                 width={50}
