@@ -7,7 +7,7 @@ const MileBox = styled.tr`
   border-bottom: 1px solid #D3D3D3;
 `
 
-const MileTableHead = styled.tr`
+const MileTableHead = styled.th`
   width: 60px;
 `
 
@@ -74,7 +74,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
         setMileTimes(tempPace)
         setTotalTime(tempTotalTime)
         setPaces(tempPace)
-        console.log(paces)
     }
 
     function minTommss(minutes){
@@ -107,8 +106,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
 
     return (
         <div>
-          hi
-            {/* <div style={{display: "flex", justifyContent: "space-around"}}>
+            <div style={{display: "flex", justifyContent: "space-around"}}>
             Equalize pace:<SliderBox>
                 <Slider
                 axis="x"
@@ -117,13 +115,13 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                 x={vertMod}
                 onChange={({ x }) =>  setVertMod(x)}/>
             </SliderBox>
-            </div> */}
-            {/* <section style={{margin: "0 auto"}}>
+            </div>
+            <section style={{margin: "0 auto"}}>
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
               <thead>
-                <MileTableHead><th>Miles</th></MileTableHead>
-                <MileTableHead><th>Pace</th></MileTableHead>
-                <MileTableHead><th>Vert</th></MileTableHead>
+                <MileTableHead>Mile</MileTableHead>
+                <MileTableHead>Pace</MileTableHead>
+                <MileTableHead>Vert</MileTableHead>
               </thead>
               {paces.map((m, index) => {
                   return (
@@ -135,8 +133,8 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                   )
               })}
             </table>
-            </section> */}
-             {/* <h5>Total time: {toHHMMSS(totalTime*60)}</h5> */}
+          </section>
+          <h5>Total time: {toHHMMSS(totalTime*60)}</h5>
         </div>
     )
 }

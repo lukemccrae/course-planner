@@ -19,8 +19,8 @@ function Login(props) {
     console.log("signin")
     //turn this on when pushing
     e.preventDefault();
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/signin`, {
-        // fetch(`http://localhost:3000/course/api/account/signin`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/signin`, {
+        fetch(`http://localhost:3005/course/api/account/signin`, {
         // fetch(`https://thawing-eyrie-65129.herokuapp.com/course/api/account/signin`, {
       method: 'POST',
       headers: {
@@ -38,6 +38,7 @@ function Login(props) {
           props.loggedIn(json)
           console.log(json)
           setInStorage('course_planner', { token: json.token })
+          props.setCourseList(json.courseList)
 
           //close login modal
           props.setLoginModalIsOpen(false);

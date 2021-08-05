@@ -90,6 +90,7 @@ function App(props) {
 
 
   function loadCourse(c) {
+    console.log(c)
     setName(c.details.name)
     setStops(c.stops)
     setMileTimes(c.details.mileTimes)
@@ -97,6 +98,7 @@ function App(props) {
     setGoalMinutes(c.details.goalMinutes)
     setCalories(c.details.calories)
     setVertMod(c.details.vertMod)
+    setVertInfo(c.route.geoJSON.properties.vertInfo.cumulativeGain)
     setTerrainMod(c.details.terrainMod)
     setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
   }
@@ -253,7 +255,7 @@ function App(props) {
         <Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
         : <div></div>
         }
-        {terrainMod && calories ? 
+        {username && terrainMod && calories ? 
           <EditCourse 
             name={name}
             stops={stops}
@@ -332,7 +334,7 @@ function App(props) {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <Login setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}></Login>
+          <Login setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}></Login>
         </Modal>
       </div>
     )

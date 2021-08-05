@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 import {Line, Scatter} from 'react-chartjs-2';
 import styled from 'styled-components';
 
+const Chart = styled.div`
+    display: inline;
+    max-width: 80vw;
+`
+
 const colors = [
     "#428A79",
     "#71AF55",
@@ -14,31 +19,19 @@ const colors = [
 ]
 
 function Profile({stops, coordinates, mileTimes}) {
-    // console.log(stops, coordinates, mileTimes)
+    console.log("stops", stops, "coordinates", coordinates, "miletimes", mileTimes)
 
     const [labels, setLabels] = useState([]);
     const [dataset, setDataset] = useState([]);
 
     useEffect(() => {
-        if(coordinates.length > 10 && coordinates[5][2]) {
-            const timer = setTimeout(() => {
-                fillLabels(coordinates.length);
-                buildDataset(coordinates.length);
-            }, 500);
-            return () => clearTimeout(timer);
+        if(coordinates.length > 5) {
+            fillLabels();
+            buildDataset();
         }
     }, [stops, coordinates, mileTimes])
 
-    function fillLabels(coordLength) {
-        let result = [];
-        for (let i = 0; i < coordLength; i++) {
-            result.push(i)
-        }
-        setLabels(result)
-    }
-
-    //split apart coordinates between each stop
-    function buildDataset(coordLength) {
+    function buildDataset() {
         let tempPoints = [];
         for (let i = -1; i < stops.length; i++) {
             //percentages of each stop beginning and end
@@ -48,10 +41,9 @@ function Profile({stops, coordinates, mileTimes}) {
 
             //make sure we dont index past the final stop
             let endPercent = (stops.length > i + 1 ? parseFloat(stops[i + 1].miles) : mileTimes.length) / mileTimes.length
-            console.log(endPercent, "endPercent")
             let coordEnd = Math.round(coordinates.length * endPercent)
 
-            tempPoints.push(fillPoints(coordStart, coordEnd - 5, i + 1))
+            tempPoints.push(fillPoints(coordStart, coordEnd, i + 1))
 
             // console.log(coordStart, coordEnd)
 
@@ -62,11 +54,12 @@ function Profile({stops, coordinates, mileTimes}) {
         setDataset(tempPoints)
     }
 
-    //return an object for the chartJS datasets array
     function fillPoints(coordStart, coordEnd, index) {
-        console.log(coordStart, coordEnd, coordinates)
+        console.log(coordStart, coordEnd)
         let points = [];
-        for (var i = coordStart; i < coordEnd; i++) {
+        console.log(coordinates)
+
+        for (let i = coordStart; i < coordEnd; i++) {
             points.push({x: i, y: Math.round(coordinates[i][2])})
         }
 
@@ -80,31 +73,20 @@ function Profile({stops, coordinates, mileTimes}) {
         return obj;
     }
 
-    // function fillLabels() {
-    //     let result = []
-    //     for (let i = 0; i < coordinates.length; i++) {
-    //         result.push(i = '')
-    //     }
-    //     // return result;
-    //     setLabels(result);
-    // }
+    function fillLabels() {
+        let result = []
+        for (let i = 0; i < coordinates.length; i++) {
+            result.push(i = '')
+        }
+        // return result;
+        setLabels(result)
+    }
 
     const data = {
         labels: labels,
         datasets: dataset,
-    };
-
-    const options = {
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                },
-            },
-            ],
-        },
-        animation: false,
+        options: {
+            animation: false,
             scales: {
                 x: {
                     type: 'linear'
@@ -132,12 +114,17 @@ function Profile({stops, coordinates, mileTimes}) {
                     radius: 0
                 }
             }
-    };
-
+        }
+    }
     return (
-        <div>
-            <Line data={data} options={options} />
-        </div>
+            <Chart>
+                <Line
+                data={data}
+                width={50}
+                height={20}
+                options={data.options}>
+                </Line>
+            </Chart>
     )
 }
 

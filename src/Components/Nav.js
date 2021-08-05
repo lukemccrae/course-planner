@@ -57,7 +57,9 @@ function Nav(props) {
   }
 
   function onLogout() {
-    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/logout?token=${props.token}`, {
+    const token = JSON.parse(localStorage.course_planner).token;
+    // fetch(`https://banana-crumble-42815.herokuapp.com/api/account/logout?token=${props.token}`, {
+      fetch(`http://localhost:3005/api/account/logout?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -153,7 +155,7 @@ function Nav(props) {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={props.onLogout}>Logout</MenuItem>
+                <MenuItem onClick={onLogout}>Logout</MenuItem>
               </Menu>
             {/* <MenuItem onClick={() => onLogout()}>Logout</MenuItem> */}
           </div>
