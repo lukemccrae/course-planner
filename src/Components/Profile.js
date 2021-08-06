@@ -51,7 +51,7 @@ function Profile({stops, coordinates, mileTimes}) {
             console.log(endPercent, "endPercent")
             let coordEnd = Math.round(coordinates.length * endPercent)
 
-            tempPoints.push(fillPoints(coordStart, coordEnd - 5, i + 1))
+            tempPoints.push(fillPoints(coordStart, coordEnd, i + 1))
 
             // console.log(coordStart, coordEnd)
 
@@ -64,7 +64,6 @@ function Profile({stops, coordinates, mileTimes}) {
 
     //return an object for the chartJS datasets array
     function fillPoints(coordStart, coordEnd, index) {
-        console.log(coordStart, coordEnd, coordinates)
         let points = [];
         for (var i = coordStart; i < coordEnd; i++) {
             points.push({x: i, y: Math.round(coordinates[i][2])})

@@ -16,6 +16,16 @@ const Splash = styled.div`
   box-shadow: inset 0 0 0 1000px rgba(0,0,0,.3);
 `
 
+const Menu = styled.div`
+  position: absolute; 
+  top:0; 
+  right:0;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  margin: 15px;
+`
+
 const StartButton = styled.button`
   width: 200px;
   height: 50px;
@@ -53,6 +63,16 @@ const SplashSky = styled.div`
   height: 30vh;
 `
 
+const MenuWords = styled.div`
+  const SplashWords = styled.h4
+  color: white;
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1;
+  margin: 10px 10px 10px 10px;
+  cursor: pointer;
+`
+
 const SplashWords = styled.h4`
   color: white;
   font-weight: 700;
@@ -76,6 +96,11 @@ const SplashBox = styled.div`
 
     return (
       <div>
+        <Menu>
+          <MenuWords onClick={() => {props.setLoginModalIsOpen(true)}} size={"1rem"}>Login</MenuWords>
+          <MenuWords onClick={() => {props.setAboutModalIsOpen(true)}} size={"1rem"}>About</MenuWords>
+          {/* <MenuWords size={"1rem"}>Corsa Plus</MenuWords> */}
+        </Menu>
         <Splash>
           <SplashBox height={"75vh"}>
             <SplashWords size={"3rem"}>
@@ -84,7 +109,7 @@ const SplashBox = styled.div`
               <SplashWords size={"3rem"}>
                 WITH OUR DATA-DRIVEN TOOLS
               </SplashWords>
-              <div style={{margin: "25px"}}><StartButton onClick={() => props.setLoginModalIsOpen(true)}>GET STARTED</StartButton></div>
+              <div style={{margin: "25px"}}><StartButton onClick={() => props.setEditNoLoginModalIsOpen(true)}>GET STARTED</StartButton></div>
           </SplashBox>
           
         </Splash>

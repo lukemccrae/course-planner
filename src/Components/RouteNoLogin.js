@@ -19,14 +19,19 @@ const Description = styled.strong`
 
 const Center = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-around;
   with: 100vw;
-  height: 90vh;
+  height: 50vh;
+  align-items: center;
+`
+
+const Name = styled.strong`
+  font-weight: 300;
+  font-size: 25px;
 `
 
 
-function Route(props) {
+function RouteNoLogin(props) {
   const [uploading, setUploading] = useState(false)
 
   function gpxToJson(gpx) {
@@ -100,10 +105,15 @@ function Route(props) {
                 loading={uploading}></BarLoader>
               <input onChange={(e)=> changeHandler(e)} type='file'></input>
           </div>
-          <Button style={{marginTop: "10px"}} variant="outlined" className="five-px-margin-right" onClick={props.updateDeleteModalIsOpen}>Delete</Button>
+        </div>
+        <div>
+            <Description style={{display: "flex"}}>Load Demo</Description>
+            <div><a href="#" onClick={() => {console.log("hi")}}> <Name>Kendall Mountain Run</Name></a> (Silverton, CO)</div>
+            <div><a href="#" onClick={() => {console.log("hi")}}> <Name>Western States</Name></a> (Auburn, CA)</div>
+            <div><a href="#" onClick={() => {console.log("hi")}}> <Name>Double Dipsea</Name></a> (Mill Valley, CA)</div>
         </div>
       </Center>
     )
 }
 
-export default Route;
+export default RouteNoLogin;

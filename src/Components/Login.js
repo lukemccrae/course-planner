@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import 'whatwg-fetch';
 
 const Box = styled.div`
-
+  display: flex;
+  justify-content: center;
 `
 function Login(props) {
   const [showRegister, setShowRegister] = useState(false);
@@ -61,10 +62,9 @@ function Login(props) {
 
         :
         <Box>
-          <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+          <div style={{display: "flex", width: "100%", justifyContent: "center", flexDirection: "column"}}>
               <h4 style={{margin: "0 0 15px 0"}}>Log in to Corsa</h4>
-            </div>
-            <Form>
+            <Form style={{width: "30vw"}}>
                 <Form.Group controlId="formBasicEmail">
                 <Form.Control
                     type="email"
@@ -86,6 +86,7 @@ function Login(props) {
                 Sign In
                 </Button>
             </Form>
+            </div>
         </Box>
         }
         <a href="#" onClick={() => setShowRegister(!showRegister)}>

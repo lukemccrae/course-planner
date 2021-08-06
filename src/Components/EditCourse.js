@@ -29,6 +29,7 @@ const Box = styled.div`
 `
 
 function EditCourse(props) {
+  console.log(props.coordinates)
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
