@@ -22,7 +22,7 @@ function About(props) {
           <Title>
               <Description>About Corsa</Description>
           </Title>
-          <div>We are group of fitness professionals, developers, data scientists, and adventure enthusiasts focused on one thing: moving efficiently in the wilderness.</div>
+          <div>We are group of fitness professionals, developers, data-scientists, and adventure enthusiasts focused on one thing: moving efficiently in the wilderness.</div>
           <div style={{marginBottom: "15px"}}></div>
           <div>We created this tool to streamline the process of planning distance adventures. Whether it is a local trail race or a multi-day FKT, we hope that Corsa can help you improve your performance.</div>
           

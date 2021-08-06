@@ -58,8 +58,8 @@ function Nav(props) {
 
   function onLogout() {
     const token = JSON.parse(localStorage.course_planner).token;
-    // fetch(`https://banana-crumble-42815.herokuapp.com/api/account/logout?token=${props.token}`, {
-      fetch(`http://localhost:3005/api/account/logout?token=${token}`, {
+    fetch(`https://banana-crumble-42815.herokuapp.com/api/account/logout?token=${token}`, {
+      // fetch(`http://localhost:3005/api/account/logout?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

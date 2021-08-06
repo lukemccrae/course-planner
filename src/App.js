@@ -41,8 +41,8 @@ const aboutStyles = {
     bottom                : 'auto',
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    width                 : '40%',
-    height                : '40%'
+    width                 : '50%',
+    height                : '50%'
   }
 };
 
@@ -104,8 +104,8 @@ function App(props) {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
       //verify token
-      // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
-        fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
+      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
+        // fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -151,8 +151,8 @@ function App(props) {
     //enable group to be editable
     function editCourse(courseRef) {
       const obj = getFromStorage('course_planner');
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
-      fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
+      // fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -233,8 +233,8 @@ function App(props) {
 
   function saveNewCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        fetch(`http://localhost:3005/course`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        // fetch(`http://localhost:3005/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -275,8 +275,8 @@ function App(props) {
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
     //   saveNewRoute();
     // }
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?courseId=${course._id}`, {
-        fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
+        // fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -299,8 +299,8 @@ function App(props) {
   function deleteCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
 
-      // fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
-        fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
+        // fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
