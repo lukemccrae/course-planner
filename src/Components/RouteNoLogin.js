@@ -3,7 +3,11 @@ import cloneDeep from 'lodash.clonedeep';
 import styled from 'styled-components';
 import { css } from "@emotion/core";
 import BarLoader from "react-spinners/BarLoader";
+import axios from 'axios'
 import Button from '@material-ui/core/Button';
+import western_states from './Demo/western_states.gpx';
+import kendall_mtn from './Demo/kendall_mtn.gpx';
+import double_dipsea from './Demo/double_dipsea.gpx';
 
 const Input = styled.input`
 
@@ -55,7 +59,7 @@ function RouteNoLogin(props) {
               name: "dummy gpx"
           }
           
-          saveNewRoute(parsedJson)
+        //   saveNewRoute(parsedJson)
       })
       .catch((error) => {
           console.log("There was an error")
@@ -85,14 +89,26 @@ function RouteNoLogin(props) {
     });
   }
 
-  const changeHandler = (event) => {
-    const file = event.target.files[0]
+    const changeHandler = (event) => {
+        console.log(event)
+        const file = event.target.files[0]
 
-    //need to cmake sure valid gpx
-    if(true) {
-        gpxToJson(file);
+        //need to cmake sure valid gpx
+        if(true) {
+            gpxToJson(file);
+        }
+    };
+
+    function invokeDemo(file) {
+        console.log(file)
+        axios.get(file, {
+            "Content-Type": "application/xml; charset=utf-8"
+         })
+         .then((response) => {
+             gpxToJson(response.data)
+         });
+
     }
-};
 
     return (
       <Center>
@@ -108,9 +124,9 @@ function RouteNoLogin(props) {
         </div>
         <div>
             <Description style={{display: "flex"}}>Load Demo</Description>
-            <div><a href="#" onClick={() => {console.log("hi")}}> <Name>Kendall Mountain Run</Name></a> (Silverton, CO)</div>
-            <div><a href="#" onClick={() => {console.log("hi")}}> <Name>Western States</Name></a> (Auburn, CA)</div>
-            <div><a href="#" onClick={() => {console.log("hi")}}> <Name>Double Dipsea</Name></a> (Mill Valley, CA)</div>
+            <div><a href="#" onClick={() => {invokeDemo(kendall_mtn)}}> <Name>Kendall Mountain Run</Name></a> (Silverton, CO)</div>
+            {/* <div><a href="#" onClick={() => {invokeDemo(western_states)}}> <Name>Western States</Name></a> (Auburn, CA)</div> */}
+            <div><a href="#" onClick={() => {invokeDemo(double_dipsea)}}> <Name>Double Dipsea</Name></a> (Mill Valley, CA)</div>
         </div>
       </Center>
     )

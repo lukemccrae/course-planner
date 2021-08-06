@@ -186,14 +186,14 @@ function App(props) {
     localStorage.clear();
     setUsername('')
     setName("")
-    setStops([])
+    setStops([{miles: 5, comments: "", name: "Aid station 1", cals: 200}])
     setMileTimes([])
-    setGoalHours()
-    setGoalMinutes()
+    setGoalHours(2)
+    setGoalMinutes(30)
     setCalories(225)
-    setVertMod()
+    setVertMod(400)
     setVertInfo([])
-    setTerrainMod()
+    setTerrainMod(1.2)
     setCoordinates([])
   }
 
