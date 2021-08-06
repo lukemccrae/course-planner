@@ -6,6 +6,7 @@ import BarLoader from "react-spinners/BarLoader";
 import axios from 'axios'
 import Button from '@material-ui/core/Button';
 import western_states from './Demo/western_states.gpx';
+import {Row, Col, Grid} from './Grid';
 import kendall_mtn from './Demo/kendall_mtn.gpx';
 import double_dipsea from './Demo/double_dipsea.gpx';
 
@@ -38,7 +39,7 @@ const Name = styled.strong`
 function RouteNoLogin(props) {
   const [uploading, setUploading] = useState(false)
 
-  function gpxToJson(gpx) {
+  function gpxToJson(gpx, name) {
     setUploading(true)
     fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
         // fetch('http://localhost:3005/gps/togeojson', {
@@ -52,6 +53,7 @@ function RouteNoLogin(props) {
       .then((data) => {
         props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
         props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
+        props.setName(name)
         console.log(data)
           //pass parsed geoJSON up to parent as JS object
           let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])
@@ -99,35 +101,37 @@ function RouteNoLogin(props) {
         }
     };
 
-    function invokeDemo(file) {
+    function invokeDemo(file, name) {
         console.log(file)
         axios.get(file, {
             "Content-Type": "application/xml; charset=utf-8"
          })
          .then((response) => {
-             gpxToJson(response.data)
+             gpxToJson(response.data, name)
          });
 
     }
 
     return (
       <Center>
-        <div style={{display: "block"}}>
-          <Description>Upload a GPX file</Description>
-          <div className='file-input'>
-            <BarLoader css={override}
-                size={15}
-                color={"#007bff"}
-                loading={uploading}></BarLoader>
-              <input onChange={(e)=> changeHandler(e)} type='file'></input>
-          </div>
-        </div>
-        <div>
-            <Description style={{display: "flex"}}>Load Demo</Description>
-            <div><a href="#" onClick={() => {invokeDemo(kendall_mtn)}}> <Name>Kendall Mountain Run</Name></a> (Silverton, CO)</div>
-            {/* <div><a href="#" onClick={() => {invokeDemo(western_states)}}> <Name>Western States</Name></a> (Auburn, CA)</div> */}
-            <div><a href="#" onClick={() => {invokeDemo(double_dipsea)}}> <Name>Double Dipsea</Name></a> (Mill Valley, CA)</div>
-        </div>
+          <Row>
+            <div style={{display: "block"}}>
+            <Description>Upload a GPX file</Description>
+                <div className='file-input'>
+                    <BarLoader css={override}
+                        size={15}
+                        color={"#007bff"}
+                        loading={uploading}></BarLoader>
+                    <input onChange={(e)=> changeHandler(e)} type='file'></input>
+                </div>
+            </div>
+            <div>
+                <Description style={{display: "flex"}}>Load Demo</Description>
+                <div><a href="#" onClick={() => {invokeDemo(kendall_mtn, "Kendall Mtn Run")}}> <Name>Kendall Mtn Run</Name></a> (Silverton, CO)</div>
+                {/* <div><a href="#" onClick={() => {invokeDemo(western_states)}}> <Name>Western States</Name></a> (Auburn, CA)</div> */}
+                <div><a href="#" onClick={() => {invokeDemo(double_dipsea, "Double Dipsea")}}> <Name>Double Dipsea</Name></a> (Mill Valley, CA)</div>
+            </div>
+        </Row>
       </Center>
     )
 }

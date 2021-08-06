@@ -96,7 +96,7 @@ function EditCourse(props) {
         </Row>
         <div>
           {props.coordinates.length === 0 ? (
-            <RouteNoLogin updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></RouteNoLogin>
+            <RouteNoLogin setName={props.setName} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></RouteNoLogin>
           ) : null}
         </div>
       </Grid>
