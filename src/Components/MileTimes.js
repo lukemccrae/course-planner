@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-input-slider';
+import GainProfile from './GainProfile';
 import { makeStyles } from '@material-ui/core/styles';
 
 const MileBox = styled.tr`
@@ -8,7 +9,7 @@ const MileBox = styled.tr`
 `
 
 const MileTableHead = styled.th`
-  width: 60px;
+  width: 100px;
 `
 
 const SliderBox = styled.div`
@@ -19,6 +20,17 @@ const SliderBox = styled.div`
 
 const TableData = styled.td`
   width: 50px;
+`
+
+const ElevationIcon = styled.div`
+  height: 40px;
+  width: 100px;
+  border-top-right: 1px solid black;
+`
+
+const Detail = styled.strong`
+  font-weight: 300;
+  font-size: 20px;
 `
 
 const Divider = styled.div`
@@ -42,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, }) {
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, points}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState()
 
@@ -60,6 +72,16 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       let vert = (Math.pow(terrainMod, gain / vertMod)).toFixed(2);
       return goalPace * vert;
     }
+
+    function findVertModFkt(vert){
+      const b1 = 0.15006;
+      const b2 = 0.0000539868;
+      const b3 = -6.3067 * Math.pow(10, -8);
+      const b4 = 2.1199 * Math.pow(10, -11);
+      const b5 = 1.5448 * Math.pow(10, -14);
+      const result = b1 * vert + b2 * Math.pow(vert, 2) + b3 * Math.pow(vert, 3) + b4 * Math.pow(vert, 4) + b5 * Math.pow(vert, 5)
+      return result;
+  }
 
     function resetPaces() {
         let smartDistance = vertInfo.length;
@@ -106,6 +128,9 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
 
     return (
         <div>
+          <div>vertMod: {vertMod}</div>
+          <div>terrainMod: {terrainMod}</div>
+          <div>627 * {terrainMod} ^ gain/{vertMod}</div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
             Equalize pace:<SliderBox>
                 <Slider
@@ -121,14 +146,18 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
               <thead>
                 <MileTableHead>Mile</MileTableHead>
                 <MileTableHead>Pace</MileTableHead>
-                <MileTableHead>Vert</MileTableHead>
+                <MileTableHead>Gain</MileTableHead>
+                <MileTableHead>Profile</MileTableHead>
               </thead>
               {paces.map((m, index) => {
                   return (
                   <MileBox key={index}>
-                      <TableData>{index + 1}</TableData>
-                      <TableData>{minTommss(m)}</TableData>
-                      <TableData>{Math.round(vertInfo[index])} ft.</TableData>
+                      <TableData><Detail>{index + 1}</Detail></TableData>
+                      <TableData><Detail>{minTommss(m)}</Detail></TableData>
+                      <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
+
+                      <TableData><GainProfile points={points.slice(index * (points.length / vertInfo.length), (index + 1) * (points.length / vertInfo.length))}></GainProfile></TableData>
+
                   </MileBox>
                   )
               })}

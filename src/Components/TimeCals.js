@@ -9,8 +9,8 @@ const colors = [
   "#E4BE67",
   "#E47043",
   "#B63534",
-  "#9598AB"]
-
+  "#9598AB"
+]
 
 const List = styled.ul`
   display: inline-flex;
@@ -31,7 +31,7 @@ const Span = styled.span`
 
 const Color = styled.li`
   margin-right: 5px;
-  background-color: ${(props) => colors[props.index + 1]};;
+  background-color: ${(props) => colors[props.index + 1]};
   width: 10px;
   height: 5vh;
 `
