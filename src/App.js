@@ -154,6 +154,7 @@ function App(props) {
 
     //enable group to be editable
     function editCourse(courseRef) {
+      console.log(courseRef)
       const obj = getFromStorage('course_planner');
       // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
       fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
