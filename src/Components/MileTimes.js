@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Slider from 'react-input-slider';
 import GainProfile from './GainProfile';
 import { makeStyles } from '@material-ui/core/styles';
+import haversine from 'haversine';
 
 const MileBox = styled.tr`
   border-bottom: 1px solid #D3D3D3;
@@ -54,13 +55,14 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, points}) {
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints}) {
+  // console.log(milePoints)
     const [paces, setPaces] = useState([])
-    const [totalTime, setTotalTime] = useState()
+    const [totalTime, setTotalTime] = useState();
 
     useEffect(() => {
         resetPaces()
-    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo])
+    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints])
 
     const classes = useStyles();
     
@@ -128,9 +130,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
 
     return (
         <div>
-          <div>vertMod: {vertMod}</div>
-          <div>terrainMod: {terrainMod}</div>
-          <div>627 * {terrainMod} ^ gain/{vertMod}</div>
+          <h5>Total time: {toHHMMSS(totalTime*60)}</h5>
             <div style={{display: "flex", justifyContent: "space-around"}}>
             Equalize pace:<SliderBox>
                 <Slider
@@ -156,14 +156,13 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                       <TableData><Detail>{minTommss(m)}</Detail></TableData>
                       <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
 
-                      <TableData><GainProfile points={points.slice(index * (points.length / vertInfo.length), (index + 1) * (points.length / vertInfo.length))}></GainProfile></TableData>
+                      <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>
 
                   </MileBox>
                   )
               })}
             </table>
           </section>
-          <h5>Total time: {toHHMMSS(totalTime*60)}</h5>
         </div>
     )
 }

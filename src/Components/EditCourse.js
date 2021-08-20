@@ -29,6 +29,7 @@ const Box = styled.div`
 `
 
 function EditCourse(props) {
+  console.log(props)
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
@@ -96,12 +97,12 @@ function EditCourse(props) {
           <Col>
             {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}
             <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile>
-            <MileTimes points={props.coordinates} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
+            <MileTimes milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
           </Col>
         </Row>
         <div>
           {props.coordinates.length === 0 ? (
-            <Route updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}>hi</Route>
+            <Route setMilePoints={props.setMilePoints} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}>hi</Route>
           ) : null}
         </div>
       </Grid>

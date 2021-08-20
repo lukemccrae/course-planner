@@ -77,9 +77,9 @@ function App(props) {
   const [username, setUsername] = useState('');
 
   const [courseList, setCourseList] = useState([]);
-  const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}]);
+  const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
-  const [name, setName] = useState("Kendall Mnt run");
+  const [name, setName] = useState("New Course");
   const [mileTimes, setMileTimes] = useState([]);
   const [goalHours, setGoalHours] = useState(2);
   const [goalMinutes, setGoalMinutes] = useState(30);
@@ -87,6 +87,7 @@ function App(props) {
   const [terrainMod, setTerrainMod] = useState(1.2);
   const [vertInfo, setVertInfo] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
+  const [milePoints, setMilePoints] = useState([]);
   const [vertMod, setVertMod] = useState(400);
 
  
@@ -146,6 +147,7 @@ function App(props) {
     setVertInfo(c.route.geoJSON.properties.vertInfo.cumulativeGain)
     setTerrainMod(c.details.terrainMod)
     setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
+    setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
   }
 
     //enable group to be editable
@@ -180,6 +182,7 @@ function App(props) {
     setVertInfo([])
     setTerrainMod()
     setCoordinates([])
+    setMilePoints([])
   }
 
   function loggedOut() {
@@ -195,6 +198,7 @@ function App(props) {
     setVertInfo([])
     setTerrainMod(1.2)
     setCoordinates([])
+    setMilePoints([])
   }
 
   function closeLoginModal() {
@@ -340,6 +344,7 @@ function App(props) {
             terrainMod={terrainMod}
             coordinates={coordinates}
             vertInfo={vertInfo}
+            milePoints={milePoints}
             
             setName={setName}
             setStops={setStops}
@@ -350,6 +355,7 @@ function App(props) {
             setVertMod={setVertMod}
             setTerrainMod={setTerrainMod}
             setCoordinates={setCoordinates}
+            setMilePoints={setMilePoints}
             setVertInfo={setVertInfo}
 
             saved={saved}
@@ -420,6 +426,7 @@ function App(props) {
             vertMod={vertMod}
             terrainMod={terrainMod}
             coordinates={coordinates}
+            milePoints={milePoints}
             vertInfo={vertInfo}
             
             setName={setName}
@@ -431,6 +438,7 @@ function App(props) {
             setVertMod={setVertMod}
             setTerrainMod={setTerrainMod}
             setCoordinates={setCoordinates}
+            setMilePoints={setMilePoints}
             setVertInfo={setVertInfo}
 
             saved={saved}
