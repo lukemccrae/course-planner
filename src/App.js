@@ -89,6 +89,7 @@ function App(props) {
   const [coordinates, setCoordinates] = useState([]);
   const [milePoints, setMilePoints] = useState([]);
   const [vertMod, setVertMod] = useState(400);
+  const [paceAdjust, setPaceAdjust] = useState([]);
 
  
   const [loading, setIsLoading] = useState(true);
@@ -119,9 +120,9 @@ function App(props) {
           console.log(json)
           setCourseList(json.courseList);
           setUsername(json.email);
-          setCourseId(json.course._id)
+          // setCourseId(json.course._id)
 
-          loadCourse(json.course)
+          // loadCourse(json.course)
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -130,7 +131,7 @@ function App(props) {
     } else {
       setIsLoading(false);
     }
-  }, [username])
+  }, [username, vertInfo])
   //empty array means only runs once
   //component did mount equivilant
 
@@ -148,6 +149,7 @@ function App(props) {
     setTerrainMod(c.details.terrainMod)
     setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
     setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
+    setPaceAdjust("paceAdjust" in c ? c.paceAdjust : [])
   }
 
     //enable group to be editable
@@ -271,9 +273,10 @@ function App(props) {
         name,
         vertMod,
         terrainMod,
-        mileTimes
+        mileTimes,
       },
-      stops: stops
+      stops: stops,
+      paceAdjust: paceAdjust
     }
     const token = JSON.parse(localStorage.course_planner).token;
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
@@ -288,7 +291,8 @@ function App(props) {
         },
         body: JSON.stringify({
           details: tempCourse.details,
-          stops: tempCourse.stops
+          stops: tempCourse.stops,
+          paceAdjust: tempCourse.paceAdjust
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
@@ -345,6 +349,7 @@ function App(props) {
             coordinates={coordinates}
             vertInfo={vertInfo}
             milePoints={milePoints}
+            paceAdjust={paceAdjust}
             
             setName={setName}
             setStops={setStops}
@@ -357,6 +362,7 @@ function App(props) {
             setCoordinates={setCoordinates}
             setMilePoints={setMilePoints}
             setVertInfo={setVertInfo}
+            setPaceAdjust={setPaceAdjust}
 
             saved={saved}
 
@@ -428,6 +434,7 @@ function App(props) {
             coordinates={coordinates}
             milePoints={milePoints}
             vertInfo={vertInfo}
+            paceAdjust={paceAdjust}
             
             setName={setName}
             setStops={setStops}
@@ -440,6 +447,7 @@ function App(props) {
             setCoordinates={setCoordinates}
             setMilePoints={setMilePoints}
             setVertInfo={setVertInfo}
+            setPaceAdjust={setPaceAdjust}
 
             saved={saved}
 

@@ -39,6 +39,24 @@ const Divider = styled.div`
   margin: 5px 0 10px 0;
 `
 
+const ArrowRight = styled.div`
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+`
+
+const ArrowLeft = styled.div`
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+`
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& .MuiTextField-root': {
@@ -55,14 +73,16 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints}) {
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust}) {
+  console.log(paceAdjust)
   // console.log(milePoints)
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
 
     useEffect(() => {
         resetPaces()
-    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints])
+        updateTotalTime()
+    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints, paceAdjust])
 
     const classes = useStyles();
     
@@ -100,7 +120,8 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
         setPaces(tempPace)
     }
 
-    function minTommss(minutes){
+    function minTommss(m, index){
+        var minutes = m + paceAdjust[index]
         var sign = minutes < 0 ? "-" : "";
         var min = Math.floor(Math.abs(minutes));
         var sec = Math.floor((Math.abs(minutes) * 60) % 60);
@@ -108,6 +129,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     }
 
     var toHHMMSS = (secs) => {
+      var paceAdjustSecs = paceAdjust.reduce((a, b) => a + b, 0) * 60
       var sec_num = parseInt(secs, 10)
       var hours   = Math.floor(sec_num / 3600)
       var minutes = Math.floor(sec_num / 60) % 60
@@ -120,11 +142,29 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
   }
 
     function updateTotalTime() {
-      let tempTime = totalTime;
+      let tempTime = 0;
       for (let i = 0; i < paces.length; i++) {
-        tempTime += paces[i];
+        tempTime += paces[i] + paceAdjust[i];
       }
       setTotalTime(tempTime);
+    }
+
+    function minusTime(index) {
+      let tempPaceAdjust = paceAdjust;
+      tempPaceAdjust[index] -= .222;
+      setPaceAdjust(tempPaceAdjust)
+      resetPaces()
+      updateTotalTime()
+      console.log(paceAdjust)
+    }
+
+    function plusTime(index) {
+      let tempPaceAdjust = paceAdjust;
+      tempPaceAdjust[index] += .111;
+      setPaceAdjust(tempPaceAdjust)
+      resetPaces()
+      updateTotalTime()
+      console.log(paceAdjust)
     }
 
 
@@ -140,6 +180,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                 x={vertMod}
                 onChange={({ x }) =>  setVertMod(x)}/>
             </SliderBox>
+            {vertMod}
             </div>
             <section style={{margin: "0 auto"}}>
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
@@ -153,7 +194,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                   return (
                   <MileBox key={index}>
                       <TableData><Detail>{index + 1}</Detail></TableData>
-                      <TableData><Detail>{minTommss(m)}</Detail></TableData>
+                      <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index)}</Detail><ArrowRight onClick={() =>plusTime(index)}></ArrowRight></TableData>
                       <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
 
                       <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>

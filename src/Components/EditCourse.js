@@ -70,7 +70,7 @@ function EditCourse(props) {
                           <MenuItem value={1.05}>Road</MenuItem>
                           <MenuItem value={1.1}>Moderate</MenuItem>
                           <MenuItem value={1.2}>Rough</MenuItem>
-                          <MenuItem value={1.3}>Extreme</MenuItem>
+                          <MenuItem value={1.23}>Extreme</MenuItem>
                           </Select>
                         </FormControl>
                         <FormControl >
@@ -97,11 +97,11 @@ function EditCourse(props) {
           <Col>
             {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}
             <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile>
-            <MileTimes milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
+            <MileTimes paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
           </Col>
         </Row>
         <div>
-          {props.coordinates.length === 0 ? (
+          {props.coordinates.length === 0 && props.id ? (
             <Route setMilePoints={props.setMilePoints} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}>hi</Route>
           ) : null}
         </div>

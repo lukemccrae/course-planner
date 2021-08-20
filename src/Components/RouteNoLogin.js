@@ -54,6 +54,7 @@ function RouteNoLogin(props) {
         props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
         props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
         props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
+        props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
         props.setName(name)
           //pass parsed geoJSON up to parent as JS object
           let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])

@@ -19,7 +19,7 @@ function GainProfile({milePoints}) {
     //profile needs to be an array of 20 numbers representing the elevation data from the points for each mile
     const [profile, setProfile] = useState(new Array(20).fill(0));
     useEffect(() => {
-        if(milePoints.length > 0) {
+        if(milePoints) {
             fillProfile()
         }
     }, [milePoints])

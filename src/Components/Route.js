@@ -42,10 +42,11 @@ function Route(props) {
       .then((response) => response.json())
       .then((data) => {
         if(data.success) {
-          props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
-          props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
-          props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
-          console.log(data)
+          props.editCourse({id: props.id})
+          // props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
+          // props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
+          // props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
+
           //pass parsed geoJSON up to parent as JS object
           let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])
           let dummy = {
