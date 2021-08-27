@@ -29,7 +29,7 @@ const Box = styled.div`
 `
 
 function EditCourse(props) {
-  console.log(props)
+  // console.log(props)
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
@@ -92,7 +92,7 @@ function EditCourse(props) {
                 </div>
               </div>
               <Category>Stops</Category>
-              <Stop vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop}></Stop>
+              <Stop vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop} paceAdjust={props.paceAdjust} ></Stop>
           </Col>
           <Col>
             {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}

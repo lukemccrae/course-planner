@@ -74,14 +74,13 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust}) {
-  console.log(paceAdjust)
   // console.log(milePoints)
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
 
     useEffect(() => {
-        resetPaces()
         updateTotalTime()
+        resetPaces()
     }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints, paceAdjust])
 
     const classes = useStyles();
@@ -142,6 +141,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
   }
 
     function updateTotalTime() {
+      console.log("updatetotaltime()")
       let tempTime = 0;
       for (let i = 0; i < paces.length; i++) {
         tempTime += paces[i] + paceAdjust[i];
@@ -155,7 +155,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       setPaceAdjust(tempPaceAdjust)
       resetPaces()
       updateTotalTime()
-      console.log(paceAdjust)
     }
 
     function plusTime(index) {
@@ -164,7 +163,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       setPaceAdjust(tempPaceAdjust)
       resetPaces()
       updateTotalTime()
-      console.log(paceAdjust)
     }
 
 

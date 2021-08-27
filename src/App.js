@@ -165,6 +165,7 @@ function App(props) {
         },
       }).then(res => res.json()).then(json => {
         if (json.success) {
+          console.log(json)
           setCourseId(json.course[0]._id)
           loadCourse(json.course[0]);
         } else {

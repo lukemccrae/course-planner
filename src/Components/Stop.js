@@ -57,8 +57,12 @@ const StopInputNew = styled.input`
 `
 
 
-function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo}) {
+function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo, paceAdjust}) {
   const [countedStops, setCountedStops] = useState(0);
+
+  useEffect(() => {
+    console.log(paceAdjust)
+  }, [paceAdjust])
   
     const classes = useStyles();
 
@@ -124,7 +128,7 @@ function onTextboxChangeStopName(event, i) {
                         <TextField className={classes.comments} style={{width: "150px"}} placeholder="Comments" rowsMax={2} multiline label={index == 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, index)} />
                     </Row>
                 </form>
-                <TimeCals miles={s.miles} countedStops={countedStops} setCountedStops={setCountedStops} vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>
+                <TimeCals paceAdjust={paceAdjust} miles={s.miles} countedStops={countedStops} setCountedStops={setCountedStops} vertInfo={vertInfo} calories={calories} stops={stops} mileTimes={mileTimes} index={index}></TimeCals>
                 </div>
               )
             })}

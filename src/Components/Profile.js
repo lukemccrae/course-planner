@@ -48,7 +48,6 @@ function Profile({stops, coordinates, mileTimes}) {
 
             //make sure we dont index past the final stop
             let endPercent = (stops.length > i + 1 ? parseFloat(stops[i + 1].miles) : mileTimes.length) / mileTimes.length
-            console.log(endPercent, "endPercent")
             let coordEnd = Math.round(coordinates.length * endPercent)
 
             tempPoints.push(fillPoints(coordStart, coordEnd, i + 1))
@@ -57,7 +56,6 @@ function Profile({stops, coordinates, mileTimes}) {
 
         }
         if(stops[0].miles === 0) tempPoints.shift()
-        console.log(tempPoints)
         // return tempPoints;
         setDataset(tempPoints)
     }

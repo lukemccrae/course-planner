@@ -37,7 +37,7 @@ const Color = styled.li`
 `
 
 
-function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedStops, setCountedStops}) {
+function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedStops, setCountedStops, paceAdjust}) {
     const [distance, setDistance] = useState();
     const [time, setTime] = useState();
     const [pastAid, setPastAid] = useState(0);
@@ -73,7 +73,8 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedSt
           let timeSum = 0;
 
           for (let i = miles; i < diff + parseInt(miles); i++) {
-            timeSum += mileTimes[i]
+            timeSum += mileTimes[i];
+            timeSum += paceAdjust[i];
           }
 
           setTime(timeSum)

@@ -42,7 +42,6 @@ function Route(props) {
       .then((response) => response.json())
       .then((data) => {
         if(data.success) {
-          props.editCourse({id: props.id})
           // props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
           // props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
           // props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
@@ -80,6 +79,7 @@ function Route(props) {
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
+        props.editCourse({id: json.course._id})
         setUploading(false)
       } else {
         console.log("Error: adding this course failed.")
