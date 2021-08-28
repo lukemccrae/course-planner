@@ -61,8 +61,10 @@ function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo,
   const [countedStops, setCountedStops] = useState(0);
 
   useEffect(() => {
-    console.log(paceAdjust)
-  }, [paceAdjust])
+    if(stops[0].miles > 0) {
+      addStop()
+    }
+  }, [stops])
   
     const classes = useStyles();
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-input-slider';
 import GainProfile from './GainProfile';
+import BasePaceMod from './BasePaceMod';
 import { makeStyles } from '@material-ui/core/styles';
 import haversine from 'haversine';
 
@@ -73,13 +74,12 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust}) {
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust, setGoalHours, setGoalMinutes}) {
   // console.log(milePoints)
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
 
     useEffect(() => {
-        updateTotalTime()
         resetPaces()
     }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints, paceAdjust])
 
@@ -117,10 +117,16 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
         setMileTimes(tempPace)
         setTotalTime(tempTotalTime)
         setPaces(tempPace)
+        updateTotalTime()
     }
 
     function minTommss(m, index){
-        var minutes = m + paceAdjust[index]
+        var minutes;
+        if(index) {
+          minutes = m + paceAdjust[index]
+        } else {
+          minutes = m;
+        }
         var sign = minutes < 0 ? "-" : "";
         var min = Math.floor(Math.abs(minutes));
         var sec = Math.floor((Math.abs(minutes) * 60) % 60);
@@ -165,6 +171,12 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       updateTotalTime()
     }
 
+    //slider controls to change the goal hours/minutes to select for a particular base pace
+    function basePaceMod(x) {
+      // setGoalHours()
+      // setGoalMinutes()
+    }
+
 
     return (
         <div>
@@ -180,6 +192,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
             </SliderBox>
             {vertMod}
             </div>
+            {/* <BasePaceMod goalHours={goalHours} goalMinutes={goalMinutes} setGoalHours={setGoalHours} setGoalMinutes={setGoalMinutes} basePaceMod={basePaceMod} minTommss={minTommss}></BasePaceMod> */}
             <section style={{margin: "0 auto"}}>
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
               <thead>
@@ -192,7 +205,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                   return (
                   <MileBox key={index}>
                       <TableData><Detail>{index + 1}</Detail></TableData>
-                      <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index)}</Detail><ArrowRight onClick={() =>plusTime(index)}></ArrowRight></TableData>
+                      <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index)}</Detail><ArrowRight onClick={() => plusTime(index)}></ArrowRight></TableData>
                       <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
 
                       <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>

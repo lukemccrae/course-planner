@@ -97,7 +97,7 @@ function EditCourse(props) {
           <Col>
             {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}
             <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile>
-            <MileTimes paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
+            <MileTimes setGoalHours={props.setGoalHours} setGoalMinutes={props.setGoalMinutes} paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
           </Col>
         </Row>
         <div>
