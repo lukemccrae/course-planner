@@ -1,6 +1,6 @@
 Hey there! Thanks for checking out my project. 
 
-I created this timer to help myself stay focused on tasks, and to store the routines that I try to repeat every day.
+I created this tool to help trail runners plan their racing strategy.
 
 To run this locally:
 
