@@ -1,18 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import cloneDeep from 'lodash.clonedeep';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import { css } from "@emotion/core";
 import BarLoader from "react-spinners/BarLoader";
 import axios from 'axios'
-import Button from '@material-ui/core/Button';
-import western_states from './Demo/western_states.gpx';
-import {Row, Col, Grid} from './Grid';
+import {Row} from './Grid';
 import kendall_mtn from './Demo/kendall_mtn.gpx';
 import double_dipsea from './Demo/double_dipsea.gpx';
 
-const Input = styled.input`
-
-`
 const override = css`
   display: flex;
 `;
@@ -56,39 +50,11 @@ function RouteNoLogin(props) {
         props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
         props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
         props.setName(name)
-          //pass parsed geoJSON up to parent as JS object
-          let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])
-          let dummy = {
-              name: "dummy gpx"
-          }
           
-        //   saveNewRoute(parsedJson)
       })
       .catch((error) => {
           console.log("There was an error")
       console.error('Error:', error);
-    });
-  }
-
-  function saveNewRoute(geoJSON) {
-    const token = JSON.parse(localStorage.course_planner).token;
-    fetch(`http://localhost:3005/course/new?courseId=${props.id}`, {
-      // fetch(`https://banana-crumble-42815.herokuapp.com/course/new?courseId=${props.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        geoJSON: geoJSON
-
-      })
-    }).then(res => res.json()).then(json => {
-      if (json.success) {
-        setUploading(false)
-      } else {
-        console.log("Error: adding this course failed.")
-        console.log(json)
-      }
     });
   }
 
@@ -129,7 +95,6 @@ function RouteNoLogin(props) {
             <div>
                 <Description style={{display: "flex"}}>Load Demo</Description>
                 <div><a href="#" onClick={() => {invokeDemo(kendall_mtn, "Kendall Mtn Run")}}> <Name>Kendall Mtn Run</Name></a> (Silverton, CO)</div>
-                {/* <div><a href="#" onClick={() => {invokeDemo(western_states)}}> <Name>Western States</Name></a> (Auburn, CA)</div> */}
                 <div><a href="#" onClick={() => {invokeDemo(double_dipsea, "Double Dipsea")}}> <Name>Double Dipsea</Name></a> (Mill Valley, CA)</div>
             </div>
         </Row>

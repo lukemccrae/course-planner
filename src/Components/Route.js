@@ -1,13 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import styled from 'styled-components';
 import { css } from "@emotion/core";
 import BarLoader from "react-spinners/BarLoader";
 import Button from '@material-ui/core/Button';
 
-const Input = styled.input`
-
-`
 const override = css`
   display: flex;
 `;
@@ -63,7 +60,6 @@ function Route(props) {
   }
 
   function saveNewRoute(geoJSON) {
-    const token = JSON.parse(localStorage.course_planner).token;
     // fetch(`http://localhost:3005/course/new?courseId=${props.id}`, {
       fetch(`https://banana-crumble-42815.herokuapp.com/course/new?courseId=${props.id}`, {
       method: 'PATCH',

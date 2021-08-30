@@ -2,22 +2,14 @@ import React from 'react';
 import RouteNoLogin from './RouteNoLogin';
 import Stop from './Stop';
 import MileTimes from './MileTimes';
-import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import {Row, Col, Grid} from './Grid';
 import Profile from './Profile';
-import Login from './Login';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-
-
-const Divider = styled.div`
-  border-top: 2px solid #D3D3D3;
-  margin: 5px 0 10px 0;
-`
 
 const Category = styled.strong`
   font-weight: 500;
@@ -25,18 +17,10 @@ const Category = styled.strong`
   display: block;
 `
 
-const Box = styled.div`
-  display: flex;
-`
-
 function EditCourse(props) {
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
-  }
-
-  function toggleEdit(c) {
-    props.editCourse(c);
   }
 
     return (

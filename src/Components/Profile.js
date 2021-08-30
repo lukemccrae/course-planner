@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import {Line, Scatter} from 'react-chartjs-2';
-import styled from 'styled-components';
+import {Line} from 'react-chartjs-2';
 
 const colors = [
     "#428A79",
@@ -76,15 +75,6 @@ function Profile({stops, coordinates, mileTimes}) {
         }
         return obj;
     }
-
-    // function fillLabels() {
-    //     let result = []
-    //     for (let i = 0; i < coordinates.length; i++) {
-    //         result.push(i = '')
-    //     }
-    //     // return result;
-    //     setLabels(result);
-    // }
 
     const data = {
         labels: labels,

@@ -37,7 +37,7 @@ const Color = styled.li`
 `
 
 
-function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, countedStops, setCountedStops, paceAdjust}) {
+function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, paceAdjust}) {
   // console.log(paceAdjust)
     const [distance, setDistance] = useState();
     const [time, setTime] = useState();

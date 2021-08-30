@@ -17,8 +17,6 @@ function Login(props) {
 
 
   const onSignIn = (e) => {
-    console.log("signin")
-    //turn this on when pushing
     e.preventDefault();
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/signin`, {
         // fetch(`http://localhost:3005/course/api/account/signin`, {
@@ -37,7 +35,6 @@ function Login(props) {
       .then(json => {
         if(json.success) {
           props.loggedIn(json)
-          console.log(json)
           setInStorage('course_planner', { token: json.token })
           props.setCourseList(json.courseList)
 

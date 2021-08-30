@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import GithubIcon from '@material-ui/icons/GitHub';
@@ -20,41 +20,16 @@ const Header = styled.header`
 `
 
 function Nav(props) {
-  const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const [name, setName] = useState()
-
-
   const handleMenu = (event) => {
-    console.log(event)
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  function closeModal() {
-    setLoginModalIsOpen(false)
-  }
-
-
-  function onSelect(e) {
-    console.log(e)
-    switch(e.value){
-      case 'github':
-        window.open('https://github.com/lukemccrae/course-planner', '_blank');
-        break;
-      case 'Login': 
-        openLoginModal();
-        break;
-      case 'Logout': 
-        onLogout();
-        break;
-    }
-  }
 
   function onLogout() {
     const token = JSON.parse(localStorage.course_planner).token;
@@ -77,10 +52,6 @@ function Nav(props) {
 
   function toggleEdit(c) {
     props.editCourse(c);
-  }
-
-  function openLoginModal() {
-    setLoginModalIsOpen(true)
   }
 
     return (
@@ -157,11 +128,8 @@ function Nav(props) {
               >
                 <MenuItem onClick={onLogout}>Logout</MenuItem>
               </Menu>
-            {/* <MenuItem onClick={() => onLogout()}>Logout</MenuItem> */}
           </div>
         </Header>
-        {/* {username ? <AppBar style={{dispay: username ? "block" : "none"}} saveNewCourse={saveNewCourse} courses={courses} toggleEdit={toggleEdit} editCourse={editCourse} username={username} onSelect={onSelect} setLoginModalIsOpen={setLoginModalIsOpen} onLogout={onLogout}></AppBar>
-         : null} */}
       </div>
     )
 }

@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-input-slider';
 import GainProfile from './GainProfile';
-import BasePaceMod from './BasePaceMod';
-import { makeStyles } from '@material-ui/core/styles';
-import haversine from 'haversine';
 
 const MileBox = styled.tr`
   border-bottom: 1px solid #D3D3D3;
@@ -24,20 +21,9 @@ const TableData = styled.td`
   width: 50px;
 `
 
-const ElevationIcon = styled.div`
-  height: 40px;
-  width: 100px;
-  border-top-right: 1px solid black;
-`
-
 const Detail = styled.strong`
   font-weight: 300;
   font-size: 20px;
-`
-
-const Divider = styled.div`
-  border-top: 2px solid #D3D3D3;
-  margin: 5px 0 10px 0;
 `
 
 const ArrowRight = styled.div`
@@ -58,24 +44,7 @@ const ArrowLeft = styled.div`
   -webkit-transform: rotate(135deg);
 `
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-        width: '25ch'
-      },
-    },
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }));
-
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust, setGoalHours, setGoalMinutes}) {
-  // console.log(milePoints)
+function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
 
@@ -83,7 +52,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
         resetPaces()
     }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints, paceAdjust])
 
-    const classes = useStyles();
     
     function calculatePace(gain, distance) {
       let goalTime = ((parseInt(goalHours) * 60) + parseInt(goalMinutes))
@@ -94,22 +62,11 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       return goalPace * vert;
     }
 
-    function findVertModFkt(vert){
-      const b1 = 0.15006;
-      const b2 = 0.0000539868;
-      const b3 = -6.3067 * Math.pow(10, -8);
-      const b4 = 2.1199 * Math.pow(10, -11);
-      const b5 = 1.5448 * Math.pow(10, -14);
-      const result = b1 * vert + b2 * Math.pow(vert, 2) + b3 * Math.pow(vert, 3) + b4 * Math.pow(vert, 4) + b5 * Math.pow(vert, 5)
-      return result;
-  }
-
     function resetPaces() {
         let smartDistance = vertInfo.length;
         let tempPace = [];
         let tempTotalTime = 0;
         for (let i = 0; i < smartDistance; i++) {
-            // updateMileTimes(course.details.pace[0] * 60 + course.details.pace[1], i)
             let newPace = calculatePace(vertInfo[i], smartDistance)
             tempPace[i] = newPace
             tempTotalTime += tempPace[i]
@@ -134,7 +91,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     }
 
     var toHHMMSS = (secs) => {
-      var paceAdjustSecs = paceAdjust.reduce((a, b) => a + b, 0) * 60
       var sec_num = parseInt(secs, 10)
       var hours   = Math.floor(sec_num / 3600)
       var minutes = Math.floor(sec_num / 60) % 60
@@ -170,12 +126,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       updateTotalTime()
     }
 
-    //slider controls to change the goal hours/minutes to select for a particular base pace
-    function basePaceMod(x) {
-      // setGoalHours()
-      // setGoalMinutes()
-    }
-
     function AveragePaces(props) {
       let paceTotal = props.paces.reduce((a, b) => a + b, 0)
       let adjustTotal = paceAdjust.slice(0, props.index + 1).reduce((a, b) => a + b, 0);
@@ -199,7 +149,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
             </SliderBox>
             {vertMod}
             </div>
-            {/* <BasePaceMod goalHours={goalHours} goalMinutes={goalMinutes} setGoalHours={setGoalHours} setGoalMinutes={setGoalMinutes} basePaceMod={basePaceMod} minTommss={minTommss}></BasePaceMod> */}
             <section style={{margin: "0 auto"}}>
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
               <thead>

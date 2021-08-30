@@ -116,7 +116,6 @@ function App(props) {
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          console.log(json)
           setCourseList(json.courseList);
           setUsername(json.email);
           // setCourseId(json.course._id)
@@ -136,7 +135,6 @@ function App(props) {
 
 
   function loadCourse(c) {
-    console.log(c)
     setName(c.details.name)
     setStops(c.stops)
     setMileTimes(c.details.mileTimes)
@@ -153,7 +151,6 @@ function App(props) {
 
     //enable group to be editable
     function editCourse(courseRef) {
-      console.log(courseRef)
       const obj = getFromStorage('course_planner');
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
       // fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
@@ -164,7 +161,6 @@ function App(props) {
         },
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          console.log(json)
           setCourseId(json.course[0]._id)
           loadCourse(json.course[0]);
         } else {
@@ -254,7 +250,6 @@ function App(props) {
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          console.log(json)
           setCourseList(json.courseList)
         } else {
           console.log("Error: adding this course failed.")

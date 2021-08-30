@@ -12,20 +12,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-
-const Divider = styled.div`
-  border-top: 2px solid #D3D3D3;
-  margin: 5px 0 10px 0;
-`
-
 const Category = styled.strong`
   font-weight: 500;
   font-size: 25px;
   display: block;
-`
-
-const Box = styled.div`
-  display: flex;
 `
 
 function EditCourse(props) {
@@ -33,10 +23,6 @@ function EditCourse(props) {
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
-  }
-
-  function toggleEdit(c) {
-    props.editCourse(c);
   }
 
     return (

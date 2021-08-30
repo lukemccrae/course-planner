@@ -4,20 +4,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore } from 'redux';
-import allReducers from './reducers';
-import {Provider} from 'react-redux';
-
-//set up the redux store
-const store = createStore(
-
-    //the composite reducer object being imported above
-    allReducers,
-    
-    //along with this line that connects the dev tools to
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-   );
-
 ReactDOM.render(
     <React.StrictMode>
         {/* <Provider store={store}> */}
