@@ -11,7 +11,7 @@ const MileBox = styled.tr`
 `
 
 const MileTableHead = styled.th`
-  width: 100px;
+  width: ${(props) => props.width + "px"};
 `
 
 const SliderBox = styled.div`
@@ -122,7 +122,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
 
     function minTommss(m, index){
         var minutes;
-        if(index) {
+        if(index >= 0) {
           minutes = m + paceAdjust[index]
         } else {
           minutes = m;
@@ -147,7 +147,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
   }
 
     function updateTotalTime() {
-      console.log("updatetotaltime()")
       let tempTime = 0;
       for (let i = 0; i < paces.length; i++) {
         tempTime += paces[i] + paceAdjust[i];
@@ -177,6 +176,14 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       // setGoalMinutes()
     }
 
+    function AveragePaces(props) {
+      let paceTotal = props.paces.reduce((a, b) => a + b, 0)
+      let adjustTotal = paceAdjust.slice(0, props.index + 1).reduce((a, b) => a + b, 0);
+      return (
+        <div>{minTommss((paceTotal + adjustTotal) / (props.index + 1))}</div>
+      )
+    }
+
 
     return (
         <div>
@@ -196,10 +203,11 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
             <section style={{margin: "0 auto"}}>
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
               <thead>
-                <MileTableHead>Mile</MileTableHead>
-                <MileTableHead>Pace</MileTableHead>
-                <MileTableHead>Gain</MileTableHead>
-                <MileTableHead>Profile</MileTableHead>
+                <MileTableHead width={50}>Mile</MileTableHead>
+                <MileTableHead width={100}>Pace</MileTableHead>
+                <MileTableHead width={80}>Gain</MileTableHead>
+                <MileTableHead width={90}>Avg. Pace</MileTableHead>
+                <MileTableHead width={100}>Profile</MileTableHead>
               </thead>
               {paces.map((m, index) => {
                   return (
@@ -207,7 +215,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                       <TableData><Detail>{index + 1}</Detail></TableData>
                       <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index)}</Detail><ArrowRight onClick={() => plusTime(index)}></ArrowRight></TableData>
                       <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
-
+                      <TableData><Detail><AveragePaces paces={paces.slice(0, index + 1)} index={index}></AveragePaces></Detail></TableData>
                       <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>
 
                   </MileBox>

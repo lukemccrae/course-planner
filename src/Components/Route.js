@@ -48,9 +48,6 @@ function Route(props) {
 
           //pass parsed geoJSON up to parent as JS object
           let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])
-          let dummy = {
-              name: "dummy gpx"
-          }
           
           saveNewRoute(parsedJson)
         } else {

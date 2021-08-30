@@ -61,8 +61,10 @@ function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo,
   const [countedStops, setCountedStops] = useState(0);
 
   useEffect(() => {
-    if(stops[0].miles > 0) {
-      addStop()
+    if(stops.length > 0) {
+      if(stops[0].miles > 0) {
+        addStop()
+      }
     }
   }, [stops])
   
