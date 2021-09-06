@@ -35,8 +35,8 @@ function RouteNoLogin(props) {
 
   function gpxToJson(gpx, name) {
     setUploading(true)
-    // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        fetch('http://localhost:3005/gps/togeojson', {
+    fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        // fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
