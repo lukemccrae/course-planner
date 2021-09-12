@@ -13,6 +13,8 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
 import Nav from './Components/Nav';
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import { CourseInfoProvider, useCourseInfoContextActions } from './context/CourseInfoContext';
+import { editCourse } from './services/courseService';
 
 const override = css`
   display: flex;
@@ -72,6 +74,12 @@ const loginStyles = {
   }
 };
 
+const INITIAL_STATE = {
+ mileTimes: [],
+ goalHours: 2
+}
+
+
 
 function App(props) {
   const [username, setUsername] = useState('');
@@ -79,16 +87,17 @@ function App(props) {
   const [courseList, setCourseList] = useState([]);
   const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
-  const [name, setName] = useState("New Course");
+  // const [name, setName] = useState("New Courseeee");
+  const [calories, setCalories] = useState(225);
+  const [vertMod, setVertMod] = useState(400);
+  const [terrainMod, setTerrainMod] = useState(1.2);
+
   const [mileTimes, setMileTimes] = useState([]);
   const [goalHours, setGoalHours] = useState(2);
   const [goalMinutes, setGoalMinutes] = useState(30);
-  const [calories, setCalories] = useState(225);
-  const [terrainMod, setTerrainMod] = useState(1.2);
   const [vertInfo, setVertInfo] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
   const [milePoints, setMilePoints] = useState([]);
-  const [vertMod, setVertMod] = useState(400);
   const [paceAdjust, setPaceAdjust] = useState([]);
 
  
@@ -106,8 +115,8 @@ function App(props) {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
       //verify token
-      // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
-        fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
+      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
+        // fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +144,9 @@ function App(props) {
 
 
   function loadCourse(c) {
-    setName(c.details.name)
+    // const {setName} = useCourseInfoContextActions();
+
+    // setName(c.details.name)
     setStops(c.stops)
     setMileTimes(c.details.mileTimes)
     setGoalHours(c.details.goalHours)
@@ -147,9 +158,14 @@ function App(props) {
     setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
     setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
     setPaceAdjust("paceAdjust" in c ? c.paceAdjust : [])
+
+
+    // action // updateCourseData({...})
+    // reducer COURSE_DATA_UPDATED
+    //     set, set set
   }
 
-    //enable group to be editable
+    // //enable group to be editable
     function editCourse(courseRef) {
       const obj = getFromStorage('course_planner');
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
@@ -324,55 +340,65 @@ function App(props) {
     setDeleteModalIsOpen(!deleteModalIsOpen)
   }
 
-    //if token, return dash, and show spinner
-    //
-    return (
-      <div>
-        {!loading && username ? 
+  function renderNavBar() {
+    if(!loading && username) {
+      return (
         <Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
-        : <div></div>
-        }
-        {username && terrainMod && calories ? 
+      )
+    } else {
+      return (
+        <div></div>
+      ) 
+    }
+  }
+
+  function renderEditCourse() {
+    if(username && terrainMod && calories) {
+      return (
+        <CourseInfoProvider>
           <EditCourse 
-            name={name}
-            stops={stops}
-            mileTimes={mileTimes}
-            goalHours={goalHours}
-            goalMinutes={goalMinutes}
-            calories={calories}
-            vertMod={vertMod}
-            terrainMod={terrainMod}
-            coordinates={coordinates}
-            vertInfo={vertInfo}
-            milePoints={milePoints}
-            paceAdjust={paceAdjust}
-            
-            setName={setName}
-            setStops={setStops}
-            setMileTimes={setMileTimes}
-            setGoalHours={setGoalHours}
-            setGoalMinutes={setGoalMinutes}
-            setCalories={setCalories}
-            setVertMod={setVertMod}
-            setTerrainMod={setTerrainMod}
-            setCoordinates={setCoordinates}
-            setMilePoints={setMilePoints}
-            setVertInfo={setVertInfo}
-            setPaceAdjust={setPaceAdjust}
+              // name={name}
+              stops={stops}
+              mileTimes={mileTimes}
+              goalHours={goalHours}
+              goalMinutes={goalMinutes}
+              calories={calories}
+              vertMod={vertMod}
+              terrainMod={terrainMod}
+              coordinates={coordinates}
+              vertInfo={vertInfo}
+              milePoints={milePoints}
+              paceAdjust={paceAdjust}
+              
+              setName={setName}
+              setStops={setStops}
+              setMileTimes={setMileTimes}
+              setGoalHours={setGoalHours}
+              setGoalMinutes={setGoalMinutes}
+              setCalories={setCalories}
+              setVertMod={setVertMod}
+              setTerrainMod={setTerrainMod}
+              setCoordinates={setCoordinates}
+              setMilePoints={setMilePoints}
+              setVertInfo={setVertInfo}
+              setPaceAdjust={setPaceAdjust}
 
-            saved={saved}
+              saved={saved}
 
-            delStop={delStop}
-            addStop={addStop}
-            saveCourse={saveCourse}
-            updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-            editCourse={editCourse}
-            loadCourse={loadCourse}
+              delStop={delStop}
+              addStop={addStop}
+              saveCourse={saveCourse}
+              updateDeleteModalIsOpen={updateDeleteModalIsOpen}
+              editCourse={editCourse}
+              loadCourse={loadCourse}
 
-            id={courseId}
-          >
-          </EditCourse>
-          : 
+              id={courseId}
+            >
+            </EditCourse>
+          </CourseInfoProvider>
+      )
+    } else {
+      return (
         <div>
           {getFromStorage('course_planner') ? 
           <div
@@ -397,7 +423,17 @@ function App(props) {
           </DashNoLogin>
          }
         </div>
-      }
+      )
+    }
+  }
+
+    //if token, return dash, and show spinner
+    //
+    return (
+      <div>
+        {renderNavBar()}
+        {renderEditCourse()}
+
         <Modal
           isOpen={deleteModalIsOpen}
           onRequestClose={updateDeleteModalIsOpen}

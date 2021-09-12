@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
 import styled from 'styled-components';
 
+import { toHHMMSS } from '../helpers/timeHelper';
+
 const colors = [
   "#428A79",
   "#71AF55",
@@ -85,19 +87,6 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, paceAdjus
       function caloriesToNextAid(timeSum) {
         setCalToConsume(Math.round(calories * (parseFloat(timeSum) / 60)))
     }
-
-    var toHHMMSS = (secs) => {
-      var sec_num = parseInt(secs, 10)
-      var hours   = Math.floor(sec_num / 3600)
-      var minutes = Math.floor(sec_num / 60) % 60
-      var seconds = sec_num % 60
-  
-      return [hours,minutes,seconds]
-          .map(v => v < 10 ? "0" + v : v)
-          .filter((v,i) => v !== "00" || i > 0)
-          .join(":")
-  }
-
     return (
         <div>
           <List>

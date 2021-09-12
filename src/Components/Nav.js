@@ -10,6 +10,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import { editCourse } from '../services/courseService';
+import { useCourseInfoContextActions } from '../context/CourseInfoContext';
+
 const Header = styled.header`
   height: 60px;
   display: flex;
@@ -50,7 +53,9 @@ function Nav(props) {
       });
   }
 
-  function toggleEdit(c) {
+  const toggleEdit = (c) => {
+    const {setName} = useCourseInfoContextActions();
+
     props.editCourse(c);
   }
 

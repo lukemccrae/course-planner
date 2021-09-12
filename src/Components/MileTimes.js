@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-input-slider';
 import GainProfile from './GainProfile';
+import { toHHMMSS } from '../helpers/timeHelper';
 
 const MileBox = styled.tr`
   border-bottom: 1px solid #D3D3D3;
@@ -90,18 +91,6 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
         return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
     }
 
-    var toHHMMSS = (secs) => {
-      var sec_num = parseInt(secs, 10)
-      var hours   = Math.floor(sec_num / 3600)
-      var minutes = Math.floor(sec_num / 60) % 60
-      var seconds = sec_num % 60
-  
-      return [hours,minutes,seconds]
-          .map(v => v < 10 ? "0" + v : v)
-          .filter((v,i) => v !== "00" || i > 0)
-          .join(":")
-  }
-
     function updateTotalTime() {
       let tempTime = 0;
       for (let i = 0; i < paces.length; i++) {
@@ -129,8 +118,9 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
     function AveragePaces(props) {
       let paceTotal = props.paces.reduce((a, b) => a + b, 0)
       let adjustTotal = paceAdjust.slice(0, props.index + 1).reduce((a, b) => a + b, 0);
+
       return (
-        <div>{minTommss((paceTotal + adjustTotal) / (props.index + 1))}</div>
+        <div>{minTommss((paceTotal + adjustTotal) / (props.index + 1), paceAdjust)}</div>
       )
     }
 
@@ -162,7 +152,7 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                   return (
                   <MileBox key={index}>
                       <TableData><Detail>{index + 1}</Detail></TableData>
-                      <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index)}</Detail><ArrowRight onClick={() => plusTime(index)}></ArrowRight></TableData>
+                      <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index, paceAdjust)}</Detail><ArrowRight onClick={() => plusTime(index)}></ArrowRight></TableData>
                       <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
                       <TableData><Detail><AveragePaces paces={paces.slice(0, index + 1)} index={index}></AveragePaces></Detail></TableData>
                       <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>

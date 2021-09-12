@@ -12,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
+import { useCourseInfoContextState } from '../context/CourseInfoContext';
+
 const Category = styled.strong`
   font-weight: 500;
   font-size: 25px;
@@ -25,6 +27,9 @@ function EditCourse(props) {
     // saveNewRoute(gpxObj)
   }
 
+  
+  const {name} = useCourseInfoContextState();
+
     return (
       <Grid>
         <Row style={{display: props.coordinates.length > 0 ? "flex" : "none"}}>
@@ -37,7 +42,7 @@ function EditCourse(props) {
             
             <Category>Course Info</Category>
               <div style={{margin: "0 0 0 10px"}}>
-                <TextField type="text" value={props.name} label="Course Name" onChange={(e) => props.setName(e.target.value)} />
+                <TextField type="text" value={name} label="Course Name" onChange={(e) => props.setName(e.target.value)} />
                 <span style={{margin: "5px"}}></span>
                 <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
                   <div style={{fontSize: "35px", padding: "5px 5px 15px 5px", display: "inline-block"}}>:</div>
