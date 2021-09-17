@@ -106,8 +106,8 @@ function App(props) {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
       //verify token
-      // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
-        fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
+      fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
+        // fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
