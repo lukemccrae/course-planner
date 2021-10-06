@@ -83,9 +83,10 @@ function App(props) {
   const [mileTimes, setMileTimes] = useState([]);
   const [goalHours, setGoalHours] = useState(2);
   const [goalMinutes, setGoalMinutes] = useState(30);
+  const [startTime, setStartTime] = useState("06:00");
   const [calories, setCalories] = useState(225);
   const [terrainMod, setTerrainMod] = useState(1.2);
-  const [vertInfo, setVertInfo] = useState([]);
+  const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
   const [coordinates, setCoordinates] = useState([]);
   const [milePoints, setMilePoints] = useState([]);
   const [vertMod, setVertMod] = useState(400);
@@ -135,6 +136,7 @@ function App(props) {
 
 
   function loadCourse(c) {
+    console.log(c, "c")
     setName(c.details.name)
     setStops(c.stops)
     setMileTimes(c.details.mileTimes)
@@ -142,11 +144,12 @@ function App(props) {
     setGoalMinutes(c.details.goalMinutes)
     setCalories(c.details.calories)
     setVertMod(c.details.vertMod)
-    setVertInfo(c.route.geoJSON.properties.vertInfo.cumulativeGain)
+    setVertInfo(c.route.geoJSON.properties.vertInfo)
     setTerrainMod(c.details.terrainMod)
     setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
     setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
     setPaceAdjust("paceAdjust" in c ? c.paceAdjust : [])
+    setStartTime(c.details.startTime)
   }
 
     //enable group to be editable
@@ -182,6 +185,7 @@ function App(props) {
     setTerrainMod()
     setCoordinates([])
     setMilePoints([])
+    setStartTime("")
   }
 
   function loggedOut() {
@@ -198,6 +202,7 @@ function App(props) {
     setTerrainMod(1.2)
     setCoordinates([])
     setMilePoints([])
+    setStartTime("")
   }
 
   function closeLoginModal() {
@@ -236,8 +241,8 @@ function App(props) {
 
   function saveNewCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        // fetch(`http://localhost:3005/course`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        fetch(`http://localhost:3005/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -246,7 +251,7 @@ function App(props) {
         body: JSON.stringify({
           token: token,
           hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
-          //server sets inital course values
+          //server sets initial course values
         })
       }).then(res => res.json()).then(json => {
         if (json.success) {
@@ -270,6 +275,7 @@ function App(props) {
         vertMod,
         terrainMod,
         mileTimes,
+        startTime
       },
       stops: stops,
       paceAdjust: paceAdjust
@@ -278,8 +284,8 @@ function App(props) {
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
     //   saveNewRoute();
     // }
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
-        // fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
+        fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -346,6 +352,7 @@ function App(props) {
             vertInfo={vertInfo}
             milePoints={milePoints}
             paceAdjust={paceAdjust}
+            startTime={startTime}
             
             setName={setName}
             setStops={setStops}
@@ -359,6 +366,7 @@ function App(props) {
             setMilePoints={setMilePoints}
             setVertInfo={setVertInfo}
             setPaceAdjust={setPaceAdjust}
+            setStartTime={setStartTime}
 
             saved={saved}
 

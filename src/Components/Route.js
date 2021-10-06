@@ -28,8 +28,8 @@ function Route(props) {
 
   function gpxToJson(gpx) {
     setUploading(true)
-    fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        // fetch('http://localhost:3005/gps/togeojson', {
+    // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',

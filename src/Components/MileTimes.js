@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-input-slider';
 import GainProfile from './GainProfile';
+import {DateTime} from 'luxon';
+
 
 const MileBox = styled.tr`
   border-bottom: 1px solid #D3D3D3;
@@ -44,30 +46,32 @@ const ArrowLeft = styled.div`
   -webkit-transform: rotate(135deg);
 `
 
-function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust}) {
+function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust, startTime}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
+    console.log(gain, "gain")
 
     useEffect(() => {
-        resetPaces()
-    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, vertInfo, milePoints, paceAdjust])
+      resetPaces()
+    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust])
 
     
-    function calculatePace(gain, distance) {
+    function calculatePace(index) {
       let goalTime = ((parseInt(goalHours) * 60) + parseInt(goalMinutes))
-      let goalDistance = parseInt(distance)
+      let goalDistance = parseInt(gain.length)
       let goalPace = goalTime / goalDistance;
 
-      let vert = (Math.pow(terrainMod, gain / vertMod)).toFixed(2);
-      return goalPace * vert;
+      //pace formula: goal pace * 1.1 ^ elevation
+      let vert = (Math.pow(terrainMod, parseInt(gain[index]) + parseInt(loss[index]) / vertMod)).toFixed(2);
+      console.log(parseFloat(vert), "66")
+      return goalPace * parseFloat(vert);
     }
 
     function resetPaces() {
-        let smartDistance = vertInfo.length;
         let tempPace = [];
         let tempTotalTime = 0;
-        for (let i = 0; i < smartDistance; i++) {
-            let newPace = calculatePace(vertInfo[i], smartDistance)
+        for (let i = 0; i < gain.length; i++) {
+            let newPace = calculatePace(i)
             tempPace[i] = newPace
             tempTotalTime += tempPace[i]
         }
@@ -126,6 +130,41 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
       updateTotalTime()
     }
 
+    function displayZeros(n) {
+      if(n.toString().length < 2) {
+        return (
+          "0" + n
+        )
+      } else {
+        return n;
+      }
+    }
+
+    function TimeThrough(props) {
+      let paceTotal = props.paces.reduce((a, b) => a + b, 0)
+      let paceTotalRound = Math.round((paceTotal + Number.EPSILON) * 100) / 100;
+
+      const [hours, minutes] = startTime.split(":");
+
+      let timeThrough = {
+        c: {
+          hour: 0,
+          minute: 0
+        }
+      };
+      
+      try {
+        timeThrough = DateTime.fromObject({year: 2017, month: 5, day: 15, hour: parseInt(hours), minute: parseInt(minutes) }, { zone: 'Asia/Singapore' }).plus({minutes: paceTotalRound})
+      } catch (error) {
+        console.error(error);
+      }
+      
+      return(
+        // <div>{displayZeros(timeThrough.c.hour)}:{displayZeros(timeThrough.c.minute)}</div>
+        <div></div>
+      )
+    }
+
     function AveragePaces(props) {
       let paceTotal = props.paces.reduce((a, b) => a + b, 0)
       let adjustTotal = paceAdjust.slice(0, props.index + 1).reduce((a, b) => a + b, 0);
@@ -155,18 +194,25 @@ function MileTimes({vertInfo, vertMod, terrainMod, setVertMod, goalHours, goalMi
                 <MileTableHead width={50}>Mile</MileTableHead>
                 <MileTableHead width={100}>Pace</MileTableHead>
                 <MileTableHead width={80}>Gain</MileTableHead>
+                <MileTableHead width={80}>Loss</MileTableHead>
                 <MileTableHead width={90}>Avg. Pace</MileTableHead>
+                <MileTableHead width={70}>Time</MileTableHead>
                 <MileTableHead width={100}>Profile</MileTableHead>
               </thead>
               {paces.map((m, index) => {
                   return (
                   <MileBox key={index}>
                       <TableData><Detail>{index + 1}</Detail></TableData>
-                      <TableData><ArrowLeft onClick={() => minusTime(index)}></ArrowLeft><Detail>{minTommss(m, index)}</Detail><ArrowRight onClick={() => plusTime(index)}></ArrowRight></TableData>
-                      <TableData><Detail>{Math.round(vertInfo[index])} ft.</Detail></TableData>
+                      <TableData>
+                        <ArrowLeft onClick={() => minusTime(index)}></ArrowLeft>
+                          <Detail>{minTommss(m, index)}</Detail>
+                        <ArrowRight onClick={() => plusTime(index)}></ArrowRight>
+                      </TableData>
+                      <TableData><Detail>{Math.round(gain[index])} ft.</Detail></TableData>
+                      <TableData><Detail>{Math.round(loss[index])} ft.</Detail></TableData>
                       <TableData><Detail><AveragePaces paces={paces.slice(0, index + 1)} index={index}></AveragePaces></Detail></TableData>
+                      <TableData><Detail><TimeThrough paces={paces.slice(0, index + 1)}></TimeThrough></Detail></TableData>
                       <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>
-
                   </MileBox>
                   )
               })}
