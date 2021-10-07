@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import RouteNoLogin from './RouteNoLogin';
 import Stop from './Stop';
 import MileTimes from './MileTimes';
@@ -17,10 +17,26 @@ const Category = styled.strong`
   display: block;
 `
 
-function EditCourse(props) {
+function EditCourseNoLogin(props) {
+  //check if values passed to the time library are valid
+  const [timeFormatError, setTimeFormatError] = useState(false);
+
+  console.log(props.vertInfo)
 
   function updateRoute(gpxObj) {
     // saveNewRoute(gpxObj)
+  }
+
+  function validateStartTime(e) {
+    let hours = parseInt(e.split(":")[0])
+    let minutes = parseInt(e.split(":")[1])
+    if(hours < 25 && hours > -1 && minutes > -1 && minutes < 60) {
+      props.setStartTime(e)
+      setTimeFormatError(false)
+    } else {
+      props.setStartTime(e)
+      setTimeFormatError(true)
+    }
   }
 
     return (
@@ -35,8 +51,7 @@ function EditCourse(props) {
                   <div style={{fontSize: "35px", padding: "5px 5px 15px 5px", display: "inline-block"}}>:</div>
                   <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
                     <div>
-                      <div>
-                    </div>
+                    <TextField error={timeFormatError} style={{width: "90px"}} type="text" value={props.startTime} label="Start Time (HH:MM)" onChange={(e) => validateStartTime(e.target.value)} />
                       <FormControl style={{marginRight: "10px"}}>
                         <InputLabel>Terrain Type</InputLabel>
                           <Select
@@ -75,7 +90,7 @@ function EditCourse(props) {
           <Col>
             {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}
             <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile>
-            <MileTimes setGoalHours={props.setGoalHours} setGoalMinutes={props.setGoalMinutes} paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
+            <MileTimes startTime={timeFormatError ? "00:00" : props.startTime} setGoalHours={props.setGoalHours} setGoalMinutes={props.setGoalMinutes} paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} gain={props.vertInfo.cumulativeGain} loss={props.vertInfo.cumulativeLoss} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
           </Col>
         </Row>
         <div>
@@ -88,4 +103,4 @@ function EditCourse(props) {
 
 }
 
-export default EditCourse;
+export default EditCourseNoLogin;

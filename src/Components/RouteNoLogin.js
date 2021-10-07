@@ -31,12 +31,13 @@ const Name = styled.strong`
 
 
 function RouteNoLogin(props) {
+  console.log(props)
   const [uploading, setUploading] = useState(false)
 
   function gpxToJson(gpx, name) {
     setUploading(true)
-    fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        // fetch('http://localhost:3005/gps/togeojson', {
+    // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -45,7 +46,7 @@ function RouteNoLogin(props) {
       })
       .then((response) => response.json())
       .then((data) => {
-        props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
+        props.setVertInfo(data.geoJson.features[0].properties.vertInfo)
         props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
         props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
         props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))

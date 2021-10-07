@@ -329,6 +329,53 @@ function App(props) {
     setDeleteModalIsOpen(!deleteModalIsOpen)
   }
 
+  function renderEditCourseNoLogin() {
+    return (
+      <EditCourseNoLogin 
+            name={name}
+            stops={stops}
+            mileTimes={mileTimes}
+            goalHours={goalHours}
+            goalMinutes={goalMinutes}
+            calories={calories}
+            vertMod={vertMod}
+            terrainMod={terrainMod}
+            coordinates={coordinates}
+            milePoints={milePoints}
+            vertInfo={vertInfo}
+            paceAdjust={paceAdjust}
+            startTime={startTime}
+            
+            setName={setName}
+            setStops={setStops}
+            setMileTimes={setMileTimes}
+            setGoalHours={setGoalHours}
+            setGoalMinutes={setGoalMinutes}
+            setCalories={setCalories}
+            setVertMod={setVertMod}
+            setTerrainMod={setTerrainMod}
+            setCoordinates={setCoordinates}
+            setMilePoints={setMilePoints}
+            setVertInfo={setVertInfo}
+            setPaceAdjust={setPaceAdjust}
+            setStartTime={setStartTime}
+
+            saved={saved}
+
+            delStop={delStop}
+            addStop={addStop}
+            saveCourse={saveCourse}
+            updateDeleteModalIsOpen={updateDeleteModalIsOpen}
+            editCourse={editCourse}
+            loadCourse={loadCourse}
+
+            id={courseId}
+            setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
+          >
+          </EditCourseNoLogin>
+    )
+  }
+
   function renderNavBar() {
     if(!loading && username) {
       return (<Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>)
@@ -415,8 +462,10 @@ function App(props) {
     }
   }
 
-    //if token, return dash, and show spinner
-    //
+  function renderModal() {
+
+  }
+
     return (
       <div>
         {renderNavBar()}
@@ -441,47 +490,7 @@ function App(props) {
           style={demoRouteStyles}
           contentLabel="Demo Route Modal"
         >
-          <EditCourseNoLogin 
-            name={name}
-            stops={stops}
-            mileTimes={mileTimes}
-            goalHours={goalHours}
-            goalMinutes={goalMinutes}
-            calories={calories}
-            vertMod={vertMod}
-            terrainMod={terrainMod}
-            coordinates={coordinates}
-            milePoints={milePoints}
-            vertInfo={vertInfo}
-            paceAdjust={paceAdjust}
-            
-            setName={setName}
-            setStops={setStops}
-            setMileTimes={setMileTimes}
-            setGoalHours={setGoalHours}
-            setGoalMinutes={setGoalMinutes}
-            setCalories={setCalories}
-            setVertMod={setVertMod}
-            setTerrainMod={setTerrainMod}
-            setCoordinates={setCoordinates}
-            setMilePoints={setMilePoints}
-            setVertInfo={setVertInfo}
-            setPaceAdjust={setPaceAdjust}
-
-            saved={saved}
-
-            delStop={delStop}
-            addStop={addStop}
-            saveCourse={saveCourse}
-            updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-            editCourse={editCourse}
-            loadCourse={loadCourse}
-
-            id={courseId}
-            setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
-          >
-          </EditCourseNoLogin>
-          
+          {renderEditCourseNoLogin()}
         </Modal>
         <Modal
           isOpen={loginModalIsOpen}
