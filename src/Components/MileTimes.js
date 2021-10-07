@@ -49,36 +49,38 @@ const ArrowLeft = styled.div`
 function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust, startTime}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
-    console.log(gain, "gain")
+
+    //keep track of the time that a runner will start each mile
+    const [timeThrough, setTimeThrough] = useState([]);
 
     useEffect(() => {
       resetPaces()
-    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust])
+    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust, startTime])
 
-    
-    function calculatePace(index) {
+    function calculatePace(elev, distance) {
       let goalTime = ((parseInt(goalHours) * 60) + parseInt(goalMinutes))
-      let goalDistance = parseInt(gain.length)
+      let goalDistance = parseInt(distance)
       let goalPace = goalTime / goalDistance;
 
-      //pace formula: goal pace * 1.1 ^ elevation
-      let vert = (Math.pow(terrainMod, parseInt(gain[index]) + parseInt(loss[index]) / vertMod)).toFixed(2);
-      console.log(parseFloat(vert), "66")
-      return goalPace * parseFloat(vert);
+      let vert = (Math.pow(terrainMod, elev / vertMod)).toFixed(2);
+      return goalPace * vert;
     }
 
     function resetPaces() {
         let tempPace = [];
         let tempTotalTime = 0;
         for (let i = 0; i < gain.length; i++) {
-            let newPace = calculatePace(i)
+            let newPace = calculatePace(gain[i] + loss[i], gain.length)
             tempPace[i] = newPace
             tempTotalTime += tempPace[i]
         }
         setMileTimes(tempPace)
         setTotalTime(tempTotalTime)
         setPaces(tempPace)
-        updateTotalTime()
+        updateTotalTime();
+
+        //update the timeThrough array
+        resetTimeThrough();
     }
 
     function minTommss(m, index){
@@ -140,28 +142,39 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
       }
     }
 
-    function TimeThrough(props) {
-      let paceTotal = props.paces.reduce((a, b) => a + b, 0)
-      let paceTotalRound = Math.round((paceTotal + Number.EPSILON) * 100) / 100;
-
+    //fill up the timeThrough state array with timeObj objects corrosponding to minutes and seconds
+    function resetTimeThrough() {
       const [hours, minutes] = startTime.split(":");
+      let tempTimeThrough = [];
 
-      let timeThrough = {
-        c: {
-          hour: 0,
-          minute: 0
-        }
-      };
-      
-      try {
-        timeThrough = DateTime.fromObject({year: 2017, month: 5, day: 15, hour: parseInt(hours), minute: parseInt(minutes) }, { zone: 'Asia/Singapore' }).plus({minutes: paceTotalRound})
-      } catch (error) {
-        console.error(error);
+      //iterate through each mile - gain is just used to get the miles length
+      for (let i = 0; i < gain.length; i++) {
+        //add up the cumulative time for each mile
+        let paceTotal = paces.slice(0, i + 1).reduce((a, b) => a + b, 0);
+
+        //add up the cumulative pace adjustment up to this point
+        let paceAdjustTotal = paceAdjust.slice(0, i + 1).reduce((a, b) => a + b, 0);
+
+        let paceTotalAdjustedRounded = Math.round((paceTotal + paceAdjustTotal + Number.EPSILON) * 100) / 100;
+
+        //create a DateTime object from the luxon package, and use the .plus method to add the paceTotalAdjustedRounded value of minutes to the start time
+        let time = DateTime.fromObject({year: 2017, month: 5, day: 15, hour: parseInt(hours), minute: parseInt(minutes) }, { zone: 'Asia/Singapore' }).plus({minutes: paceTotalAdjustedRounded})
+
+        let timeObj = {
+          hour: time.c.hour,
+          minute: time.c.minute
+        };
+
+        tempTimeThrough.push(timeObj)
       }
-      
-      return(
+      setTimeThrough(tempTimeThrough)
+    }
+
+    function TimeThrough(props) {
+      // console.log(time[props.index], props, time, "164")
+      return (
         // <div>{displayZeros(timeThrough.c.hour)}:{displayZeros(timeThrough.c.minute)}</div>
-        <div></div>
+        <div>{displayZeros(timeThrough[props.index].hour)}:{displayZeros(timeThrough[props.index].minute)}</div>
       )
     }
 
@@ -211,7 +224,7 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
                       <TableData><Detail>{Math.round(gain[index])} ft.</Detail></TableData>
                       <TableData><Detail>{Math.round(loss[index])} ft.</Detail></TableData>
                       <TableData><Detail><AveragePaces paces={paces.slice(0, index + 1)} index={index}></AveragePaces></Detail></TableData>
-                      <TableData><Detail><TimeThrough paces={paces.slice(0, index + 1)}></TimeThrough></Detail></TableData>
+                      <TableData><Detail><TimeThrough index={index}></TimeThrough></Detail></TableData>
                       <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>
                   </MileBox>
                   )

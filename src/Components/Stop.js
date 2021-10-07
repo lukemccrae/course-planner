@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
 function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo, paceAdjust}) {
   const [countedStops, setCountedStops] = useState(0);
 
+  //value of stop distance cant be a decimal
+  const [stopTimeFormatError, setStopTimeFormatError] = useState(false);
+
   useEffect(() => {
     if(stops.length > 0) {
       if(stops[0].miles > 0) {
@@ -30,6 +33,18 @@ function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo,
   }, [stops])
   
     const classes = useStyles();
+
+  function validateStopDistance(e, index) {
+    //if number is int
+    if(e.target.value % 1 === 0) {
+      onTextboxChangeStopMiles(e, index)
+      setStopTimeFormatError(false)
+    } else {
+      //if it is float
+      onTextboxChangeStopMiles(e, index)
+      setStopTimeFormatError(true)
+    }
+  }
 
 function onTextboxChangeStopName(event, i) {
     const updatedStops = cloneDeep(stops)
@@ -71,7 +86,7 @@ function onTextboxChangeStopName(event, i) {
                         {/* <StopInput placeholder="Miles" stops={stops} s={s} type="number" value={s.miles} onChange={(e) => onTextboxChangeStopMiles(e, s)}/>
                         <StopInput placeholder="Calories" stops={stops} s={s} type="number" value={s.cals} onChange={(e) => onTextboxChangeStopCals(e, s)}/> */}
 
-                        <TextField style={{width: "50px"}} placeholder="Miles" type="number" min="0" step="1" label={index === 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => onTextboxChangeStopMiles(e, index)} />
+                        <TextField style={{width: "50px"}} error={stopTimeFormatError} helperText={stopTimeFormatError ? "Decimals not supported" : ""} placeholder="Miles" type="number" min="0" step="1" label={index === 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => validateStopDistance(e, index)} />
                         <TextField style={{width: "50px"}} placeholder="Calories"  label={index === 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} />
                         <TextField className={classes.comments} style={{width: "150px"}} placeholder="Comments" rowsMax={2} multiline label={index === 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, index)} />
                     </Row>

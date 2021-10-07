@@ -20,7 +20,6 @@ const Category = styled.strong`
 `
 
 function EditCourse(props) {
-  console.log(props)
   const [value, onChange] = useState(new Date());
 
   //check if values passed to the time library are valid
