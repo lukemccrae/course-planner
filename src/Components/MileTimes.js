@@ -58,7 +58,7 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
     }, [distance, goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust, startTime])
 
     function calculatePace(elev, distance) {
-      let goalTime = ((parseInt(goalHours) * 60) + parseInt(goalMinutes))
+      let goalTime = ((parseInt(goalHours ? goalHours : 0) * 60) + parseInt(goalMinutes ? goalMinutes : 0))
       let goalDistance = parseInt(distance)
       let goalPace = goalTime / goalDistance;
 
@@ -158,7 +158,7 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
         let paceTotalAdjustedRounded = Math.round((paceTotal + paceAdjustTotal + Number.EPSILON) * 100) / 100;
 
         //create a DateTime object from the luxon package, and use the .plus method to add the paceTotalAdjustedRounded value of minutes to the start time
-        let time = DateTime.fromObject({year: 2017, month: 5, day: 15, hour: parseInt(hours), minute: parseInt(minutes) }, { zone: 'Asia/Singapore' }).plus({minutes: paceTotalAdjustedRounded})
+        let time = DateTime.fromObject({year: 2017, month: 5, day: 15, hour: parseInt(hours ? hours : 0), minute: parseInt(minutes ? minutes : 0) }, { zone: 'Asia/Singapore' }).plus({minutes: paceTotalAdjustedRounded})
 
         let timeObj = {
           hour: time.c.hour,
