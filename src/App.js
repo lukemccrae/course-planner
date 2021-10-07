@@ -330,16 +330,21 @@ function App(props) {
     setDeleteModalIsOpen(!deleteModalIsOpen)
   }
 
-    //if token, return dash, and show spinner
-    //
-    return (
-      <div>
-        {!loading && username ? 
-        <Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
-        : <div></div>
-        }
-        {username && terrainMod && calories ? 
-          <EditCourse 
+  function renderNavBar() {
+    if(!loading && username) {
+      return (<Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>)
+    } else {
+      return (
+        <div></div>
+      )
+    }
+      
+  }
+
+  function renderEditCourse() {
+    if(username && terrainMod && calories) {
+      return (
+        <EditCourse 
             name={name}
             stops={stops}
             mileTimes={mileTimes}
@@ -380,7 +385,9 @@ function App(props) {
             id={courseId}
           >
           </EditCourse>
-          : 
+      )
+    } else {
+      return (
         <div>
           {getFromStorage('course_planner') ? 
           <div
@@ -405,7 +412,16 @@ function App(props) {
           </DashNoLogin>
          }
         </div>
-      }
+      )
+    }
+  }
+
+    //if token, return dash, and show spinner
+    //
+    return (
+      <div>
+        {renderNavBar()}
+        {renderEditCourse()}
         <Modal
           isOpen={deleteModalIsOpen}
           onRequestClose={updateDeleteModalIsOpen}
