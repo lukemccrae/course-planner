@@ -92,7 +92,6 @@ function App(props) {
   const [vertMod, setVertMod] = useState(400);
   const [paceAdjust, setPaceAdjust] = useState([]);
 
- 
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -181,7 +180,7 @@ function App(props) {
     setGoalMinutes()
     setCalories(225)
     setVertMod()
-    setVertInfo([])
+    setVertInfo({cumulativeGain: [], cumulativeLoss: []})
     setTerrainMod()
     setCoordinates([])
     setMilePoints([])
@@ -198,7 +197,7 @@ function App(props) {
     setGoalMinutes(30)
     setCalories(225)
     setVertMod(400)
-    setVertInfo([])
+    setVertInfo({cumulativeGain: [], cumulativeLoss: []})
     setTerrainMod(1.2)
     setCoordinates([])
     setMilePoints([])
