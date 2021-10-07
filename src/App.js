@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
-import Button from '@material-ui/core/Button';
 import EditCourse from './Components/EditCourse';
 import EditCourseNoLogin from './Components/EditCourseNoLogin';
 import Login from './Components/Login';
@@ -13,65 +12,14 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
 import Nav from './Components/Nav';
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import {demoRouteStyles, loginStyles, aboutStyles, deleteStyles} from './Components/helpers/ModalStyles';
+import {DeleteModalContent} from './Components/helpers/ModalContent';
 
 const override = css`
   display: flex;
   margin: 0 auto;
   border-color: red;
 `;
-
-const demoRouteStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '100%',
-    height                : '80%'
-  }
-};
-
-const aboutStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '50%',
-    height                : '50%'
-  }
-};
-
-const deleteStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '25%',
-    height                : '15%'
-  }
-};
-
-const loginStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '40%',
-    height                : '37%'
-  }
-};
-
 
 function App(props) {
   const [username, setUsername] = useState('');
@@ -462,28 +410,27 @@ function App(props) {
     }
   }
 
-  function renderModal() {
-
+  function renderModal(isOpen, onRequestClose, style, contentLabel, content) {
+    console.log(content)
+    return (
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        style={style}
+        contentLabel={contentLabel}
+      >
+        {content}
+      </Modal>
+    )
   }
 
     return (
       <div>
         {renderNavBar()}
         {renderEditCourse()}
-        <Modal
-          isOpen={deleteModalIsOpen}
-          onRequestClose={updateDeleteModalIsOpen}
-          style={deleteStyles}
-          contentLabel="Delete Modal"
-        >
-          <div>
-            <h5 style={{margin: '0 10px 10px 0'}}>
-            Are you sure?
-            </h5>
-            <Button style={{margin: '0 0 0 10px'}} disabled={courseList.length < 2} variant="outlined" className="five-px-margin-right"  onClick={deleteCourse}>Delete</Button>
-            <Button style={{margin: '0 0 0 10px'}} variant="outlined" className="five-px-margin-right" onClick={updateDeleteModalIsOpen}>Cancel</Button>
-          </div>
-        </Modal>
+
+        {renderModal(deleteModalIsOpen, updateDeleteModalIsOpen, deleteStyles, "Delete Modal", DeleteModalContent({courseList, deleteCourse, updateDeleteModalIsOpen}))}
+
         <Modal
           isOpen={editNoLoginModalIsOpen}
           onRequestClose={closeEditNoLoginModal}
