@@ -70,7 +70,7 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
         let tempPace = [];
         let tempTotalTime = 0;
         for (let i = 0; i < gain.length; i++) {
-            let newPace = calculatePace(gain[i] + loss[i], gain.length)
+            let newPace = calculatePace(gain[i] + loss[i]/2, gain.length)
             tempPace[i] = newPace
             tempTotalTime += tempPace[i]
         }
@@ -205,12 +205,12 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
               <table style={{marginLeft: "auto", marginRight: "auto", tableLayout: "fixed", width: "250px"}}>
               <thead>
                 <MileTableHead width={50}>Mile</MileTableHead>
-                <MileTableHead width={100}>Pace</MileTableHead>
+                <MileTableHead width={90}>Pace</MileTableHead>
+                <MileTableHead width={80}>Profile</MileTableHead>
+                <MileTableHead width={70}>Avg.</MileTableHead>
                 <MileTableHead width={80}>Gain</MileTableHead>
                 <MileTableHead width={80}>Loss</MileTableHead>
-                <MileTableHead width={90}>Avg. Pace</MileTableHead>
                 <MileTableHead width={70}>Time</MileTableHead>
-                <MileTableHead width={100}>Profile</MileTableHead>
               </thead>
               {paces.map((m, index) => {
                   return (
@@ -221,11 +221,12 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
                           <Detail>{minTommss(m, index)}</Detail>
                         <ArrowRight onClick={() => plusTime(index)}></ArrowRight>
                       </TableData>
+                      <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>
+                      <TableData><Detail><AveragePaces paces={paces.slice(0, index + 1)} index={index}></AveragePaces></Detail></TableData>
                       <TableData><Detail>{Math.round(gain[index])} ft.</Detail></TableData>
                       <TableData><Detail>{Math.round(loss[index])} ft.</Detail></TableData>
-                      <TableData><Detail><AveragePaces paces={paces.slice(0, index + 1)} index={index}></AveragePaces></Detail></TableData>
+                      
                       <TableData><Detail><TimeThrough index={index}></TimeThrough></Detail></TableData>
-                      <TableData><GainProfile milePoints={milePoints.length > 0 ? milePoints[index] : []}></GainProfile></TableData>
                   </MileBox>
                   )
               })}
