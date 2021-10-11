@@ -45,7 +45,6 @@ const ArrowLeft = styled.div`
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 `
-
 function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust, startTime}) {
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
@@ -70,7 +69,7 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
         let tempPace = [];
         let tempTotalTime = 0;
         for (let i = 0; i < gain.length; i++) {
-            let newPace = calculatePace(gain[i] + loss[i]/2, gain.length)
+            let newPace = calculatePace(gain[i], gain.length)
             tempPace[i] = newPace
             tempTotalTime += tempPace[i]
         }
@@ -189,7 +188,10 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
 
     return (
         <div>
-          <h5>Total time: {toHHMMSS(totalTime*60)}</h5>
+          <div style={{display: "flex", justifyContent: "space-around"}}>
+            <h5>Total time: {toHHMMSS(totalTime*60)}</h5>
+            <h5>Vertical gain: {Math.round(gain.reduce((a, b) => a + b, 0))} ft.</h5>
+          </div>
             <div style={{display: "flex", justifyContent: "space-around"}}>
             Equalize pace:<SliderBox>
                 <Slider

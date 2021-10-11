@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 
 function VertStop({distance, vertInfo, pastAid, Detail}) {
+
     const [vert, setVert] = useState(0);
     useEffect(() => {
         calcVert();
@@ -11,8 +12,8 @@ function VertStop({distance, vertInfo, pastAid, Detail}) {
         let result = 0;
         //start iteratig through vertInfo.cumulativeGain array starting from pastStop stop
         for (let i = pastAid; i < pastAid + distance; i++) {
-            if(vertInfo[i] !== undefined && vertInfo[i] > 0) {
-                result += vertInfo[i]
+            if(vertInfo.cumulativeGain[i] !== undefined && vertInfo.cumulativeGain[i] > 0) {
+                result += vertInfo.cumulativeGain[i]
             }
         }
         setVert(Math.round(result))

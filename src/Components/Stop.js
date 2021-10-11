@@ -77,7 +77,7 @@ function onTextboxChangeStopName(event, i) {
                 <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">
                     <Row style={{display: "flex", flexDirection: "row"}} key={s.id}>
-                        <button style={{display: parseFloat(s.miles) === 0 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
+                        <button style={{display: index === 0 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         {/* <StopNameInput placeholder="Name" stops={stops} s={s} type="text" value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}
@@ -87,7 +87,7 @@ function onTextboxChangeStopName(event, i) {
                         <StopInput placeholder="Calories" stops={stops} s={s} type="number" value={s.cals} onChange={(e) => onTextboxChangeStopCals(e, s)}/> */}
 
                         <TextField style={{width: "50px"}} error={stopTimeFormatError} helperText={stopTimeFormatError ? "Decimals not supported" : ""} placeholder="Miles" type="number" min="0" step="1" label={index === 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => validateStopDistance(e, index)} />
-                        <TextField style={{width: "50px"}} placeholder="Calories"  label={index === 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} />
+                        {/* <TextField style={{width: "50px"}} placeholder="Calories"  label={index === 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} /> */}
                         <TextField className={classes.comments} style={{width: "150px"}} placeholder="Comments" rowsMax={2} multiline label={index === 0 ? "Comments" : ""} type="text" defaultValue={s.comments} s={s} onChange={(e) => onTextboxChangeStopComments(e, index)} />
                     </Row>
                 </form>

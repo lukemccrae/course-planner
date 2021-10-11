@@ -136,7 +136,6 @@ function App(props) {
 
 
   function loadCourse(c) {
-    console.log(c, "c")
     setName(c.details.name)
     setStops(c.stops)
     setMileTimes(c.details.mileTimes)
@@ -181,7 +180,7 @@ function App(props) {
     setGoalMinutes()
     setCalories(225)
     setVertMod()
-    setVertInfo([])
+    setVertInfo({cumulativeGain: [], cumulativeLoss: []})
     setTerrainMod()
     setCoordinates([])
     setMilePoints([])
@@ -198,7 +197,7 @@ function App(props) {
     setGoalMinutes(30)
     setCalories(225)
     setVertMod(400)
-    setVertInfo([])
+    setVertInfo({cumulativeGain: [], cumulativeLoss: []})
     setTerrainMod(1.2)
     setCoordinates([])
     setMilePoints([])
@@ -241,8 +240,8 @@ function App(props) {
 
   function saveNewCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        fetch(`http://localhost:3005/course`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        // fetch(`http://localhost:3005/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -284,8 +283,8 @@ function App(props) {
     // if(props.course.route.geoJSON.properties.name === "no route stored") {
     //   saveNewRoute();
     // }
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
-        fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
+        // fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
