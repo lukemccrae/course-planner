@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import 'whatwg-fetch';
 import {getFromStorage} from './utils/storage';
-import Button from '@material-ui/core/Button';
 import EditCourse from './Components/EditCourse';
 import EditCourseNoLogin from './Components/EditCourseNoLogin';
 import Login from './Components/Login';
@@ -13,6 +12,11 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-modal';
 import Nav from './Components/Nav';
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
+import {demoRouteStyles, loginStyles, aboutStyles, deleteStyles} from './Components/helpers/ModalStyles';
+import {DeleteModalContent} from './Components/helpers/ModalContent';
+
+import CourseInfoProvider from './Providers/CourseInfoProvider';
+import MileTimesProvider from './Providers/MileTimesProvider';
 
 const override = css`
   display: flex;
@@ -20,79 +24,30 @@ const override = css`
   border-color: red;
 `;
 
-const demoRouteStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '100%',
-    height                : '80%'
-  }
-};
-
-const aboutStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '50%',
-    height                : '50%'
-  }
-};
-
-const deleteStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '25%',
-    height                : '15%'
-  }
-};
-
-const loginStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    width                 : '40%',
-    height                : '37%'
-  }
-};
-
-
 function App(props) {
   const [username, setUsername] = useState('');
 
   const [courseList, setCourseList] = useState([]);
   const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
+  //course info provider
   const [name, setName] = useState("New Course");
-  const [mileTimes, setMileTimes] = useState([]);
   const [goalHours, setGoalHours] = useState(2);
   const [goalMinutes, setGoalMinutes] = useState(30);
   const [startTime, setStartTime] = useState("06:00");
   const [calories, setCalories] = useState(225);
   const [terrainMod, setTerrainMod] = useState(1.2);
-  const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
-  const [coordinates, setCoordinates] = useState([]);
+
+  //mileTimes provider
   const [milePoints, setMilePoints] = useState([]);
   const [vertMod, setVertMod] = useState(400);
   const [paceAdjust, setPaceAdjust] = useState([]);
+  const [mileTimes, setMileTimes] = useState([]);
 
- 
+  const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
+
+  const [coordinates, setCoordinates] = useState([]);
+  
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -329,16 +284,10 @@ function App(props) {
     setDeleteModalIsOpen(!deleteModalIsOpen)
   }
 
-    //if token, return dash, and show spinner
-    //
+  function renderEditCourseNoLogin() {
     return (
-      <div>
-        {!loading && username ? 
-        <Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>
-        : <div></div>
-        }
-        {username && terrainMod && calories ? 
-          <EditCourse 
+      <CourseInfoProvider>
+        <EditCourseNoLogin 
             name={name}
             stops={stops}
             mileTimes={mileTimes}
@@ -348,8 +297,8 @@ function App(props) {
             vertMod={vertMod}
             terrainMod={terrainMod}
             coordinates={coordinates}
-            vertInfo={vertInfo}
             milePoints={milePoints}
+            vertInfo={vertInfo}
             paceAdjust={paceAdjust}
             startTime={startTime}
             
@@ -377,9 +326,83 @@ function App(props) {
             loadCourse={loadCourse}
 
             id={courseId}
+            setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
           >
-          </EditCourse>
-          : 
+          </EditCourseNoLogin>
+      </CourseInfoProvider>
+    )
+  }
+
+  function renderNavBar() {
+    if(!loading && username) {
+      return (<Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>)
+    } else {
+      return (
+        <div></div>
+      )
+    }
+      
+  }
+
+  function renderEditCourse() {
+    if(username && terrainMod && calories) {
+      return (
+        <CourseInfoProvider>
+          <MileTimesProvider>
+            <EditCourse 
+            //courseInfoContext
+              // name={name}
+              // goalHours={goalHours}
+              // goalMinutes={goalMinutes}
+              // calories={calories}
+              // setCalories={setCalories}
+              // terrainMod={terrainMod}
+              // setTerrainMod={setTerrainMod}
+              // startTime={startTime}
+              // setName={setName}
+              // setGoalMinutes={setGoalMinutes}
+              // setGoalHours={setGoalHours}
+              // setStartTime={setStartTime}
+              
+              //miletimes provider
+              milePoints={milePoints}
+              setMilePoints={setMilePoints}
+              vertMod={vertMod}
+              setVertMod={setVertMod}
+              paceAdjust={paceAdjust}
+              setPaceAdjust={setPaceAdjust}
+              mileTimes={mileTimes}
+              setMileTimes={setMileTimes}
+              
+
+              //route
+              coordinates={coordinates}
+              setCoordinates={setCoordinates}
+
+              vertInfo={vertInfo}
+              setVertInfo={setVertInfo}
+
+              //stops
+              stops={stops}
+              delStop={delStop}
+              addStop={addStop}
+              setStops={setStops}
+
+              //mthods / UI info
+              saveCourse={saveCourse}
+              saved={saved}
+              updateDeleteModalIsOpen={updateDeleteModalIsOpen}
+              editCourse={editCourse}
+              loadCourse={loadCourse}
+              id={courseId}
+            >
+            </EditCourse>
+          </MileTimesProvider>
+        </CourseInfoProvider>
+        
+      )
+    } else {
+      return (
         <div>
           {getFromStorage('course_planner') ? 
           <div
@@ -404,87 +427,42 @@ function App(props) {
           </DashNoLogin>
          }
         </div>
-      }
-        <Modal
-          isOpen={deleteModalIsOpen}
-          onRequestClose={updateDeleteModalIsOpen}
-          style={deleteStyles}
-          contentLabel="Delete Modal"
-        >
-          <div>
-            <h5 style={{margin: '0 10px 10px 0'}}>
-            Are you sure?
-            </h5>
-            <Button style={{margin: '0 0 0 10px'}} disabled={courseList.length < 2} variant="outlined" className="five-px-margin-right"  onClick={deleteCourse}>Delete</Button>
-            <Button style={{margin: '0 0 0 10px'}} variant="outlined" className="five-px-margin-right" onClick={updateDeleteModalIsOpen}>Cancel</Button>
-          </div>
-        </Modal>
-        <Modal
-          isOpen={editNoLoginModalIsOpen}
-          onRequestClose={closeEditNoLoginModal}
-          style={demoRouteStyles}
-          contentLabel="Demo Route Modal"
-        >
-          <EditCourseNoLogin 
-            name={name}
-            stops={stops}
-            mileTimes={mileTimes}
-            goalHours={goalHours}
-            goalMinutes={goalMinutes}
-            calories={calories}
-            vertMod={vertMod}
-            terrainMod={terrainMod}
-            coordinates={coordinates}
-            milePoints={milePoints}
-            vertInfo={vertInfo}
-            paceAdjust={paceAdjust}
-            startTime={startTime}
-            setStartTime={setStartTime}
-            
-            setName={setName}
-            setStops={setStops}
-            setMileTimes={setMileTimes}
-            setGoalHours={setGoalHours}
-            setGoalMinutes={setGoalMinutes}
-            setCalories={setCalories}
-            setVertMod={setVertMod}
-            setTerrainMod={setTerrainMod}
-            setCoordinates={setCoordinates}
-            setMilePoints={setMilePoints}
-            setVertInfo={setVertInfo}
-            setPaceAdjust={setPaceAdjust}
+      )
+    }
+  }
 
-            saved={saved}
+  function renderModal(isOpen, onRequestClose, style, contentLabel, content) {
+    console.log(content)
+    return (
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        style={style}
+        contentLabel={contentLabel}
+      >
+        {content}
+      </Modal>
+    )
+  }
 
-            delStop={delStop}
-            addStop={addStop}
-            saveCourse={saveCourse}
-            updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-            editCourse={editCourse}
-            loadCourse={loadCourse}
+  function renderLogin() {
+    return <Login setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}></Login>
+  }
 
-            id={courseId}
-            setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
-          >
-          </EditCourseNoLogin>
-          
-        </Modal>
-        <Modal
-          isOpen={loginModalIsOpen}
-          onRequestClose={closeLoginModal}
-          style={loginStyles}
-          contentLabel="Login Modal"
-        >
-        <Login setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}></Login>
-        </Modal>
-        <Modal
-          isOpen={aboutModalIsOpen}
-          onRequestClose={closeAboutModal}
-          style={aboutStyles}
-          contentLabel="About Modal"
-        >
-          <About></About>
-        </Modal>
+  function renderAbout() {
+    return <About></About>
+  }
+
+    return (
+      <div>
+        {renderNavBar()}
+        {renderEditCourse()}
+
+        {/* higher order components to render various modals */}
+        {renderModal(deleteModalIsOpen, updateDeleteModalIsOpen, deleteStyles, "Delete Modal", DeleteModalContent({courseList, deleteCourse, updateDeleteModalIsOpen}))}
+        {renderModal(editNoLoginModalIsOpen, closeEditNoLoginModal, demoRouteStyles, "Demo Route Modal", renderEditCourseNoLogin())}
+        {renderModal(loginModalIsOpen, closeLoginModal, loginStyles, "Login Modal", renderLogin())}
+        {renderModal(aboutModalIsOpen, closeAboutModal, aboutStyles, "About Modal", renderAbout())}
       </div>
     )
   }

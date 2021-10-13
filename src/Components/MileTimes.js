@@ -49,6 +49,8 @@ function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goal
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
 
+    console.log(gain)
+
     //keep track of the time that a runner will start each mile
     const [timeThrough, setTimeThrough] = useState([]);
 
