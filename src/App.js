@@ -438,6 +438,8 @@ function App(props) {
             milePoints={milePoints}
             vertInfo={vertInfo}
             paceAdjust={paceAdjust}
+            startTime={startTime}
+            setStartTime={setStartTime}
             
             setName={setName}
             setStops={setStops}
