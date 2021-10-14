@@ -50,6 +50,7 @@ function Route(props) {
         } else {
           alert(data.message)
           setUploading(false)
+          window.location.reload();
         }
       })
       .catch((error) => {
@@ -83,11 +84,7 @@ function Route(props) {
 
   const changeHandler = (event) => {
     const file = event.target.files[0]
-
-    //need to cmake sure valid gpx
-    if(true) {
-        gpxToJson(file);
-    }
+    gpxToJson(file)
 };
 
     return (
@@ -99,7 +96,7 @@ function Route(props) {
                 size={15}
                 color={"#007bff"}
                 loading={uploading}></BarLoader>
-              <input onChange={(e)=> changeHandler(e)} type='file'></input>
+              <input onChange={changeHandler} type='file'></input>
           </div>
           <Button style={{marginTop: "10px"}} variant="outlined" className="five-px-margin-right" onClick={props.updateDeleteModalIsOpen}>Delete</Button>
         </div>

@@ -107,6 +107,8 @@ function App(props) {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
       //verify token
+      const {DEV} = process.env;
+      console.log(DEV)
       fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
         // fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
@@ -153,6 +155,7 @@ function App(props) {
 
     //enable group to be editable
     function editCourse(courseRef) {
+      console.log(courseRef)
       const obj = getFromStorage('course_planner');
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
       // fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
@@ -375,6 +378,7 @@ function App(props) {
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
             editCourse={editCourse}
             loadCourse={loadCourse}
+            loggedIn={loggedIn}
 
             id={courseId}
           >

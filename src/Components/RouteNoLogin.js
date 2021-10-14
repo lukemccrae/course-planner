@@ -45,11 +45,18 @@ function RouteNoLogin(props) {
       })
       .then((response) => response.json())
       .then((data) => {
-        props.setVertInfo(data.geoJson.features[0].properties.vertInfo)
-        props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
-        props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
-        props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
-        props.setName(name)
+        if(data.success) {
+          props.setVertInfo(data.geoJson.features[0].properties.vertInfo)
+          props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
+          props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
+          props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
+          props.setName(name)
+        } else {
+          alert(data.message)
+          setUploading(false)
+          window.location.reload();
+        }
+
           
       })
       .catch((error) => {

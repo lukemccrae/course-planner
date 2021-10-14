@@ -25,3 +25,4 @@ yarn-error.log*
 Methods
 Models
 .vscode
+.env
