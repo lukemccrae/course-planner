@@ -4,7 +4,7 @@
 ![React](https://img.shields.io/badge/react-v16.8.4+-blue.svg)
 [![Build Status](https://travis-ci.org/anfederico/clairvoyant.svg?branch=master)](https://travis-ci.org/anfederico/clairvoyant)
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
-[![GitHub Issues](https://img.shields.io/github/issues/anfederico/clairvoyant.svg)](https://github.com/anfederico/clairvoyant/issues)
+<!-- [![GitHub Issues](https://img.shields.io/github/issues/anfederico/clairvoyant.svg)](https://github.com/anfederico/clairvoyant/issues) -->
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -15,22 +15,28 @@ Corsa uses a dynamic pacing formula to turn GPS data into relative-effort mile t
 
 <br>
 
-## Visualize the Learning Process
-<img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%>
+## Break down big efforts
+<!-- <img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%> -->
+
+## Get pacing guidance with mile-by-mile course insights
+<!-- <img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%> -->
+
+## Plan your nutrition strategy and resupply strategy
+<!-- <img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%> -->
 
 <br>
-
-## Last Stable Release
+<!-- 
+<!-- ## Last Stable Release
 ```bash
 pip install clairvoyant
-```
+``` -->
 
-## Latest Development Changes
+<!-- ## Latest Development Changes
 ```bash
 python -m pip install git+https://github.com/anfederico/clairvoyant
-```
+``` -->
 
-## Backtesting Signal Accuracy
+<!-- ## Backtesting Signal Accuracy
 During the testing period, the model signals to buy or sell based on its prediction for price
 movement the following day. By putting your trading algorithm aside and testing for signal accuracy
 alone, you can rapidly build and test more reliable models.
@@ -60,7 +66,7 @@ data = data.round(3)
 backtest.start(data, kernel='rbf', C=1, gamma=10)
 backtest.conditions()
 backtest.statistics()  
-backtest.visualize('SBUX')
+backtest.visualize('SBUX') -->
 ```
 
 #### Output
@@ -173,7 +179,7 @@ variables = ["SSO"]                            # 1 feature
 variables = ["SSO", "SSC"]                     # 2 features
 variables = ["SSO", "SSC", "RSI"]              # 3 features
 variables = ["SSO", "SSC", "RSI", ... , "Xn"]  # n features
-```
+``` -->
 
 ## Contributing
 Please take a look at our [contributing](https://github.com/anfederico/clairvoyant/blob/master/CONTRIBUTING.md) guidelines if you're interested in helping!
