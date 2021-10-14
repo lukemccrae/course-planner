@@ -31,7 +31,6 @@ const Name = styled.strong`
 
 
 function RouteNoLogin(props) {
-  console.log(props)
   const [uploading, setUploading] = useState(false)
 
   function gpxToJson(gpx, name) {
