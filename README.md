@@ -17,7 +17,7 @@ Corsa uses a dynamic pacing formula to turn GPX files into relative-effort mile 
 <img src="https://i.imgur.com/T3FkXXq.png" width=40%>
 
 ## Plan your nutrition strategy and resupply strategy
-<img src="https://i.imgur.com/dTuvAzx.png" width=40%>
+<img src="https://i.imgur.com/2vemLsg.png" width=40%>
 
 ## Get pacing guidance with mile-by-mile course insights
 <img src="https://i.imgur.com/6cNUpmF.png" width=40%>
