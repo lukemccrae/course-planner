@@ -9,18 +9,18 @@
 
 ## Basic Overview
 
-Corsa uses a dynamic pacing formula to turn GPS data into relative-effort mile times, giving athletes strategic insight into their efforts on uneven terrain. \
+Corsa uses a dynamic pacing formula to turn GPS data into relative-effort mile times, giving athletes strategic insight into their efforts on uneven terrain.
 
 <br>
 
 ## Break down big efforts
-<!-- <img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%> -->
+<img src="https://i.imgur.com/T3FkXXq.png" width=40%>
 
 ## Get pacing guidance with mile-by-mile course insights
-<!-- <img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%> -->
+<img src="https://i.imgur.com/6cNUpmF.png" width=40%>
 
 ## Plan your nutrition strategy and resupply strategy
-<!-- <img src="https://github.com/anfederico/clairvoyant/blob/master/media/Learning.gif" width=40%> -->
+<img src="https://i.imgur.com/dTuvAzx.png" width=40%>
 
 <br>
 
