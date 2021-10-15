@@ -9,7 +9,7 @@
 
 ## Basic Overview
 
-Corsa uses a dynamic pacing formula to turn XML-based GPS data (GPX) into relative-effort mile times, giving athletes strategic insight into their efforts on uneven terrain. 
+Corsa uses a dynamic pacing formula to turn GPX files into relative-effort mile times, giving athletes strategic insight into their efforts on uneven terrain. 
 
 <br>
 
