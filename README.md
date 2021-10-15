@@ -13,6 +13,9 @@ Corsa uses a dynamic pacing formula to turn GPX files into relative-effort mile 
 
 <br>
 
+## Set up your race plan
+<img src="https://i.imgur.com/DXepz0T.png" width=40%>
+
 ## Break down big efforts
 <img src="https://i.imgur.com/T3FkXXq.png" width=40%>
 
