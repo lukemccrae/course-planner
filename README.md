@@ -16,18 +16,19 @@ Corsa uses a dynamic pacing formula to turn GPS data into relative-effort mile t
 ## Break down big efforts
 <img src="https://i.imgur.com/T3FkXXq.png" width=40%>
 
-## Get pacing guidance with mile-by-mile course insights
-<img src="https://i.imgur.com/6cNUpmF.png" width=40%>
-
 ## Plan your nutrition strategy and resupply strategy
 <img src="https://i.imgur.com/dTuvAzx.png" width=40%>
+
+## Get pacing guidance with mile-by-mile course insights
+<img src="https://i.imgur.com/6cNUpmF.png" width=40%>
 
 <br>
 
 
 ## Contributing
-Please take a look at our [contributing](https://github.com/anfederico/clairvoyant/blob/master/CONTRIBUTING.md) guidelines if you're interested in helping!
-#### Pending Features
-- Export model
-- Support for multiple sklearn SVM models
-- Visualization for models with more than 2 features
+Currently the biggest needs of the project are:
+- Aggregating a collection of GPX files to improve our pacing model
+- Refactoring state management with React Context (In progress)
+- Improve ChartJS Elevation profile UI to add more data to the chart, or implement another visualization library
+- Break up mile pacing into multiple equations, taking into account trail grade (Partly backend)
+- If you have any interest in these or other additions to this project, please shoot me an email at lukemccrae@gmail.com! :D 
