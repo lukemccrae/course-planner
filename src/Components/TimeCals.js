@@ -2,15 +2,14 @@ import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
 import styled from 'styled-components';
 
+
 const colors = [
   "#428A79",
   "#71AF55",
-  "#F00500",
-  "#E4BE67",
-  "#E47043",
-  "#B63534",
-  "#9598AB",
-  "#90be6d",
+  "#F00046",
+  "#3B65EB",
+  "#EBBE49",
+  "#7F3CF0",
   "#577590",
   "#f9844a",
   "#4d908e",
@@ -27,6 +26,7 @@ const colors = [
   "#6a4c93",
   "#723d46",
 ]
+
 
 const List = styled.ul`
   display: inline-flex;
