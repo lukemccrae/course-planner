@@ -433,7 +433,6 @@ function App(props) {
   }
 
   function renderModal(isOpen, onRequestClose, style, contentLabel, content) {
-    console.log(content)
     return (
       <Modal
         isOpen={isOpen}

@@ -1,57 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
-import styled from 'styled-components';
 
-const colors = [
-  "#428A79",
-  "#71AF55",
-  "#F00500",
-  "#E4BE67",
-  "#E47043",
-  "#B63534",
-  "#9598AB",
-  "#90be6d",
-  "#577590",
-  "#f9844a",
-  "#4d908e",
-  "#f3722c",
-  "#f9c74f",
-  "#43aa8b",
-  "#f8961e",
-  "#a44a3f",
-  "#f19c79",
-  "#cbdfbd",
-  "#90e0ef",
-  "#197278",
-  "#283d3b",
-  "#6a4c93",
-  "#723d46",
-]
-
-const List = styled.ul`
-  display: inline-flex;
-  list-style: none;
-  margin: 0 0 15px 5px;
-  padding: 0;
-  flex-wrap: wrap;
-`
-
-const Detail = styled.strong`
-  font-weight: 300;
-  font-size: 25px;
-`
-
-const Span = styled.span`
-  margin: 5px;
-`
-
-const Color = styled.li`
-  margin-right: 5px;
-  background-color: ${(props) => colors[props.index + 1]};
-  width: 10px;
-  height: 5vh;
-`
-
+import {List, Color, Detail, Span} from './helpers/StyledComponents/TimeCalStyles';
 
 function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, paceAdjust}) {
   // console.log(paceAdjust)
