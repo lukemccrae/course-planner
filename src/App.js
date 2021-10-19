@@ -15,8 +15,11 @@ import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import {demoRouteStyles, loginStyles, aboutStyles, deleteStyles} from './Components/helpers/ModalStyles';
 import {DeleteModalContent} from './Components/helpers/ModalContent';
 
-import CourseInfoProvider from './Providers/CourseInfoProvider';
-import MileTimesProvider from './Providers/MileTimesProvider';
+import CourseInfoProvider, { useCourseInfoContext } from './Providers/CourseInfoProvider';
+import MileTimesProvider, { useMileTimesContext } from './Providers/MileTimesProvider';
+import RouteProvider, { useRouteContext }  from './Providers/RouteProvider';
+
+console.log(useCourseInfoContext)
 
 const override = css`
   display: flex;
@@ -30,26 +33,31 @@ function App(props) {
   const [courseList, setCourseList] = useState([]);
   const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
+  const {name, setName, goalHours, setGoalHours, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
+  const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes} = useMileTimesContext();
+  const {coordinates, setCoordinates, vertInfo, setVertInfo, loadRouteInfo} = useRouteContext();
+  
   //course info provider
-  const [name, setName] = useState("New Course");
-  const [goalHours, setGoalHours] = useState(2);
-  const [goalMinutes, setGoalMinutes] = useState(30);
-  const [startTime, setStartTime] = useState("06:00");
-  const [calories, setCalories] = useState(225);
-  const [terrainMod, setTerrainMod] = useState(1.2);
+  // const [name, setName] = useState("New Course");
+  // const [goalHours, setGoalHours] = useState(2);
+  // const [goalMinutes, setGoalMinutes] = useState(30);
+  // const [startTime, setStartTime] = useState("06:00");
+  // const [calories, setCalories] = useState(225);
+  // const [terrainMod, setTerrainMod] = useState(1.2);
 
   //mileTimes provider
-  const [milePoints, setMilePoints] = useState([]);
-  const [vertMod, setVertMod] = useState(400);
-  const [paceAdjust, setPaceAdjust] = useState([]);
-  const [mileTimes, setMileTimes] = useState([]);
+  // const [milePoints, setMilePoints] = useState([]);
+  // const [vertMod, setVertMod] = useState(400);
+  // const [paceAdjust, setPaceAdjust] = useState([]);
+  // const [mileTimes, setMileTimes] = useState([]);
 
-  const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
-
-  const [coordinates, setCoordinates] = useState([]);
+  //routeInfoProvider
+  // const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
+  // const [coordinates, setCoordinates] = useState([]);
   
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
+
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [editNoLoginModalIsOpen, setEditNoLoginModalIsOpen] = useState(false);
@@ -91,20 +99,36 @@ function App(props) {
 
 
   function loadCourse(c) {
-    console.log(c, "c")
+    
     setName(c.details.name)
-    setStops(c.stops)
-    setMileTimes(c.details.mileTimes)
     setGoalHours(c.details.goalHours)
-    setGoalMinutes(c.details.goalMinutes)
+    // setGoalMinutes(c.details.goalMinutes)
     setCalories(c.details.calories)
+    setTerrainMod(c.details.terrainMod)
+    setStartTime(c.details.startTime)
+
+    setStops(c.stops)
+
+    setMileTimes(c.details.mileTimes)
+    
     setVertMod(c.details.vertMod)
     setVertInfo(c.route.geoJSON.properties.vertInfo)
-    setTerrainMod(c.details.terrainMod)
+    
     setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
     setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
     setPaceAdjust("paceAdjust" in c ? c.paceAdjust : [])
+    
+  }
+
+  function loadCourseInfo(c) {
+    console.log("----c", c)
+    setName(c.details.name)
+    setGoalHours(c.details.goalHours)
+    setGoalMinutes(c.details.goalMinutes)
+    setCalories(c.details.calories)
+    setTerrainMod(c.details.terrainMod)
     setStartTime(c.details.startTime)
+    console.log(name)
   }
 
     //enable group to be editable
@@ -121,6 +145,7 @@ function App(props) {
         if (json.success) {
           setCourseId(json.course[0]._id)
           loadCourse(json.course[0]);
+          loadCourseInfo(json.course[0])
         } else {
           console.log("Error: didnt get a course.")
         }
@@ -133,7 +158,7 @@ function App(props) {
     setStops([])
     setMileTimes([])
     setGoalHours()
-    setGoalMinutes()
+    // setGoalMinutes()
     setCalories(225)
     setVertMod()
     setVertInfo({cumulativeGain: [], cumulativeLoss: []})
@@ -150,7 +175,7 @@ function App(props) {
     setStops([{miles: 5, comments: "", name: "Aid station 1", cals: 200}])
     setMileTimes([])
     setGoalHours(2)
-    setGoalMinutes(30)
+    // setGoalMinutes(30)
     setCalories(225)
     setVertMod(400)
     setVertInfo({cumulativeGain: [], cumulativeLoss: []})
@@ -224,7 +249,7 @@ function App(props) {
         name,
         calories,
         goalHours,
-        goalMinutes,
+        // goalMinutes,
         calories,
         name,
         vertMod,
@@ -292,30 +317,36 @@ function App(props) {
             name={name}
             stops={stops}
             mileTimes={mileTimes}
+            startTime={startTime}
             goalHours={goalHours}
-            goalMinutes={goalMinutes}
+            // goalMinutes={goalMinutes}
             calories={calories}
-            vertMod={vertMod}
             terrainMod={terrainMod}
+            setMileTimes={setMileTimes}
+            setGoalHours={setGoalHours}
+            // setGoalMinutes={setGoalMinutes}
+            setCalories={setCalories}
+            setTerrainMod={setTerrainMod}
+            setStartTime={setStartTime}
+
+            vertMod={vertMod}
             coordinates={coordinates}
             milePoints={milePoints}
             vertInfo={vertInfo}
             paceAdjust={paceAdjust}
-            startTime={startTime}
+            setStops={setStops}
+            setVertMod={setVertMod}
+            
             
             setName={setName}
-            setStops={setStops}
-            setMileTimes={setMileTimes}
-            setGoalHours={setGoalHours}
-            setGoalMinutes={setGoalMinutes}
-            setCalories={setCalories}
-            setVertMod={setVertMod}
-            setTerrainMod={setTerrainMod}
+            
+
+
             setCoordinates={setCoordinates}
             setMilePoints={setMilePoints}
             setVertInfo={setVertInfo}
             setPaceAdjust={setPaceAdjust}
-            setStartTime={setStartTime}
+            
 
             saved={saved}
 
@@ -350,54 +381,57 @@ function App(props) {
       return (
         <CourseInfoProvider>
           <MileTimesProvider>
-            <EditCourse 
-            //courseInfoContext
-              // name={name}
-              // goalHours={goalHours}
-              // goalMinutes={goalMinutes}
-              // calories={calories}
-              // setCalories={setCalories}
-              // terrainMod={terrainMod}
-              // setTerrainMod={setTerrainMod}
-              // startTime={startTime}
-              // setName={setName}
-              // setGoalMinutes={setGoalMinutes}
-              // setGoalHours={setGoalHours}
-              // setStartTime={setStartTime}
-              
-              //miletimes provider
-              milePoints={milePoints}
-              setMilePoints={setMilePoints}
-              vertMod={vertMod}
-              setVertMod={setVertMod}
-              paceAdjust={paceAdjust}
-              setPaceAdjust={setPaceAdjust}
-              mileTimes={mileTimes}
-              setMileTimes={setMileTimes}
-              
+            <RouteProvider>
+              <EditCourse 
+              //courseInfoContext
+                // name={name}
+                // goalHours={goalHours}
+                // goalMinutes={goalMinutes}
+                // calories={calories}
+                // setCalories={setCalories}
+                // terrainMod={terrainMod}
+                // setTerrainMod={setTerrainMod}
+                // startTime={startTime}
+                // setName={setName}
+                // setGoalMinutes={setGoalMinutes}
+                // setGoalHours={setGoalHours}
+                // setStartTime={setStartTime}
+                
+                //miletimes provider
+                milePoints={milePoints}
+                setMilePoints={setMilePoints}
+                vertMod={vertMod}
+                setVertMod={setVertMod}
+                paceAdjust={paceAdjust}
+                setPaceAdjust={setPaceAdjust}
+                mileTimes={mileTimes}
+                setMileTimes={setMileTimes}
+                
 
-              //route
-              coordinates={coordinates}
-              setCoordinates={setCoordinates}
+                //route
+                coordinates={coordinates}
+                setCoordinates={setCoordinates}
 
-              vertInfo={vertInfo}
-              setVertInfo={setVertInfo}
+                vertInfo={vertInfo}
+                setVertInfo={setVertInfo}
 
-              //stops
-              stops={stops}
-              delStop={delStop}
-              addStop={addStop}
-              setStops={setStops}
+                //stops
+                stops={stops}
+                delStop={delStop}
+                addStop={addStop}
+                setStops={setStops}
 
-              //mthods / UI info
-              saveCourse={saveCourse}
-              saved={saved}
-              updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-              editCourse={editCourse}
-              loadCourse={loadCourse}
-              id={courseId}
-            >
-            </EditCourse>
+                //mthods / UI info
+                saveCourse={saveCourse}
+                saved={saved}
+                updateDeleteModalIsOpen={updateDeleteModalIsOpen}
+                editCourse={editCourse}
+                loadCourse={loadCourse}
+                id={courseId}
+              >
+              </EditCourse>
+            </RouteProvider>
+            
           </MileTimesProvider>
         </CourseInfoProvider>
         
@@ -460,7 +494,7 @@ function App(props) {
 
         {/* higher order components to render various modals */}
         {renderModal(deleteModalIsOpen, updateDeleteModalIsOpen, deleteStyles, "Delete Modal", DeleteModalContent({courseList, deleteCourse, updateDeleteModalIsOpen}))}
-        {renderModal(editNoLoginModalIsOpen, closeEditNoLoginModal, demoRouteStyles, "Demo Route Modal", renderEditCourseNoLogin())}
+        {/* {renderModal(editNoLoginModalIsOpen, closeEditNoLoginModal, demoRouteStyles, "Demo Route Modal", renderEditCourseNoLogin())} */}
         {renderModal(loginModalIsOpen, closeLoginModal, loginStyles, "Login Modal", renderLogin())}
         {renderModal(aboutModalIsOpen, closeAboutModal, aboutStyles, "About Modal", renderAbout())}
       </div>

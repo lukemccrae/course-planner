@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button';
 
 export const DeleteModalContent = (props) => {
-    console.log(props)
     return (
         <div>
             <h5 style={{margin: '0 10px 10px 0'}}>

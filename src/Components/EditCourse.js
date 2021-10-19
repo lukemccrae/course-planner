@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Route from './Route';
 import Stop from './Stop';
 import MileTimes from './MileTimes';
@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
 
 
 const Category = styled.strong`
@@ -25,14 +26,13 @@ function EditCourse(props) {
 
   const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
   const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes} = useMileTimesContext();
-
+  const {coordinates} = useRouteContext()
   //check if values passed to the time library are valid
   const [timeFormatError, setTimeFormatError] = useState(false);
 
-
-  function updateRoute(gpxObj) {
-    // saveNewRoute(gpxObj)
-  }
+    useEffect(() => {
+    console.log(name)
+  }, [name])
 
   function validateStartTime(e) {
     let hours = parseInt(e.split(":")[0])
@@ -44,6 +44,7 @@ function EditCourse(props) {
       setStartTime(e)
       setTimeFormatError(true)
     }
+    // SelectedCourseInfo()
   }
 
 
@@ -112,7 +113,7 @@ function EditCourse(props) {
         </Row>
         <div>
           {props.coordinates.length === 0 && props.id ? (
-            <Route setMilePoints={setMilePoints} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}>hi</Route>
+            <Route setMilePoints={setMilePoints} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id}>hi</Route>
           ) : null}
         </div>
       </Grid>

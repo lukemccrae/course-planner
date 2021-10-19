@@ -6,7 +6,7 @@ export const useMileTimesContext = () => useContext(MileTimesContext);
 export const MileTimesProvider = ({ children }) => {
 
 const [milePoints, setMilePoints] = useState([]);
-const [vertMod, setVertMod] = useState(400);
+const [vertMod, setVertMod] = useState(300);
 const [paceAdjust, setPaceAdjust] = useState([]);
 const [mileTimes, setMileTimes] = useState([]);
 
