@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-
+import {Span} from './helpers/StyledComponents/TimeCalStyles';
 
 function VertStop({distance, vertInfo, pastAid, Detail}) {
 
@@ -8,7 +8,7 @@ function VertStop({distance, vertInfo, pastAid, Detail}) {
 
     useEffect(() => {
         calcVert();
-    }, [distance, pastAid])
+    }, [distance, pastAid, vertInfo])
 
     function calcVert() {
         console.log(vertInfo)
@@ -20,10 +20,11 @@ function VertStop({distance, vertInfo, pastAid, Detail}) {
                 gain += Math.round(vertInfo.cumulativeGain[i])
             }
 
-            if(vertInfo.cumulativeGain[i] !== undefined && vertInfo.cumulativeGain[i] < 0) {
-                loss += Math.round(vertInfo.cumulativeLoss[i] * -1)
+            if(vertInfo.cumulativeGain[i] !== undefined && vertInfo.cumulativeLoss[i] < 0) {
+                loss += Math.round(vertInfo.cumulativeLoss[i])
             }
         }
+        console.log(loss)
         setGain(gain);
         setLoss(loss);
     }
@@ -31,8 +32,9 @@ function VertStop({distance, vertInfo, pastAid, Detail}) {
     
     return (
         <div style={{display: "flex"}}>
-            <li><Detail>{gain}</Detail>gain</li>
-            <li><Detail>{loss}</Detail>loss</li>
+            <li><Detail>+{gain}</Detail>ft.</li>
+            <Span />
+            <li><Detail>{loss}</Detail>ft.</li>
         </div>
     )
 }

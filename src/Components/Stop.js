@@ -58,16 +58,10 @@ function onTextboxChangeStopName(event, i) {
     setStops(updatedStops)
   }
 
-  function onTextboxChangeStopCals(event, i) {
-    const updatedStops = cloneDeep(stops)
-    updatedStops[i].cals = event.target.value
-    setStops(updatedStops)
-  }
-
   function onTextboxChangeStopComments(event, i) {
     const updatedStops = cloneDeep(stops)
     updatedStops[i].comments = event.target.value
-    // setStops(updatedStops)
+    setStops(updatedStops)
   }
 
     return (

@@ -9,6 +9,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import {HideUsernameMobileNav, HideCorsaMobileNav, HideLogoMobileNav} from './Grid';
+import {colors} from './helpers/Colors';
 
 const Header = styled.header`
   height: 60px;
@@ -58,7 +60,7 @@ function Nav(props) {
       <div>
         <Header>
           <div>
-            <span style={{margin: "0 0 0 20px"}}>
+            <HideLogoMobileNav style={{margin: "0 0 0 20px"}}>
               <svg style={{paddingBottom: "10px"}} version="1.0" xmlns="http://www.w3.org/2000/svg"
                 width="30.000000pt" height="30.000000pt" viewBox="0 0 295.000000 295.000000"
                 preserveAspectRatio="xMidYMid meet">
@@ -71,8 +73,8 @@ function Nav(props) {
                 -241 488 c-133 268 -243 487 -246 487 -3 0 -159 -308 -347 -685z"/>
                 </g>
               </svg>
-            </span>
-            <h4 style={{padding: "15px 0 0 15px", display: "inline-flex", color: "white", margin: "0 15px 0 0"}}>Corsa</h4>
+            </HideLogoMobileNav>
+            <HideCorsaMobileNav style={{padding: "15px 0 0 15px", color: "white", margin: "0 15px 0 0"}}>Corsa</HideCorsaMobileNav>
             <FormControl style={{width: "75px", color: "white"}}>
               <InputLabel htmlFor="age-native-simple">Course</InputLabel>
                   <Select
@@ -89,10 +91,10 @@ function Nav(props) {
                     })}
                   </Select>
               </FormControl>
-          <Button style={{color: "white", borderColor: "white", margin: "0 15px 0 15px"}} onClick={() => props.saveNewCourse()} variant="outlined">New Course</Button>
+          <Button style={{color: "white", borderColor: "white", margin: "0 5px 0 5px"}} onClick={() => props.saveNewCourse()} variant="outlined">New Course</Button>
           </div>
           <div>
-          <p style={{display: "inline", fontSize: "12px"}}> {props.username}</p>
+          <HideUsernameMobileNav style={{fontSize: "12px"}}> {props.username}</HideUsernameMobileNav>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"

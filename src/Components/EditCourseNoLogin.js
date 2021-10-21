@@ -17,7 +17,7 @@ const Category = styled.strong`
   display: block;
 `
 
-function EditCourse(props) {
+function EditCourseNoLogin(props) {
 
   const [timeFormatError, setTimeFormatError] = useState(false);
 
@@ -107,4 +107,4 @@ function EditCourse(props) {
 
 }
 
-export default EditCourse;
+export default EditCourseNoLogin;

@@ -1,40 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import {Line} from 'react-chartjs-2';
-
-// const colors = [
-    // "#428A79",
-    // "#71AF55",
-    // "#F00500",
-    // "#EBAD3B",
-    // "#E47043",
-    // "#B63534",
-    // "#9598AB"
-// ]
-
-const colors = [
-    "#428A79",
-    "#71AF55",
-    "#F00046",
-    "#3B65EB",
-    "#EBBE49",
-    "#7F3CF0",
-    "#577590",
-    "#f9844a",
-    "#4d908e",
-    "#f3722c",
-    "#f9c74f",
-    "#43aa8b",
-    "#f8961e",
-    "#a44a3f",
-    "#f19c79",
-    "#cbdfbd",
-    "#90e0ef",
-    "#197278",
-    "#283d3b",
-    "#6a4c93",
-    "#723d46",
-  ]
+import {colors} from './helpers/Colors';
 
 function Profile({stops, coordinates, mileTimes}) {
     // console.log(stops, coordinates, mileTimes)
