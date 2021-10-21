@@ -96,7 +96,7 @@ function EditCourse(props) {
                         </FormControl>
                 </div>
               </div>
-              <Category>Stops</Category>
+              <Category>Segments</Category>
               <Stop vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop} paceAdjust={props.paceAdjust} ></Stop>
           </Col>
           <Col>

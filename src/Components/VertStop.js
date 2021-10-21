@@ -3,24 +3,37 @@ import React, {useState, useEffect} from 'react';
 
 function VertStop({distance, vertInfo, pastAid, Detail}) {
 
-    const [vert, setVert] = useState(0);
+    const [gain, setGain] = useState(0);
+    const [loss, setLoss] = useState(0);
+
     useEffect(() => {
         calcVert();
     }, [distance, pastAid])
 
     function calcVert() {
-        let result = 0;
+        console.log(vertInfo)
+        let gain = 0;
+        let loss = 0;
         //start iteratig through vertInfo.cumulativeGain array starting from pastStop stop
         for (let i = pastAid; i < pastAid + distance; i++) {
             if(vertInfo.cumulativeGain[i] !== undefined && vertInfo.cumulativeGain[i] > 0) {
-                result += vertInfo.cumulativeGain[i]
+                gain += Math.round(vertInfo.cumulativeGain[i])
+            }
+
+            if(vertInfo.cumulativeGain[i] !== undefined && vertInfo.cumulativeGain[i] < 0) {
+                loss += Math.round(vertInfo.cumulativeLoss[i] * -1)
             }
         }
-        setVert(Math.round(result))
+        setGain(gain);
+        setLoss(loss);
     }
+
     
     return (
-        <li><Detail>{vert}</Detail>ft.</li>
+        <div style={{display: "flex"}}>
+            <li><Detail>{gain}</Detail>gain</li>
+            <li><Detail>{loss}</Detail>loss</li>
+        </div>
     )
 }
 

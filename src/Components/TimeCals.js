@@ -38,7 +38,7 @@ const List = styled.ul`
 
 const Detail = styled.strong`
   font-weight: 300;
-  font-size: 25px;
+  font-size: 20px;
 `
 
 const Span = styled.span`
