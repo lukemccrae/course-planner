@@ -11,6 +11,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
+
 const Category = styled.strong`
   font-weight: 500;
   font-size: 25px;
@@ -20,6 +24,8 @@ const Category = styled.strong`
 function EditCourseNoLogin(props) {
   //check if values passed to the time library are valid
   const [timeFormatError, setTimeFormatError] = useState(false);
+
+  const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
 
   console.log(props.vertInfo)
 

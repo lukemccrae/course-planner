@@ -30,10 +30,6 @@ function EditCourse(props) {
   //check if values passed to the time library are valid
   const [timeFormatError, setTimeFormatError] = useState(false);
 
-    useEffect(() => {
-    console.log(name)
-  }, [name])
-
   function validateStartTime(e) {
     let hours = parseInt(e.split(":")[0])
     let minutes = parseInt(e.split(":")[1])
@@ -46,7 +42,6 @@ function EditCourse(props) {
     }
     // SelectedCourseInfo()
   }
-  console.log(coordinates)
 
     return (
       <Grid>

@@ -1,18 +1,33 @@
 import React, { useContext, createContext, useState, useEffect } from 'react';
 
+const INITIAL_STATE = {
+  coordinates: [],
+  vertInfo: {cumulativeGain: [], cumulativeLoss: []}
+}
+
 export const RouteContext = createContext(null);
 export const useRouteContext = () => useContext(RouteContext);
 
 export const RouteProvider = ({ children }) => {
 
-    const [coordinates, setCoordinates] = useState([]);
-    const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
+  const [coordinates, setCoordinates] = useState(INITIAL_STATE.coordinates);
+  const [vertInfo, setVertInfo] = useState(INITIAL_STATE.vertInfo);
 
-    function loadRouteInfo(c) {
-        console.log(c)
-        // setCoordinates()
-        // setVertInfo()
-    }
+  function loadRouteInfo(c) {
+      console.log(c)
+      // setCoordinates()
+      // setVertInfo()
+  }
+
+  function resetRouteInfo() {
+    setCoordinates(INITIAL_STATE.coordinates)
+    setVertInfo(INITIAL_STATE.vertInfo)
+  }
+
+  function setRouteInfo(routeDetails = {properties: {vertInfo: {}}, geometry: {coordinates: []}}) {
+    setVertInfo(routeDetails.properties.vertInfo)
+    setCoordinates(routeDetails.geometry.coordinates)
+  }
 
   return (
     <RouteContext.Provider
@@ -22,7 +37,8 @@ export const RouteProvider = ({ children }) => {
             setCoordinates,
             vertInfo,
             setVertInfo,
-            loadRouteInfo
+            setRouteInfo,
+            resetRouteInfo
         }
       }>
       {children}

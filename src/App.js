@@ -33,27 +33,10 @@ function App(props) {
   const [courseList, setCourseList] = useState([]);
   const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
-  const {name, setName, goalHours, setGoalHours, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
-  const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes} = useMileTimesContext();
-  const {coordinates, setCoordinates, vertInfo, setVertInfo, loadRouteInfo} = useRouteContext();
-  
-  //course info provider
-  // const [name, setName] = useState("New Course");
-  // const [goalHours, setGoalHours] = useState(2);
-  // const [goalMinutes, setGoalMinutes] = useState(30);
-  // const [startTime, setStartTime] = useState("06:00");
-  // const [calories, setCalories] = useState(225);
-  // const [terrainMod, setTerrainMod] = useState(1.2);
+  const {name, goalHours, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
+  const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes, setMileTimesInfo} = useMileTimesContext();
+  const {coordinates, setCoordinates, vertInfo, setVertInfo, setRouteInfo, resetRouteInfo} = useRouteContext();
 
-  //mileTimes provider
-  // const [milePoints, setMilePoints] = useState([]);
-  // const [vertMod, setVertMod] = useState(400);
-  // const [paceAdjust, setPaceAdjust] = useState([]);
-  // const [mileTimes, setMileTimes] = useState([]);
-
-  //routeInfoProvider
-  // const [vertInfo, setVertInfo] = useState({cumulativeGain: [], cumulativeLoss: []});
-  // const [coordinates, setCoordinates] = useState([]);
   
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
@@ -100,12 +83,12 @@ function App(props) {
 
   function loadCourse(c) {
     
-    setName(c.details.name)
-    setGoalHours(c.details.goalHours)
-    // setGoalMinutes(c.details.goalMinutes)
-    setCalories(c.details.calories)
-    setTerrainMod(c.details.terrainMod)
-    setStartTime(c.details.startTime)
+    // setName(c.details.name)
+    // setGoalHours(c.details.goalHours)
+    // // setGoalMinutes(c.details.goalMinutes)
+    // setCalories(c.details.calories)
+    // setTerrainMod(c.details.terrainMod)
+    // setStartTime(c.details.startTime)
 
     setStops(c.stops)
 
@@ -118,17 +101,6 @@ function App(props) {
     setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
     setPaceAdjust("paceAdjust" in c ? c.paceAdjust : [])
     
-  }
-
-  function loadCourseInfo(c) {
-    console.log("----c", c)
-    setName(c.details.name)
-    setGoalHours(c.details.goalHours)
-    setGoalMinutes(c.details.goalMinutes)
-    setCalories(c.details.calories)
-    setTerrainMod(c.details.terrainMod)
-    setStartTime(c.details.startTime)
-    setCoordinates(c.route.geoJSON.geometry.coordinates)
   }
 
     //enable group to be editable
@@ -145,7 +117,15 @@ function App(props) {
         if (json.success) {
           setCourseId(json.course[0]._id)
           // loadCourse(json.course[0]);
-          loadCourseInfo(json.course[0])
+          // loadCourseInfo(json.course[0])
+          const courseDetails = json.course[0].details;
+          const routeDetails = json.course[0].route.geoJSON;
+          const mileTimesDetails = json.course[0]
+          console.log(json.course[0])
+          
+          setCourseInfo(courseDetails);
+          setRouteInfo(routeDetails);
+          setMileTimesInfo(mileTimesDetails);
         } else {
           console.log("Error: didnt get a course.")
         }
@@ -154,35 +134,15 @@ function App(props) {
 
   function loggedIn(args) {
     setUsername(args.user);
-    setName("")
-    setStops([])
-    setMileTimes([])
-    setGoalHours()
-    // setGoalMinutes()
-    setCalories(225)
-    setVertMod()
-    setVertInfo({cumulativeGain: [], cumulativeLoss: []})
-    setTerrainMod()
-    setCoordinates([])
-    setMilePoints([])
-    setStartTime("")
+    resetCourseInfo();
+    resetRouteInfo();
   }
 
   function loggedOut() {
     localStorage.clear();
     setUsername('')
-    setName("")
-    setStops([{miles: 5, comments: "", name: "Aid station 1", cals: 200}])
-    setMileTimes([])
-    setGoalHours(2)
-    // setGoalMinutes(30)
-    setCalories(225)
-    setVertMod(400)
-    setVertInfo({cumulativeGain: [], cumulativeLoss: []})
-    setTerrainMod(1.2)
-    setCoordinates([])
-    setMilePoints([])
-    setStartTime("")
+    resetCourseInfo();
+    resetRouteInfo();
   }
 
   function closeLoginModal() {
@@ -313,20 +273,6 @@ function App(props) {
   function renderEditCourseNoLogin() {
     return (
       <EditCourseNoLogin 
-          name={name}
-          stops={stops}
-          mileTimes={mileTimes}
-          startTime={startTime}
-          goalHours={goalHours}
-          // goalMinutes={goalMinutes}
-          calories={calories}
-          terrainMod={terrainMod}
-          setMileTimes={setMileTimes}
-          setGoalHours={setGoalHours}
-          // setGoalMinutes={setGoalMinutes}
-          setCalories={setCalories}
-          setTerrainMod={setTerrainMod}
-          setStartTime={setStartTime}
 
           vertMod={vertMod}
           coordinates={coordinates}
@@ -337,7 +283,7 @@ function App(props) {
           setVertMod={setVertMod}
           
           
-          setName={setName}
+          // setName={setName}
           
 
 
@@ -378,36 +324,6 @@ function App(props) {
     if(username && terrainMod && calories) {
       return (
           <EditCourse 
-          //courseInfoContext
-            // name={name}
-            // goalHours={goalHours}
-            // goalMinutes={goalMinutes}
-            // calories={calories}
-            // setCalories={setCalories}
-            // terrainMod={terrainMod}
-            // setTerrainMod={setTerrainMod}
-            // startTime={startTime}
-            // setName={setName}
-            // setGoalMinutes={setGoalMinutes}
-            // setGoalHours={setGoalHours}
-            // setStartTime={setStartTime}
-            
-            //miletimes provider
-            // milePoints={milePoints}
-            // setMilePoints={setMilePoints}
-            // vertMod={vertMod}
-            // setVertMod={setVertMod}
-            // paceAdjust={paceAdjust}
-            // setPaceAdjust={setPaceAdjust}
-            // mileTimes={mileTimes}
-            // setMileTimes={setMileTimes}
-            
-
-            //routeProvider
-            // coordinates={coordinates}
-            // setCoordinates={setCoordinates}
-            // vertInfo={vertInfo}
-            // setVertInfo={setVertInfo}
 
             //stops
             stops={stops}
