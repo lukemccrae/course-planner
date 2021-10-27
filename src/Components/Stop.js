@@ -6,6 +6,11 @@ import TimeCals from './TimeCals';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
+import { useStopsContext } from '../Providers/StopsProvider';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& .MuiTextField-root': {
@@ -18,8 +23,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo, paceAdjust}) {
+function Stop() {
   const [countedStops, setCountedStops] = useState(0);
+
+  const {calories} = useCourseInfoContext();
+  const {paceAdjust, mileTimes} = useMileTimesContext();
+  const {vertInfo} = useRouteContext();
+  const {stops, setStops, addStop, delStop} = useStopsContext();
 
   //value of stop distance cant be a decimal
   const [stopTimeFormatError, setStopTimeFormatError] = useState(false);
@@ -74,11 +84,7 @@ function onTextboxChangeStopName(event, i) {
                         <button style={{display: index === 0 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        {/* <StopNameInput placeholder="Name" stops={stops} s={s} type="text" value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}
                         <TextField style={{width: "75px"}} placeholder="Name"  label={index === 0 ? "Name" : ""} s={s} defaultValue={s.name} onChange={(e) => onTextboxChangeStopName(e, index)} />
-
-                        {/* <StopInput placeholder="Miles" stops={stops} s={s} type="number" value={s.miles} onChange={(e) => onTextboxChangeStopMiles(e, s)}/>
-                        <StopInput placeholder="Calories" stops={stops} s={s} type="number" value={s.cals} onChange={(e) => onTextboxChangeStopCals(e, s)}/> */}
 
                         <TextField style={{width: "50px"}} error={stopTimeFormatError} helperText={stopTimeFormatError ? "Decimals not supported" : ""} placeholder="Miles" type="number" min="0" step="1" label={index === 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => validateStopDistance(e, index)} />
                         {/* <TextField style={{width: "50px"}} placeholder="Calories"  label={index === 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} /> */}

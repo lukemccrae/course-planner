@@ -8,10 +8,9 @@ function VertStop({distance, vertInfo, pastAid, Detail}) {
 
     useEffect(() => {
         calcVert();
-    }, [distance, pastAid, vertInfo])
+    }, [distance, pastAid, vertInfo, calcVert])
 
     function calcVert() {
-        console.log(vertInfo)
         let gain = 0;
         let loss = 0;
         //start iteratig through vertInfo.cumulativeGain array starting from pastStop stop
@@ -24,12 +23,10 @@ function VertStop({distance, vertInfo, pastAid, Detail}) {
                 loss += Math.round(vertInfo.cumulativeLoss[i])
             }
         }
-        console.log(loss)
         setGain(gain);
         setLoss(loss);
     }
 
-    
     return (
         <div style={{display: "flex"}}>
             <li><Detail>+{gain}</Detail>ft.</li>

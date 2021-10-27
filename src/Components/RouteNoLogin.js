@@ -7,6 +7,11 @@ import {Row} from './Grid';
 import kendall_mtn from './Demo/kendall_mtn.gpx';
 import double_dipsea from './Demo/double_dipsea.gpx';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext }  from '../Providers/RouteProvider';
+import { useStopsContext } from '../Providers/StopsProvider';
+
 const override = css`
   display: flex;
 `;
@@ -31,7 +36,11 @@ const Name = styled.strong`
 
 
 function RouteNoLogin(props) {
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false);
+
+  const {setName} = useCourseInfoContext();
+  const {setMilePoints, setPaceAdjust} = useMileTimesContext();
+  const {setCoordinates, setVertInfo} = useRouteContext();
 
   function gpxToJson(gpx, name) {
     setUploading(true)
@@ -45,18 +54,11 @@ function RouteNoLogin(props) {
       })
       .then((response) => response.json())
       .then((data) => {
-        if(data.success) {
-          props.setVertInfo(data.geoJson.features[0].properties.vertInfo)
-          props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
-          props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
-          props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
-          props.setName(name)
-        } else {
-          alert(data.message)
-          setUploading(false)
-          window.location.reload();
-        }
-
+        setVertInfo(data.geoJson.features[0].properties.vertInfo)
+        setCoordinates(data.geoJson.features[0].geometry.coordinates)
+        setMilePoints(data.geoJson.features[0].geometry.milePoints)
+        setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
+        setName(name)
           
       })
       .catch((error) => {

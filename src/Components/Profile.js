@@ -2,9 +2,18 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import {Line} from 'react-chartjs-2';
 import {colors} from './helpers/Colors';
+import { useStopsContext } from '../Providers/StopsProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
 
-function Profile({stops, coordinates, mileTimes}) {
+
+
+function Profile() {
     // console.log(stops, coordinates, mileTimes)
+
+    const {stops} = useStopsContext();
+    const {mileTimes} = useMileTimesContext();
+    const {coordinates} = useRouteContext();
 
     const [labels, setLabels] = useState([]);
     const [dataset, setDataset] = useState([]);
@@ -17,7 +26,7 @@ function Profile({stops, coordinates, mileTimes}) {
             }, 500);
             return () => clearTimeout(timer);
         }
-    }, [stops, coordinates, mileTimes])
+    }, [stops, coordinates, mileTimes, buildDataset])
 
     function fillLabels(coordLength) {
         let result = [];

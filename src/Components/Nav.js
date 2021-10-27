@@ -10,7 +10,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {HideUsernameMobileNav, HideCorsaMobileNav, HideLogoMobileNav} from './Grid';
-import {colors} from './helpers/Colors';
 
 const Header = styled.header`
   height: 60px;

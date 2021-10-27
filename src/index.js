@@ -3,12 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import CourseInfoProvider from './Providers/CourseInfoProvider';
+import MileTimesProvider from './Providers/MileTimesProvider';
+import RouteProvider from './Providers/RouteProvider';
+import StopsProvider from './Providers/StopsProvider';
 
 ReactDOM.render(
     <React.StrictMode>
-        {/* <Provider store={store}> */}
-            <App />
-        {/* </Provider> */}
+        <CourseInfoProvider>
+            <MileTimesProvider>
+                <RouteProvider>
+                    <StopsProvider>
+                        <App />
+                    </StopsProvider>
+                </RouteProvider>
+            </MileTimesProvider>
+        </CourseInfoProvider>
     </React.StrictMode>,
     document.getElementById('root'));
 

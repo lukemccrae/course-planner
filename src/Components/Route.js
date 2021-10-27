@@ -22,9 +22,8 @@ const Center = styled.div`
   height: 90vh;
 `
 
-
 function Route(props) {
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false);
 
   function gpxToJson(gpx) {
     setUploading(true)
@@ -39,13 +38,10 @@ function Route(props) {
       .then((response) => response.json())
       .then((data) => {
         if(data.success) {
-          // props.setVertInfo(data.geoJson.features[0].properties.vertInfo.cumulativeGain)
-          // props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
-          // props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
-
           //pass parsed geoJSON up to parent as JS object
           let parsedJson = cloneDeep(JSON.parse(JSON.stringify(data.geoJson)).features[0])
-          
+
+          //save new route to this course
           saveNewRoute(parsedJson)
         } else {
           alert(data.message)
@@ -54,9 +50,7 @@ function Route(props) {
         }
       })
       .catch((error) => {
-        // alert("We're sorry, that GPX file could not be processed. Try redownloading it from the source and uploading again.")
-        // setUploading(false)
-        console.error('Error:', error);
+        console.error('Error:', error); 
     });
   }
 

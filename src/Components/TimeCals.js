@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import VertStop from './VertStop';
-import {List, Detail, Span, Color} from './helpers/StyledComponents/TimeCalStyles';
 
+import {List, Color, Detail, Span} from './helpers/StyledComponents/TimeCalStyles';
 
 function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, paceAdjust}) {
   // console.log(paceAdjust)
@@ -11,7 +11,7 @@ function TimeCals({stops, miles, mileTimes, index, calories, vertInfo, paceAdjus
     const [calToConsume, setCalToConsume] = useState('')
     useEffect(() => {
         distanceToNextAid()
-    }, [mileTimes, stops, calories, pastAid])
+    }, [mileTimes, stops, calories, pastAid, distanceToNextAid])
 
     function distanceToNextAid() {
         //two variables to store next and past aid mileage

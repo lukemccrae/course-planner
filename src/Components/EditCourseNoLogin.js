@@ -11,6 +11,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
+
 const Category = styled.strong`
   font-weight: 500;
   font-size: 25px;
@@ -21,10 +24,8 @@ function EditCourseNoLogin(props) {
 
   const [timeFormatError, setTimeFormatError] = useState(false);
 
-
-  function updateRoute(gpxObj) {
-    // saveNewRoute(gpxObj)
-  }
+  const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
+  const {coordinates} = useRouteContext();
 
   function validateStartTime(e) {
     let hours = parseInt(e.split(":")[0])
@@ -40,26 +41,23 @@ function EditCourseNoLogin(props) {
 
     return (
       <Grid>
-        <Row style={{display: props.coordinates.length > 0 ? "flex" : "none"}}>
+        <Row style={{display: coordinates.length > 0 ? "flex" : "none"}}>
           <Col>   
             <Category>Course Info</Category>
               <div style={{margin: "0 0 0 10px"}}>
-                <TextField type="text" value={props.name} label="Course Name" onChange={(e) => props.setName(e.target.value)} />
+                <TextField type="text" value={name} label="Course Name" onChange={(e) => setName(e.target.value)} />
                 <span style={{margin: "5px"}}></span>
-                <TextField style={{width: "40px"}} type="number" value={props.goalHours}  label="Hours" onChange={(e) => props.setGoalHours(e.target.value)} />
+                <TextField style={{width: "40px"}} type="number" value={goalHours}  label="Hours" onChange={(e) => setGoalHours(e.target.value)} />
                   <div style={{fontSize: "35px", padding: "5px 5px 15px 5px", display: "inline-block"}}>:</div>
-                  <TextField style={{width: "40px"}} type="number" value={props.goalMinutes}  label="Minutes" onChange={(e) => props.setGoalMinutes(e.target.value)} />
+                  <TextField style={{width: "40px"}} type="number" value={goalMinutes}  label="Minutes" onChange={(e) => setGoalMinutes(e.target.value)} />
                     <div>
-                    <TextField error={timeFormatError} style={{width: "90px"}} type="text" value={props.startTime} label="Start Time (HH:MM)" onChange={(e) => validateStartTime(e.target.value)} />
-
-                      <div>
-                    </div>
+                    <TextField error={timeFormatError} style={{width: "90px"}} type="text" value={startTime} label="Start Time (HH:MM)" onChange={(e) => validateStartTime(e.target.value)} />
                       <FormControl style={{marginRight: "10px"}}>
                         <InputLabel>Terrain Type</InputLabel>
                           <Select
                             labelId="demo-simple-select-label"
-                            value={props.terrainMod}
-                            onChange={(e) => props.setTerrainMod(e.target.value)}
+                            value={terrainMod}
+                            onChange={(e) => setTerrainMod(e.target.value)}
                             className="cal-style"
                           >
                           <MenuItem value={1.05}>Road</MenuItem>
@@ -72,8 +70,8 @@ function EditCourseNoLogin(props) {
                           <InputLabel>Calories per Hour</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
-                              value={props.calories}
-                              onChange={(e) => props.setCalories(e.target.value)}
+                              value={calories}
+                              onChange={(e) => setCalories(e.target.value)}
                               className="cal-style"
                             >
                             <MenuItem value={100}>100 (very low)</MenuItem>
@@ -87,19 +85,16 @@ function EditCourseNoLogin(props) {
                 </div>
               </div>
               <Category>Stops</Category>
-              <Stop paceAdjust={props.paceAdjust} vertInfo={props.vertInfo} calories={props.calories} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop}></Stop>
+              <Stop></Stop>
           </Col>
           <Col>
-            {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}
-            <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile>
-            {/* <MileTimes setGoalHours={props.setGoalHours} setGoalMinutes={props.setGoalMinutes} paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} gain={props.vertInfo.cumulativeGain} loss={props.vertInfo.cumulativeLoss} goalHours={props.goalHours} goalMinutes={props.goalMinutes} vertInfo={props.vertInfo} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes> */}
-            <MileTimes startTime={timeFormatError ? "00:00" : props.startTime} setGoalHours={props.setGoalHours} setGoalMinutes={props.setGoalMinutes} paceAdjust={props.paceAdjust} setPaceAdjust={props.setPaceAdjust} milePoints={props.milePoints} setVertMod={props.setVertMod} terrainMod={props.terrainMod} vertMod={props.vertMod} goalHours={props.goalHours} goalMinutes={props.goalMinutes} gain={props.vertInfo.cumulativeGain} loss={props.vertInfo.cumulativeLoss} distance={props.distance} mileTimes={props.mileTimes} setMileTimes={props.setMileTimes}></MileTimes>
-
+            <Profile></Profile>
+            <MileTimes></MileTimes>
           </Col>
         </Row>
         <div>
-          {props.coordinates.length === 0 ? (
-            <RouteNoLogin setPaceAdjust={props.setPaceAdjust} setMilePoints={props.setMilePoints} setName={props.setName} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id} updateRoute={updateRoute}></RouteNoLogin>
+          {coordinates.length === 0 ? (
+            <RouteNoLogin setPaceAdjust={props.setPaceAdjust} setMilePoints={props.setMilePoints} setName={props.setName} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={props.setCoordinates} setVertInfo={props.setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id}></RouteNoLogin>
           ) : null}
         </div>
       </Grid>
