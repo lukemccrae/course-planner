@@ -11,10 +11,9 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
-import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useRouteContext } from '../Providers/RouteProvider';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
 
 const Category = styled.strong`
   font-weight: 500;
@@ -25,8 +24,8 @@ const Category = styled.strong`
 function EditCourse(props) {
 
   const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
-  const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes} = useMileTimesContext();
-  const {coordinates, setCoordinates, vertInfo, setVertInfo} = useRouteContext();
+  const {coordinates} = useRouteContext();
+
   //check if values passed to the time library are valid
   const [timeFormatError, setTimeFormatError] = useState(false);
 
@@ -97,18 +96,16 @@ function EditCourse(props) {
                 </div>
               </div>
               <Category>Stops</Category>
-              <Stop vertInfo={vertInfo} calories={calories} mileTimes={mileTimes} setMileTimes={setMileTimes} addStop={props.addStop} setStops={props.setStops} stops={props.stops} delStop={props.delStop} paceAdjust={paceAdjust} ></Stop>
+              <Stop></Stop>
           </Col>
           <Col>
-            {/* <Profile coordinates={props.coordinates} mileTimes={props.mileTimes} stops={props.stops}></Profile> */}
-            <Profile coordinates={coordinates} mileTimes={mileTimes} stops={props.stops}></Profile>
-            <MileTimes startTime={timeFormatError ? "00:00" : startTime} setGoalHours={setGoalHours} setGoalMinutes={setGoalMinutes} paceAdjust={paceAdjust} setPaceAdjust={setPaceAdjust} milePoints={milePoints} setVertMod={setVertMod} terrainMod={terrainMod} vertMod={vertMod} goalHours={goalHours} goalMinutes={goalMinutes} gain={vertInfo.cumulativeGain} loss={vertInfo.cumulativeLoss} mileTimes={mileTimes} setMileTimes={setMileTimes}></MileTimes>
-            {/* <MileTimes startTime={timeFormatError ? "00:00" : startTime} setGoalHours={setGoalHours} setGoalMinutes={setGoalMinutes} paceAdjust={paceAdjust} setPaceAdjust={setPaceAdjust} milePoints={milePoints} setVertMod={setVertMod} terrainMod={terrainMod} vertMod={vertMod} goalHours={goalHours} goalMinutes={goalMinutes} gain={props.vertInfo.cumulativeGain} loss={props.vertInfo.cumulativeLoss} distance={props.distance} mileTimes={mileTimes} setMileTimes={setMileTimes}></MileTimes> */}
+            <Profile></Profile>
+            <MileTimes></MileTimes>
           </Col>
         </Row>
         <div>
           {coordinates.length === 0 && props.id ? (
-            <Route setMilePoints={setMilePoints} updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} loadCourse={props.loadCourse} setCoordinates={setCoordinates} setVertInfo={setVertInfo} editCourse={props.editCourse} saveCourse={props.saveCourse} id={props.id}>hi</Route>
+            <Route updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} editCourse={props.editCourse} id={props.id}>hi</Route>
           ) : null}
         </div>
       </Grid>

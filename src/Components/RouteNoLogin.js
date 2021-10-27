@@ -7,6 +7,11 @@ import {Row} from './Grid';
 import kendall_mtn from './Demo/kendall_mtn.gpx';
 import double_dipsea from './Demo/double_dipsea.gpx';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext }  from '../Providers/RouteProvider';
+import { useStopsContext } from '../Providers/StopsProvider';
+
 const override = css`
   display: flex;
 `;
@@ -32,12 +37,17 @@ const Name = styled.strong`
 
 function RouteNoLogin(props) {
   console.log(props)
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false);
+
+  const {name, setName, goalHours, goalMinutes, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
+  const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes, setMileTimesInfo} = useMileTimesContext();
+  const {coordinates, setCoordinates, vertInfo, setVertInfo, setRouteInfo, resetRouteInfo} = useRouteContext();
+  const {stops, setStops, setStopsInfo} = useStopsContext();
 
   function gpxToJson(gpx, name) {
     setUploading(true)
-    // fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        fetch('http://localhost:3005/gps/togeojson', {
+    fetch('https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        // fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -46,11 +56,11 @@ function RouteNoLogin(props) {
       })
       .then((response) => response.json())
       .then((data) => {
-        props.setVertInfo(data.geoJson.features[0].properties.vertInfo)
-        props.setCoordinates(data.geoJson.features[0].geometry.coordinates)
-        props.setMilePoints(data.geoJson.features[0].geometry.milePoints)
-        props.setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
-        props.setName(name)
+        setVertInfo(data.geoJson.features[0].properties.vertInfo)
+        setCoordinates(data.geoJson.features[0].geometry.coordinates)
+        setMilePoints(data.geoJson.features[0].geometry.milePoints)
+        setPaceAdjust(new Array(data.geoJson.features[0].properties.vertInfo.cumulativeGain.length).fill(0))
+        setName(name)
           
       })
       .catch((error) => {

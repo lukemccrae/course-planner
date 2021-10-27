@@ -6,13 +6,16 @@ import * as serviceWorker from './serviceWorker';
 import CourseInfoProvider from './Providers/CourseInfoProvider';
 import MileTimesProvider from './Providers/MileTimesProvider';
 import RouteProvider from './Providers/RouteProvider';
+import StopsProvider from './Providers/StopsProvider';
 
 ReactDOM.render(
     <React.StrictMode>
         <CourseInfoProvider>
             <MileTimesProvider>
                 <RouteProvider>
-                    <App />
+                    <StopsProvider>
+                        <App />
+                    </StopsProvider>
                 </RouteProvider>
             </MileTimesProvider>
         </CourseInfoProvider>

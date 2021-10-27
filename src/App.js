@@ -18,6 +18,7 @@ import {DeleteModalContent} from './Components/helpers/ModalContent';
 import CourseInfoProvider, { useCourseInfoContext } from './Providers/CourseInfoProvider';
 import MileTimesProvider, { useMileTimesContext } from './Providers/MileTimesProvider';
 import RouteProvider, { useRouteContext }  from './Providers/RouteProvider';
+import StopsProvider, { useStopsContext } from './Providers/StopsProvider';
 
 console.log(useCourseInfoContext)
 
@@ -31,11 +32,12 @@ function App(props) {
   const [username, setUsername] = useState('');
 
   const [courseList, setCourseList] = useState([]);
-  const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
+  // const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
-  const {name, goalHours, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
+  const {name, goalHours, goalMinutes, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
   const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes, setMileTimesInfo} = useMileTimesContext();
   const {coordinates, setCoordinates, vertInfo, setVertInfo, setRouteInfo, resetRouteInfo} = useRouteContext();
+  const {stops, setStops, setStopsInfo} = useStopsContext();
 
   
   const [loading, setIsLoading] = useState(true);
@@ -121,11 +123,12 @@ function App(props) {
           const courseDetails = json.course[0].details;
           const routeDetails = json.course[0].route.geoJSON;
           const mileTimesDetails = json.course[0]
-          console.log(json.course[0])
+          const stopDetails = json.course[0].stops;
           
           setCourseInfo(courseDetails);
           setRouteInfo(routeDetails);
           setMileTimesInfo(mileTimesDetails);
+          setStopsInfo(stopDetails)
         } else {
           console.log("Error: didnt get a course.")
         }
@@ -155,28 +158,6 @@ function App(props) {
 
   function closeEditNoLoginModal() {
     setEditNoLoginModalIsOpen(false)
-  }
-
-  function addStop() {
-    let updatedStops = stops;
-    
-    let newStop = {
-      name: "New Stop",
-      cals: 200,
-      miles: 0,
-      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
-      comments: ""
-    }
-
-      updatedStops.push(newStop);
-      setStops([...updatedStops])
-  }
-
-
-  function delStop(index) {
-    let updatedStops = stops;
-    updatedStops.splice(index, 1)
-    setStops([...updatedStops])
   }
 
   function saveNewCourse() {
@@ -209,7 +190,7 @@ function App(props) {
         name,
         calories,
         goalHours,
-        // goalMinutes,
+        goalMinutes,
         calories,
         name,
         vertMod,
@@ -221,9 +202,6 @@ function App(props) {
       paceAdjust: paceAdjust
     }
     const token = JSON.parse(localStorage.course_planner).token;
-    // if(props.course.route.geoJSON.properties.name === "no route stored") {
-    //   saveNewRoute();
-    // }
       // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
         fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
         method: 'PATCH',
@@ -273,30 +251,8 @@ function App(props) {
   function renderEditCourseNoLogin() {
     return (
       <EditCourseNoLogin 
-
-          vertMod={vertMod}
-          coordinates={coordinates}
-          milePoints={milePoints}
-          vertInfo={vertInfo}
-          paceAdjust={paceAdjust}
-          setStops={setStops}
-          setVertMod={setVertMod}
-          
-          
-          // setName={setName}
-          
-
-
-          setCoordinates={setCoordinates}
-          setMilePoints={setMilePoints}
-          setVertInfo={setVertInfo}
-          setPaceAdjust={setPaceAdjust}
-          
-
           saved={saved}
 
-          delStop={delStop}
-          addStop={addStop}
           saveCourse={saveCourse}
           updateDeleteModalIsOpen={updateDeleteModalIsOpen}
           editCourse={editCourse}
@@ -324,14 +280,6 @@ function App(props) {
     if(username && terrainMod && calories) {
       return (
           <EditCourse 
-
-            //stops
-            stops={stops}
-            delStop={delStop}
-            addStop={addStop}
-            setStops={setStops}
-
-            //mthods / UI info
             saveCourse={saveCourse}
             saved={saved}
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
@@ -400,7 +348,7 @@ function App(props) {
 
         {/* higher order components to render various modals */}
         {renderModal(deleteModalIsOpen, updateDeleteModalIsOpen, deleteStyles, "Delete Modal", DeleteModalContent({courseList, deleteCourse, updateDeleteModalIsOpen}))}
-        {/* {renderModal(editNoLoginModalIsOpen, closeEditNoLoginModal, demoRouteStyles, "Demo Route Modal", renderEditCourseNoLogin())} */}
+        {renderModal(editNoLoginModalIsOpen, closeEditNoLoginModal, demoRouteStyles, "Demo Route Modal", renderEditCourseNoLogin())}
         {renderModal(loginModalIsOpen, closeLoginModal, loginStyles, "Login Modal", renderLogin())}
         {renderModal(aboutModalIsOpen, closeAboutModal, aboutStyles, "About Modal", renderAbout())}
         

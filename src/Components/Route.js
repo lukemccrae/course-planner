@@ -24,12 +24,12 @@ const Center = styled.div`
 
 
 function Route(props) {
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false);
 
   function gpxToJson(gpx) {
     setUploading(true)
-    // fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
-        fetch('http://localhost:3005/gps/togeojson', {
+    fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/gps/togeojson', {
+        // fetch('http://localhost:3005/gps/togeojson', {
       method: 'POST',
       headers: {
           'Content-Type': 'text/xml; charset=utf-8',
@@ -55,7 +55,7 @@ function Route(props) {
       .catch((error) => {
         // alert("We're sorry, that GPX file could not be processed. Try redownloading it from the source and uploading again.")
         // setUploading(false)
-        console.error('Error:', error);
+        console.error('Error:', error); 
     });
   }
 

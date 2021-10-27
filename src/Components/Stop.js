@@ -6,6 +6,11 @@ import TimeCals from './TimeCals';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext } from '../Providers/RouteProvider';
+import { useStopsContext } from '../Providers/StopsProvider';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& .MuiTextField-root': {
@@ -18,8 +23,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function Stop({mileTimes, delStop, setStops, addStop, stops, calories, vertInfo, paceAdjust}) {
+function Stop() {
   const [countedStops, setCountedStops] = useState(0);
+
+  const {calories} = useCourseInfoContext();
+  const {paceAdjust, mileTimes} = useMileTimesContext();
+  const {vertInfo} = useRouteContext();
+  const {stops, setStops, addStop, delStop} = useStopsContext();
 
   //value of stop distance cant be a decimal
   const [stopTimeFormatError, setStopTimeFormatError] = useState(false);

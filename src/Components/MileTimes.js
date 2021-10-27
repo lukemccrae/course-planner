@@ -3,18 +3,29 @@ import Slider from 'react-input-slider';
 import GainProfile from './GainProfile';
 import {DateTime} from 'luxon';
 
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useRouteContext } from '../Providers/RouteProvider'
+
 import {MileBox, MileTableHead, SliderBox, TableData, Detail, ArrowRight, ArrowLeft} from './helpers/StyledComponents/MileTimeStyles';
 
-function MileTimes({gain, loss, vertMod, terrainMod, setVertMod, goalHours, goalMinutes, distance, setMileTimes, milePoints, paceAdjust, setPaceAdjust, startTime}) {
+function MileTimes() {
+    const {goalHours, goalMinutes, startTime, terrainMod, } = useCourseInfoContext();
+    const {milePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, setMileTimes} = useMileTimesContext();
+    const {vertInfo} = useRouteContext();
+
+    const gain = vertInfo.cumulativeGain;
+    const loss = vertInfo.cumulativeLoss;
+
     const [paces, setPaces] = useState([])
     const [totalTime, setTotalTime] = useState();
-
+    
     //keep track of the time that a runner will start each mile
     const [timeThrough, setTimeThrough] = useState([]);
 
     useEffect(() => {
       resetPaces()
-    }, [distance, goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust, startTime])
+    }, [goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust, startTime])
 
     function calculatePace(elev, distance) {
       let goalTime = ((parseInt(goalHours ? goalHours : 0) * 60) + parseInt(goalMinutes ? goalMinutes : 0))
