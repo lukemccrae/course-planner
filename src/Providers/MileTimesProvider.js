@@ -31,7 +31,6 @@ export const MileTimesContext = createContext(null);
   const [mileTimes, setMileTimes] = useState(INITIAL_STATE.mileTimes);
 
   function setMileTimesInfo(mileTimesInfo = mockMileTimesInfo) {
-    console.log(mileTimesInfo)
     setMilePoints(mileTimesInfo.route.geoJSON.geometry.milePoints);
     setVertMod(mileTimesInfo.details.vertMod);
     setPaceAdjust(mileTimesInfo.paceAdjust);
