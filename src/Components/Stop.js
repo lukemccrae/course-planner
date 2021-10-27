@@ -77,7 +77,7 @@ function onTextboxChangeStopName(event, i) {
   function onTextboxChangeStopComments(event, i) {
     const updatedStops = cloneDeep(stops)
     updatedStops[i].comments = event.target.value
-    // setStops(updatedStops)
+    setStops(updatedStops)
   }
 
     return (
@@ -90,11 +90,7 @@ function onTextboxChangeStopName(event, i) {
                         <button style={{display: parseFloat(s.miles) === 0 ? "none" : "inline"}} onClick={()=>{delStop(index)}} type="button" className="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        {/* <StopNameInput placeholder="Name" stops={stops} s={s} type="text" value={s.name} onChange={(e) => onTextboxChangeStopName(e, s)}/> */}
                         <TextField style={{width: "75px"}} placeholder="Name"  label={index === 0 ? "Name" : ""} s={s} defaultValue={s.name} onChange={(e) => onTextboxChangeStopName(e, index)} />
-
-                        {/* <StopInput placeholder="Miles" stops={stops} s={s} type="number" value={s.miles} onChange={(e) => onTextboxChangeStopMiles(e, s)}/>
-                        <StopInput placeholder="Calories" stops={stops} s={s} type="number" value={s.cals} onChange={(e) => onTextboxChangeStopCals(e, s)}/> */}
 
                         <TextField style={{width: "50px"}} error={stopTimeFormatError} helperText={stopTimeFormatError ? "Decimals not supported" : ""} placeholder="Miles" type="number" min="0" step="1" label={index === 0 ? "Miles" : ""} defaultValue={s.miles} s={s} onChange={(e) => validateStopDistance(e, index)} />
                         <TextField style={{width: "50px"}} placeholder="Calories"  label={index === 0 ? "Calories" : ""} type="number" defaultValue={s.cals} s={s} onChange={(e) => onTextboxChangeStopCals(e, s, index)} />

@@ -15,10 +15,10 @@ import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import {demoRouteStyles, loginStyles, aboutStyles, deleteStyles} from './Components/helpers/ModalStyles';
 import {DeleteModalContent} from './Components/helpers/ModalContent';
 
-import CourseInfoProvider, { useCourseInfoContext } from './Providers/CourseInfoProvider';
-import MileTimesProvider, { useMileTimesContext } from './Providers/MileTimesProvider';
-import RouteProvider, { useRouteContext }  from './Providers/RouteProvider';
-import StopsProvider, { useStopsContext } from './Providers/StopsProvider';
+import { useCourseInfoContext } from './Providers/CourseInfoProvider';
+import { useMileTimesContext } from './Providers/MileTimesProvider';
+import { useRouteContext }  from './Providers/RouteProvider';
+import { useStopsContext } from './Providers/StopsProvider';
 
 console.log(useCourseInfoContext)
 
@@ -32,7 +32,6 @@ function App(props) {
   const [username, setUsername] = useState('');
 
   const [courseList, setCourseList] = useState([]);
-  // const [stops, setStops] = useState([{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]);
 
   const {name, goalHours, goalMinutes, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
   const {milePoints, setMilePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, mileTimes, setMileTimes, setMileTimesInfo} = useMileTimesContext();
@@ -69,7 +68,6 @@ function App(props) {
           setUsername(json.email);
           // setCourseId(json.course._id)
 
-          // loadCourse(json.course)
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -79,33 +77,8 @@ function App(props) {
       setIsLoading(false);
     }
   }, [username, vertInfo])
-  //empty array means only runs once
-  //component did mount equivilant
 
-
-  function loadCourse(c) {
-    
-    // setName(c.details.name)
-    // setGoalHours(c.details.goalHours)
-    // // setGoalMinutes(c.details.goalMinutes)
-    // setCalories(c.details.calories)
-    // setTerrainMod(c.details.terrainMod)
-    // setStartTime(c.details.startTime)
-
-    setStops(c.stops)
-
-    setMileTimes(c.details.mileTimes)
-    
-    setVertMod(c.details.vertMod)
-    setVertInfo(c.route.geoJSON.properties.vertInfo)
-    
-    setCoordinates(c.route.geoJSON.geometry.coordinates.length > 0  ? c.route.geoJSON.geometry.coordinates : [])
-    setMilePoints("milePoints" in c.route.geoJSON.geometry ? c.route.geoJSON.geometry.milePoints : [{}])
-    setPaceAdjust("paceAdjust" in c ? c.paceAdjust : [])
-    
-  }
-
-    //enable group to be editable
+    //retrieve and set selected group in state
     function editCourse(courseRef) {
       const obj = getFromStorage('course_planner');
       fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
@@ -118,8 +91,6 @@ function App(props) {
       }).then(res => res.json()).then(json => {
         if (json.success) {
           setCourseId(json.course[0]._id)
-          // loadCourse(json.course[0]);
-          // loadCourseInfo(json.course[0])
           const courseDetails = json.course[0].details;
           const routeDetails = json.course[0].route.geoJSON;
           const mileTimesDetails = json.course[0]
@@ -162,8 +133,8 @@ function App(props) {
 
   function saveNewCourse() {
     const token = JSON.parse(localStorage.course_planner).token;
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        fetch(`http://localhost:3005/course`, {
+      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
+        // fetch(`http://localhost:3005/course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -256,7 +227,6 @@ function App(props) {
           saveCourse={saveCourse}
           updateDeleteModalIsOpen={updateDeleteModalIsOpen}
           editCourse={editCourse}
-          loadCourse={loadCourse}
 
           id={courseId}
           setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
@@ -284,7 +254,6 @@ function App(props) {
             saved={saved}
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
             editCourse={editCourse}
-            loadCourse={loadCourse}
             id={courseId}
           >
           </EditCourse>
@@ -307,7 +276,6 @@ function App(props) {
           </div>
           :
           <DashNoLogin
-            // setIsLoading={setIsLoading}
             setLoginModalIsOpen={setLoginModalIsOpen}
             setDeleteModalIsOpen={setDeleteModalIsOpen}
             setEditNoLoginModalIsOpen={setEditNoLoginModalIsOpen}
