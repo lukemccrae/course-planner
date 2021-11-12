@@ -7,20 +7,41 @@ import CourseInfoProvider from './Providers/CourseInfoProvider';
 import MileTimesProvider from './Providers/MileTimesProvider';
 import RouteProvider from './Providers/RouteProvider';
 import StopsProvider from './Providers/StopsProvider';
+import UserProvider from './Providers/UserProvider';
 
-ReactDOM.render(
-    <React.StrictMode>
-        <CourseInfoProvider>
-            <MileTimesProvider>
-                <RouteProvider>
-                    <StopsProvider>
-                        <App />
-                    </StopsProvider>
-                </RouteProvider>
-            </MileTimesProvider>
-        </CourseInfoProvider>
-    </React.StrictMode>,
-    document.getElementById('root'));
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    useQuery,
+    gql
+  } from "@apollo/client";
+
+// import ApolloClient from 'apollo-boost';
+import { createHttpLink } from 'apollo-link-http';
+
+const client = new ApolloClient({
+    uri: 'http://localhost:3005/graphql',
+    cache: new InMemoryCache()
+  });
+
+    ReactDOM.render(
+        <React.StrictMode>
+            <CourseInfoProvider>
+                <MileTimesProvider>
+                    <RouteProvider>
+                        <StopsProvider>
+                            <UserProvider>
+                                <ApolloProvider client={client}>
+                                    <App />
+                                </ApolloProvider>
+                            </UserProvider>
+                        </StopsProvider>
+                    </RouteProvider>
+                </MileTimesProvider>
+            </CourseInfoProvider>
+        </React.StrictMode>,
+        document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -20,6 +20,7 @@ import { useCourseInfoContext } from './Providers/CourseInfoProvider';
 import { useMileTimesContext } from './Providers/MileTimesProvider';
 import { useRouteContext }  from './Providers/RouteProvider';
 import { useStopsContext } from './Providers/StopsProvider';
+import { UserContext, useUserContext } from './Providers/UserProvider';
 
 const override = css`
   display: flex;
@@ -28,7 +29,7 @@ const override = css`
 `;
 
 function App(props) {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
 
   const [courseList, setCourseList] = useState([]);
 
@@ -36,6 +37,7 @@ function App(props) {
   const {vertMod, paceAdjust, mileTimes, setMileTimesInfo} = useMileTimesContext();
   const {vertInfo,  setRouteInfo, resetRouteInfo} = useRouteContext();
   const {stops, setStopsInfo} = useStopsContext();
+  const {setId, username, setUsername} = useUserContext();
 
   
   const [loading, setIsLoading] = useState(true);
@@ -65,7 +67,8 @@ function App(props) {
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          setCourseList(json.courseList);
+          console.log(json)
+          // setCourseList(json.courseList);
           setUsername(json.email);
 
           setIsLoading(false);
@@ -81,8 +84,8 @@ function App(props) {
     //retrieve and set selected group in state
     function editCourse(courseRef) {
       const obj = getFromStorage('course_planner');
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
-      // fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef.id}`, {
+      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
+      fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef._id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +93,7 @@ function App(props) {
         },
       }).then(res => res.json()).then(json => {
         if (json.success) {
+          console.log(json)
           setCourseId(json.course[0]._id)
           const courseDetails = json.course[0].details;
           const routeDetails = json.course[0].route.geoJSON;
@@ -107,7 +111,7 @@ function App(props) {
     }
 
   function loggedIn(args) {
-    setUsername(args.user);
+    // setUsername(args.user);
     resetCourseInfo();
     resetRouteInfo();
   }

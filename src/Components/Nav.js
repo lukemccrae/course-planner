@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import GithubIcon from '@material-ui/icons/GitHub';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import CourseSelect from "./CourseSelect";
 import {HideUsernameMobileNav, HideCorsaMobileNav, HideLogoMobileNav} from './Grid';
 
 const Header = styled.header`
@@ -21,6 +19,7 @@ const Header = styled.header`
 `
 
 function Nav(props) {
+  console.log(props)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -51,10 +50,6 @@ function Nav(props) {
       });
   }
 
-  function toggleEdit(c) {
-    props.editCourse(c);
-  }
-
     return (
       <div>
         <Header>
@@ -74,22 +69,7 @@ function Nav(props) {
               </svg>
             </HideLogoMobileNav>
             <HideCorsaMobileNav style={{padding: "15px 0 0 15px", color: "white", margin: "0 15px 0 0"}}>Corsa</HideCorsaMobileNav>
-            <FormControl style={{width: "75px", color: "white"}}>
-              <InputLabel htmlFor="age-native-simple">Course</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    inputProps={{
-                      name: 'age',
-                      id: 'age-native-simple',
-                    }}
-                  >
-                    {props.courseList.map(c => {
-                      return (
-                        <MenuItem key={c.hash} onClick={() => toggleEdit(c)}>{c.name}</MenuItem>
-                      )
-                    })}
-                  </Select>
-              </FormControl>
+            <CourseSelect courseId={props.id} courseToken={props.token} editCourse={props.editCourse}></CourseSelect>
           <Button style={{color: "white", borderColor: "white", margin: "0 5px 0 5px"}} onClick={() => props.saveNewCourse()} variant="outlined">New Course</Button>
           </div>
           <div>
