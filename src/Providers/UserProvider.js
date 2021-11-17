@@ -7,6 +7,8 @@ export const UserProvider = ({ children }) => {
 
   const [id, setId] = useState();
   const [username, setUsername] = useState('');
+  const [courseId, setCourseId] = useState('');
+  const [token, setToken] = useState('');
 
   return (
     <UserContext.Provider
@@ -15,7 +17,11 @@ export const UserProvider = ({ children }) => {
             id,
             setId,
             username,
-            setUsername
+            setUsername,
+            courseId, 
+            setCourseId,
+            token,
+            setToken
         }
       }>
       {children}

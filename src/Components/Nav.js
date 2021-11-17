@@ -19,7 +19,6 @@ const Header = styled.header`
 `
 
 function Nav(props) {
-  console.log(props)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 

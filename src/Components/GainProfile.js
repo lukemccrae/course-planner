@@ -49,6 +49,7 @@ function GainProfile({milePoints}) {
         
 
         for (const point of milePoints) {
+            console.log(point)
             result.push(Math.round((point - min) / avgIncrement))
         }
         setProfile(result)

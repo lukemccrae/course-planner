@@ -9,6 +9,7 @@ import DashNoLogin from './Components/DashNoLogin';
 import About from './Components/About';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
+import { gql, useQuery } from '@apollo/client';
 import Modal from 'react-modal';
 import Nav from './Components/Nav';
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
@@ -20,7 +21,7 @@ import { useCourseInfoContext } from './Providers/CourseInfoProvider';
 import { useMileTimesContext } from './Providers/MileTimesProvider';
 import { useRouteContext }  from './Providers/RouteProvider';
 import { useStopsContext } from './Providers/StopsProvider';
-import { UserContext, useUserContext } from './Providers/UserProvider';
+import { useUserContext } from './Providers/UserProvider';
 
 const override = css`
   display: flex;
@@ -37,9 +38,8 @@ function App(props) {
   const {vertMod, paceAdjust, mileTimes, setMileTimesInfo} = useMileTimesContext();
   const {vertInfo,  setRouteInfo, resetRouteInfo} = useRouteContext();
   const {stops, setStopsInfo} = useStopsContext();
-  const {setId, username, setUsername} = useUserContext();
+  const {courseId, setCourseId, username, setUsername, token, setToken} = useUserContext();
 
-  
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
 
@@ -48,12 +48,10 @@ function App(props) {
   const [editNoLoginModalIsOpen, setEditNoLoginModalIsOpen] = useState(false);
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
 
-
-  const [courseId, setCourseId] = useState();
-
   useEffect(() => {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
+      setToken(obj.token)
       //verify token
       const {DEV} = process.env;
       console.log(DEV)
@@ -81,34 +79,39 @@ function App(props) {
     }
   }, [username, vertInfo])
 
+
     //retrieve and set selected group in state
-    function editCourse(courseRef) {
-      const obj = getFromStorage('course_planner');
-      // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
-      fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef._id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'origin': 'https://course-planner.firebaseapp.com/'
-        },
-      }).then(res => res.json()).then(json => {
-        if (json.success) {
-          console.log(json)
-          setCourseId(json.course[0]._id)
-          const courseDetails = json.course[0].details;
-          const routeDetails = json.course[0].route.geoJSON;
-          const mileTimesDetails = json.course[0]
-          const stopDetails = json.course[0].stops;
+    // function editCourse(courseRef) {
+    //   const { loading, error, data } = useQuery(COURSE_QUERY, {
+    //     variables: { courseId, token}
+    //     });
+    //     console.log(data)
+
+    //   const obj = getFromStorage('course_planner');
+    //   // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
+    //   fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef._id}`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'origin': 'https://course-planner.firebaseapp.com/'
+    //     },
+    //   }).then(res => res.json()).then(json => {
+    //     if (json.success) {
+    //       setCourseId(json.course[0]._id)
+    //       const courseDetails = json.course[0].details;
+    //       const routeDetails = json.course[0].route.geoJSON;
+    //       const mileTimesDetails = json.course[0]
+    //       const stopDetails = json.course[0].stops;
           
-          setCourseInfo(courseDetails);
-          setRouteInfo(routeDetails);
-          setMileTimesInfo(mileTimesDetails);
-          setStopsInfo(stopDetails)
-        } else {
-          console.log("Error: didnt get a course.")
-        }
-      });
-    }
+    //       setCourseInfo(courseDetails);
+    //       setRouteInfo(routeDetails);
+    //       setMileTimesInfo(mileTimesDetails);
+    //       setStopsInfo(stopDetails)
+    //     } else {
+    //       console.log("Error: didnt get a course.")
+    //     }
+    //   });
+    // }
 
   function loggedIn(args) {
     // setUsername(args.user);
@@ -210,7 +213,6 @@ function App(props) {
       if (json.success) {
         setCourseList(json.courseList)
         setDeleteModalIsOpen(false);
-        editCourse(json.courseList[0])
       } else {
         console.log("error: ", json)
       }
@@ -229,7 +231,7 @@ function App(props) {
 
           saveCourse={saveCourse}
           updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-          editCourse={editCourse}
+          // editCourse={editCourse}
 
           id={courseId}
           setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
@@ -240,7 +242,9 @@ function App(props) {
 
   function renderNavBar() {
     if(!loading && username) {
-      return (<Nav courseList={courseList} editCourse={editCourse} saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>)
+      return (<Nav courseList={courseList} 
+        // editCourse={editCourse} 
+        saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>)
     } else {
       return (
         <div></div>
@@ -256,8 +260,9 @@ function App(props) {
             saveCourse={saveCourse}
             saved={saved}
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-            editCourse={editCourse}
-            id={courseId}
+            // editCourse={editCourse}
+            courseId={courseId}
+            token={token}
           >
           </EditCourse>
         
@@ -305,7 +310,7 @@ function App(props) {
   }
 
   function renderLogin() {
-    return <Login setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}></Login>
+    return <Login setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} setToken={setToken}></Login>
   }
 
   function renderAbout() {

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { gql, useQuery } from '@apollo/client';
+import { useUserContext } from '../Providers/UserProvider';
 
 const COURSE_LIST_QUERY = gql`
     query Query($courseToken: String!) {
@@ -18,13 +19,17 @@ const COURSE_LIST_QUERY = gql`
 `
 
 function CourseSelect({editCourse}) {
+    const {setCourseId} = useUserContext();
     const courseToken = JSON.parse(localStorage.course_planner).token;
 
     const { loading, error, data={courseNamesIds: []} } = useQuery(COURSE_LIST_QUERY, {
         variables: { courseToken }
         
-      });
-      console.log(data)
+        });
+
+    function setCourse(c) {
+        setCourseId(c._id)
+    }
     return (
         <FormControl style={{width: "75px", color: "white"}}>
             <InputLabel htmlFor="age-native-simple">Course</InputLabel>
@@ -37,7 +42,7 @@ function CourseSelect({editCourse}) {
                 >
                 {data.courseNamesIds.map(c => {
                     return (
-                    <MenuItem key={c.hash} onClick={() => editCourse(c)}>{c.details.name}</MenuItem>
+                    <MenuItem key={c.hash} onClick={() => setCourse(c)}>{c.details.name}</MenuItem>
                     )
                 })}
                 </Select>

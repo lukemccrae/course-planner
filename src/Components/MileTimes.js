@@ -5,15 +5,50 @@ import {DateTime} from 'luxon';
 
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useRouteContext } from '../Providers/RouteProvider'
+import { useRouteContext } from '../Providers/RouteProvider';
+import { useUserContext } from '../Providers/UserProvider';
 
 import {MileBox, MileTableHead, SliderBox, TableData, Detail, ArrowRight, ArrowLeft} from './helpers/StyledComponents/MileTimeStyles';
+import { gql, useQuery } from '@apollo/client';
 
-function MileTimes() {
+const MILE_TIMES_QUERY = gql`
+  query MileTimesInfo($token: String, $courseId: String) {
+    mileTimesInfo(token: $token, courseId: $courseId) {
+      hash
+      details {
+        goalHours
+        goalMinutes
+        mileTimes
+        vertMod
+        terrainMod
+        startTime
+      }
+      route {
+        geoJSON {
+          properties {
+            name
+          }
+          geometry {
+            coordinates
+            milePoints
+          }
+        }
+      }
+    }
+  }
+`
+
+function MileTimes(props) {
     const {goalHours, goalMinutes, startTime, terrainMod, } = useCourseInfoContext();
-    const {milePoints, vertMod, setVertMod, paceAdjust, setPaceAdjust, setMileTimes} = useMileTimesContext();
+    const {milePoints, vertMod, setVertMod, paceAdjust, setMileTimes, setPaceAdjust, setMileTimesInfo} = useMileTimesContext();
     const {vertInfo} = useRouteContext();
+    const {courseId, token} = useUserContext();
 
+    const { loading, error, data } = useQuery(MILE_TIMES_QUERY, {
+      variables: { courseId, token }
+      });
+      console.log(data)
+    
     const gain = vertInfo.cumulativeGain;
     const loss = vertInfo.cumulativeLoss;
 
@@ -22,6 +57,7 @@ function MileTimes() {
     
     //keep track of the time that a runner will start each mile
     const [timeThrough, setTimeThrough] = useState([]);
+      
 
     useEffect(() => {
       resetPaces()
@@ -156,7 +192,6 @@ function MileTimes() {
         <div>{minTommss((paceTotal + adjustTotal) / (props.index + 1))}</div>
       )
     }
-
 
     return (
         <div>

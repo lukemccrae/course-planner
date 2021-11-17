@@ -22,7 +22,6 @@ const Category = styled.strong`
 `
 
 function EditCourse(props) {
-
   const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
   const {coordinates} = useRouteContext();
 
@@ -99,7 +98,7 @@ function EditCourse(props) {
           </Col>
           <Col>
             <Profile></Profile>
-            <MileTimes></MileTimes>
+            <MileTimes courseId={props.courseId} token={props.token}></MileTimes>
           </Col>
         </Row>
         <div>
