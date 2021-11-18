@@ -10,11 +10,11 @@ import { useUserContext } from '../Providers/UserProvider';
 
 import {MileBox, MileTableHead, SliderBox, TableData, Detail, ArrowRight, ArrowLeft} from './helpers/StyledComponents/MileTimeStyles';
 import { gql, useQuery } from '@apollo/client';
+import { mockMileTimesInfo } from '../Providers/MileTimesProvider';
 
 const MILE_TIMES_QUERY = gql`
   query MileTimesInfo($token: String, $courseId: String) {
     mileTimesInfo(token: $token, courseId: $courseId) {
-      hash
       details {
         goalHours
         goalMinutes
@@ -23,6 +23,7 @@ const MILE_TIMES_QUERY = gql`
         terrainMod
         startTime
       }
+      paceAdjust
       route {
         geoJSON {
           properties {
@@ -42,6 +43,7 @@ const MILE_TIMES_QUERY = gql`
           }
         }
       }
+      
     }
   }
 `
@@ -52,10 +54,10 @@ function MileTimes(props) {
     const {vertInfo} = useRouteContext();
     const {courseId, token} = useUserContext();
 
-    const { loading, error, data } = useQuery(MILE_TIMES_QUERY, {
+    const { loading, error, data=mockMileTimesInfo } = useQuery(MILE_TIMES_QUERY, {
       variables: { courseId, token }
       });
-      console.log(data)
+      setMileTimesInfo(data.mileTimesInfo[0])
     
     const gain = vertInfo.cumulativeGain;
     const loss = vertInfo.cumulativeLoss;

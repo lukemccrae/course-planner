@@ -7,17 +7,20 @@ const INITIAL_STATE = {
   mileTimes: []
 }
 
-const mockMileTimesInfo = {
-  route: {
-    geoJSON: {
-      geometry: {
-        milePoints: []
+export const mockMileTimesInfo = {
+  mileTimesInfo: [{
+    route: {
+      geoJSON: {
+        geometry: {
+          milePoints: []
+        }
       }
+    },
+    paceAdjust: [],
+    details: {
+      vertMod: 300
     }
-  },
-  details: {
-    vertMod: 300
-  }
+  }]
 }
 
 export const MileTimesContext = createContext(null);
@@ -30,7 +33,7 @@ export const MileTimesContext = createContext(null);
   const [paceAdjust, setPaceAdjust] = useState(INITIAL_STATE.paceAdjust);
   const [mileTimes, setMileTimes] = useState(INITIAL_STATE.mileTimes);
 
-  function setMileTimesInfo(mileTimesInfo = mockMileTimesInfo) {
+  function setMileTimesInfo(mileTimesInfo) {
     setMilePoints(mileTimesInfo.route.geoJSON.geometry.milePoints);
     setVertMod(mileTimesInfo.details.vertMod);
     setPaceAdjust(mileTimesInfo.paceAdjust);
