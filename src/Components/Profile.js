@@ -63,6 +63,7 @@ function Profile() {
     function fillPoints(coordStart, coordEnd, index) {
         let points = [];
         for (var i = coordStart; i < coordEnd; i++) {
+            console.log(typeof coordinates[i][0])
             points.push({x: i, y: Math.round(coordinates[i][2])})
         }
 

@@ -29,8 +29,16 @@ const MILE_TIMES_QUERY = gql`
             name
           }
           geometry {
-            coordinates
-            milePoints
+            coordinates {
+              lat
+              lng
+              elev
+            }
+            milePoints {
+              lat
+              lng
+              elev
+            }
           }
         }
       }
