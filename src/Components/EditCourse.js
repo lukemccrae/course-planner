@@ -94,7 +94,7 @@ function EditCourse(props) {
                 </div>
               </div>
               <Category>Stops</Category>
-              <Stop></Stop>
+              <Stop courseId={props.courseId} token={props.token}></Stop>
           </Col>
           <Col>
             <Profile courseId={props.courseId} token={props.token}></Profile>

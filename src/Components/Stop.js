@@ -11,6 +11,22 @@ import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { useStopsContext } from '../Providers/StopsProvider';
 
+import { gql, useQuery } from '@apollo/client';
+import { mockStopsInfo } from '../Providers/StopsProvider';
+
+const STOPS_QUERY = gql`
+  query StopsInfo {
+    stopsInfo {
+      stops {
+        name
+        cals
+        miles
+        id
+      }
+    }
+  }
+`
+
 const useStyles = makeStyles((theme) => ({
     root: {
       '& .MuiTextField-root': {
@@ -23,16 +39,22 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function Stop() {
+function Stop({courseId, token}) {
   const [countedStops, setCountedStops] = useState(0);
 
   const {calories} = useCourseInfoContext();
   const {paceAdjust, mileTimes} = useMileTimesContext();
   const {vertInfo} = useRouteContext();
-  const {stops, setStops, addStop, delStop} = useStopsContext();
+  const {stops, setStops, addStop, delStop, setStopsInfo} = useStopsContext();
 
   //value of stop distance cant be a decimal
   const [stopTimeFormatError, setStopTimeFormatError] = useState(false);
+
+  const { loading, error, data=mockStopsInfo } = useQuery(STOPS_QUERY, {
+    variables: { courseId, token }
+    });
+    console.log(data)
+    // setStopsInfo(data)
 
   useEffect(() => {
     if(stops.length > 0) {

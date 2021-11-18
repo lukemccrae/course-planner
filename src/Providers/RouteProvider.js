@@ -34,9 +34,10 @@ export const RouteProvider = ({ children }) => {
     setVertInfo(INITIAL_STATE.vertInfo)
   }
 
-  function setRouteInfo(routeInfo) {
-    setVertInfo(routeInfo.geoJSON.properties.vertInfo)
-    setCoordinates(routeInfo.geoJSON.geometry.coordinates)
+  function setRouteInfo(data) {
+
+    setVertInfo(data.routeInfo.geoJSON.properties.vertInfo)
+    setCoordinates(data.routeInfo.geoJSON.geometry.coordinates)
   }
 
   return (

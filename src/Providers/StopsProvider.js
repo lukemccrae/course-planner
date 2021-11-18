@@ -4,6 +4,15 @@ const INITIAL_STATE = {
     stops: [{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]
 }
 
+export const mockStopsInfo = {
+  stops: {
+    name: "",
+    cals: 1,
+    miles: 1,
+    id: ""
+  }
+}
+
 export const StopsContext = createContext(null);
 export const useStopsContext = () => useContext(StopsContext);
 
