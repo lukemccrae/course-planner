@@ -5,18 +5,46 @@ import {colors} from './helpers/Colors';
 import { useStopsContext } from '../Providers/StopsProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
+import { mockRouteInfo } from '../Providers/RouteProvider';
 
+import { gql, useQuery } from '@apollo/client';
 
+const ROUTE_QUERY = gql`
+    query RouteInfo($token: String, $courseId: String) {
+        routeInfo(token: $token, courseId: $courseId) {
+            geoJSON {
+            properties {
+                vertInfo {
+                cumulativeGain
+                cumulativeLoss
+                }
+            }
+            geometry {
+                coordinates {
+                lat
+                lng
+                elev
+                }
+            }
+            }
+        }
+    }
+`
 
-function Profile() {
+function Profile({courseId, token}) {
     // console.log(stops, coordinates, mileTimes)
 
     const {stops} = useStopsContext();
     const {mileTimes} = useMileTimesContext();
-    const {coordinates} = useRouteContext();
+    const {coordinates, setRouteInfo} = useRouteContext();
 
     const [labels, setLabels] = useState([]);
     const [dataset, setDataset] = useState([]);
+
+    const { loading, error, data=mockRouteInfo } = useQuery(ROUTE_QUERY, {
+        variables: { courseId, token }
+        });
+        setRouteInfo(data)
 
     useEffect(() => {
         if(coordinates.length > 10 && coordinates[5][2]) {
@@ -77,7 +105,7 @@ function Profile() {
         return obj;
     }
 
-    const data = {
+    const labelData = {
         labels: labels,
         datasets: dataset,
     };
@@ -124,7 +152,7 @@ function Profile() {
 
     return (
         <div>
-            <Line data={data} options={options} />
+            <Line data={labelData} options={options} />
         </div>
     )
 }

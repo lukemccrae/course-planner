@@ -97,7 +97,7 @@ function EditCourse(props) {
               <Stop></Stop>
           </Col>
           <Col>
-            <Profile></Profile>
+            <Profile courseId={props.courseId} token={props.token}></Profile>
             <MileTimes courseId={props.courseId} token={props.token}></MileTimes>
           </Col>
         </Row>

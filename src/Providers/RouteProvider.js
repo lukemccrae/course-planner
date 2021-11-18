@@ -5,6 +5,22 @@ const INITIAL_STATE = {
   vertInfo: {cumulativeGain: [], cumulativeLoss: []}
 }
 
+export const mockRouteInfo = {
+  routeInfo: {
+    geoJSON: {
+      geometry: {
+        coordinates: []
+      },
+      properties: {
+        vertInfo: {
+          cumulativeGain: [],
+          cumulativeLoss: []
+        }
+      }
+    }
+  }
+}
+
 export const RouteContext = createContext(null);
 export const useRouteContext = () => useContext(RouteContext);
 
@@ -18,9 +34,9 @@ export const RouteProvider = ({ children }) => {
     setVertInfo(INITIAL_STATE.vertInfo)
   }
 
-  function setRouteInfo(routeDetails = {properties: {vertInfo: {}}, geometry: {coordinates: []}}) {
-    setVertInfo(routeDetails.properties.vertInfo)
-    setCoordinates(routeDetails.geometry.coordinates)
+  function setRouteInfo(routeInfo) {
+    setVertInfo(routeInfo.geoJSON.properties.vertInfo)
+    setCoordinates(routeInfo.geoJSON.geometry.coordinates)
   }
 
   return (
