@@ -9,13 +9,12 @@ import DashNoLogin from './Components/DashNoLogin';
 import About from './Components/About';
 import { css } from "@emotion/core";
 import Container from 'react-bootstrap/Container';
-import { gql, useQuery } from '@apollo/client';
 import Modal from 'react-modal';
 import Nav from './Components/Nav';
 import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
 import {demoRouteStyles, loginStyles, aboutStyles, deleteStyles} from './Components/helpers/ModalStyles';
-import {DeleteModalContent} from './Components/helpers/ModalContent';
+import {DeleteModalContent} from './Components/helpers/DeleteModalContent';
 
 import { useCourseInfoContext } from './Providers/CourseInfoProvider';
 import { useMileTimesContext } from './Providers/MileTimesProvider';
@@ -29,16 +28,17 @@ const override = css`
   border-color: red;
 `;
 
+
+
 function App(props) {
   // const [username, setUsername] = useState('');
-
-  const [courseList, setCourseList] = useState([]);
 
   const {name, goalHours, goalMinutes, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
   const {vertMod, paceAdjust, mileTimes, setMileTimesInfo} = useMileTimesContext();
   const {vertInfo,  setRouteInfo, resetRouteInfo} = useRouteContext();
   const {stops, setStopsInfo} = useStopsContext();
   const {courseId, setCourseId, username, setUsername, token, setToken} = useUserContext();
+  const [courseList, setCourseList] = useState([]);
 
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
@@ -48,13 +48,12 @@ function App(props) {
   const [editNoLoginModalIsOpen, setEditNoLoginModalIsOpen] = useState(false);
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
 
+
   useEffect(() => {
     const obj = getFromStorage('course_planner');
     if (obj && obj.token && username === '') {
       setToken(obj.token)
       //verify token
-      const {DEV} = process.env;
-      console.log(DEV)
       fetch('https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course/api/account/verify?token=' + obj.token, {
         // fetch('http://localhost:3005/course/api/account/verify?token=' + obj.token, {
         method: 'GET',
@@ -65,11 +64,7 @@ function App(props) {
         }
       }).then(res => res.json()).then(json => {
         if (json.success) {
-          console.log(json)
-          // setCourseList(json.courseList);
-          setUsername(json.email);
-
-          setIsLoading(false);
+          loggedIn(json)
         } else {
           setIsLoading(false);
         }
@@ -77,44 +72,12 @@ function App(props) {
     } else {
       setIsLoading(false);
     }
-  }, [username, vertInfo])
-
-
-    //retrieve and set selected group in state
-    // function editCourse(courseRef) {
-    //   const { loading, error, data } = useQuery(COURSE_QUERY, {
-    //     variables: { courseId, token}
-    //     });
-    //     console.log(data)
-
-    //   const obj = getFromStorage('course_planner');
-    //   // fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${obj.token}&id=${courseRef.id}`, {
-    //   fetch(`http://localhost:3005/course?token=${obj.token}&id=${courseRef._id}`, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'origin': 'https://course-planner.firebaseapp.com/'
-    //     },
-    //   }).then(res => res.json()).then(json => {
-    //     if (json.success) {
-    //       setCourseId(json.course[0]._id)
-    //       const courseDetails = json.course[0].details;
-    //       const routeDetails = json.course[0].route.geoJSON;
-    //       const mileTimesDetails = json.course[0]
-    //       const stopDetails = json.course[0].stops;
-          
-    //       setCourseInfo(courseDetails);
-    //       setRouteInfo(routeDetails);
-    //       setMileTimesInfo(mileTimesDetails);
-    //       setStopsInfo(stopDetails)
-    //     } else {
-    //       console.log("Error: didnt get a course.")
-    //     }
-    //   });
-    // }
+  }, [vertInfo])
 
   function loggedIn(args) {
-    // setUsername(args.user);
+    setUsername(args.email);
+    setCourseList(args.courseList);
+    setIsLoading(false);
     resetCourseInfo();
     resetRouteInfo();
   }
@@ -200,29 +163,9 @@ function App(props) {
       });
   }
 
-  function deleteCourse() {
-    const token = JSON.parse(localStorage.course_planner).token;
-
-      fetch(`https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
-        // fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json()).then(json => {
-      if (json.success) {
-        setCourseList(json.courseList)
-        setDeleteModalIsOpen(false);
-      } else {
-        console.log("error: ", json)
-      }
-    });
-  }
-
   function updateDeleteModalIsOpen() {
     setDeleteModalIsOpen(!deleteModalIsOpen)
   }
-
 
   function renderEditCourseNoLogin() {
     return (
@@ -244,7 +187,7 @@ function App(props) {
     if(!loading && username) {
       return (<Nav courseList={courseList} 
         // editCourse={editCourse} 
-        saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} username={username} loggedOut={loggedOut}></Nav>)
+        saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}loggedOut={loggedOut}></Nav>)
     } else {
       return (
         <div></div>
@@ -310,22 +253,20 @@ function App(props) {
   }
 
   function renderLogin() {
-    return <Login setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} setToken={setToken}></Login>
+    return <Login setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn} setToken={setToken}></Login>
   }
 
   function renderAbout() {
     return <About></About>
   }
 
-    //if token, return dash, and show spinner
-    //
     return (
       <div>
         {renderNavBar()}
         {renderEditCourse()}
 
         {/* higher order components to render various modals */}
-        {renderModal(deleteModalIsOpen, updateDeleteModalIsOpen, deleteStyles, "Delete Modal", DeleteModalContent({courseList, deleteCourse, updateDeleteModalIsOpen}))}
+        {renderModal(deleteModalIsOpen, updateDeleteModalIsOpen, deleteStyles, "Delete Modal", DeleteModalContent({updateDeleteModalIsOpen, courseList, setDeleteModalIsOpen}))}
         {renderModal(editNoLoginModalIsOpen, closeEditNoLoginModal, demoRouteStyles, "Demo Route Modal", renderEditCourseNoLogin())}
         {renderModal(loginModalIsOpen, closeLoginModal, loginStyles, "Login Modal", renderLogin())}
         {renderModal(aboutModalIsOpen, closeAboutModal, aboutStyles, "About Modal", renderAbout())}

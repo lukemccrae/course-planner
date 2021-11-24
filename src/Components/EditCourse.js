@@ -14,6 +14,10 @@ import Select from '@material-ui/core/Select';
 
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
+import { gql, useQuery } from '@apollo/client';
+import { mockCourseInfo } from '../Providers/CourseInfoProvider';
+import { useUserContext } from '../Providers/UserProvider';
+
 
 const Category = styled.strong`
   font-weight: 500;
@@ -21,12 +25,33 @@ const Category = styled.strong`
   display: block;
 `
 
+const COURSE_INFO_QUERY = gql`
+  query CourseInfo($token: String, $courseId: String) {
+    courseInfo(token: $token, courseId: $courseId) {
+      name
+      goalHours
+      goalMinutes
+      calories
+      terrainMod
+      startTime
+    }
+  }
+`
+
+
+
 function EditCourse(props) {
-  const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod} = useCourseInfoContext();
+  const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod, setCourseInfo} = useCourseInfoContext();
   const {coordinates} = useRouteContext();
+  const {courseId} = useUserContext();
 
   //check if values passed to the time library are valid
   const [timeFormatError, setTimeFormatError] = useState(false);
+
+  const { loading, error, data=mockCourseInfo } = useQuery(COURSE_INFO_QUERY, {
+    variables: { courseId: props.courseId, token: props.token }
+    });
+    setCourseInfo(data.courseInfo)
 
   function validateStartTime(e) {
     let hours = parseInt(e.split(":")[0])
@@ -102,7 +127,7 @@ function EditCourse(props) {
           </Col>
         </Row>
         <div>
-          {coordinates.length === 0 && props.id ? (
+          {coordinates.length === 0 && courseId ? (
             <Route updateDeleteModalIsOpen={props.updateDeleteModalIsOpen} editCourse={props.editCourse} id={props.id}>hi</Route>
           ) : null}
         </div>

@@ -15,8 +15,8 @@ import { gql, useQuery } from '@apollo/client';
 import { mockStopsInfo } from '../Providers/StopsProvider';
 
 const STOPS_QUERY = gql`
-  query StopsInfo {
-    stopsInfo {
+  query StopsInfo($token: String, $courseId: String) {
+    stopsInfo(token: $token, courseId: $courseId) {
       stops {
         name
         cals
@@ -53,8 +53,7 @@ function Stop({courseId, token}) {
   const { loading, error, data=mockStopsInfo } = useQuery(STOPS_QUERY, {
     variables: { courseId, token }
     });
-    console.log(data)
-    // setStopsInfo(data)
+    setStopsInfo(data.stopsInfo.stops)
 
   useEffect(() => {
     if(stops.length > 0) {
@@ -96,9 +95,10 @@ function onTextboxChangeStopName(event, i) {
     setStops(updatedStops)
   }
 
+
     return (
         <div>
-            {stops.sort((a, b) => a.miles - b.miles).map((s, index) => {
+            {stops.map((s, index) => {
               return (
                 <div key={s.id}>
                 <form key={s.id} className={classes.root} noValidate autoComplete="off">

@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
   const [username, setUsername] = useState('');
   const [courseId, setCourseId] = useState('');
   const [token, setToken] = useState('');
+  const [courseList, setCourseList] = useState([]);
 
   return (
     <UserContext.Provider
@@ -21,7 +22,9 @@ export const UserProvider = ({ children }) => {
             courseId, 
             setCourseId,
             token,
-            setToken
+            setToken,
+            courseList,
+            setCourseList
         }
       }>
       {children}

@@ -8,6 +8,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import CourseSelect from "./CourseSelect";
 import {HideUsernameMobileNav, HideCorsaMobileNav, HideLogoMobileNav} from './Grid';
+import { useUserContext } from '../Providers/UserProvider';
 
 const Header = styled.header`
   height: 60px;
@@ -19,6 +20,7 @@ const Header = styled.header`
 `
 
 function Nav(props) {
+  const {username} = useUserContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -72,7 +74,7 @@ function Nav(props) {
           <Button style={{color: "white", borderColor: "white", margin: "0 5px 0 5px"}} onClick={() => props.saveNewCourse()} variant="outlined">New Course</Button>
           </div>
           <div>
-          <HideUsernameMobileNav style={{fontSize: "12px"}}> {props.username}</HideUsernameMobileNav>
+          <HideUsernameMobileNav style={{fontSize: "12px"}}> {username}</HideUsernameMobileNav>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"

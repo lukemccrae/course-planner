@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {setInStorage} from '../utils/storage';
 import styled from 'styled-components';
+import { useUserContext } from '../Providers/UserProvider';
 import 'whatwg-fetch';
 
 const Box = styled.div`
@@ -14,6 +15,8 @@ function Login(props) {
   const [showRegister, setShowRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {setToken, setCourseList} = useUserContext();
+
 
 
   const onSignIn = (e) => {
@@ -36,13 +39,13 @@ function Login(props) {
         if(json.success) {
           props.loggedIn(json)
           setInStorage('course_planner', { token: json.token })
-          props.setToken(json.token)
-          props.setCourseList(json.courseList)
+          setToken(json.token)
+          setCourseList(json.courseList)
 
           //close login modal
           props.setLoginModalIsOpen(false);
         } else {
-          console.log(json)
+          console.log(json) 
         }
       });
   }

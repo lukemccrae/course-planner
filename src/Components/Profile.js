@@ -47,14 +47,14 @@ function Profile({courseId, token}) {
         setRouteInfo(data)
 
     useEffect(() => {
-        if(coordinates.length > 10 && coordinates[5][2]) {
+        if(true) {
             const timer = setTimeout(() => {
                 fillLabels(coordinates.length);
                 buildDataset(coordinates.length);
             }, 500);
             return () => clearTimeout(timer);
         }
-    }, [stops, coordinates, mileTimes, buildDataset])
+    }, [stops, coordinates, mileTimes])
 
     function fillLabels(coordLength) {
         let result = [];
@@ -91,8 +91,7 @@ function Profile({courseId, token}) {
     function fillPoints(coordStart, coordEnd, index) {
         let points = [];
         for (var i = coordStart; i < coordEnd; i++) {
-            console.log(typeof coordinates[i][0])
-            points.push({x: i, y: Math.round(coordinates[i][2])})
+            points.push({x: i, y: Math.round(coordinates[i].elev)})
         }
 
         let obj = {

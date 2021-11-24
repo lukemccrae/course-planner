@@ -1,12 +1,23 @@
 import React, { useContext, createContext, useState } from 'react';
 
 const INITIAL_STATE = {
-  name: "",
+  name: "New Course",
   goalHours: 2,
   goalMinutes: 30,
   calories: 225, 
   terrainMod: 1.2,
-  startTime: ""
+  startTime: "06:00"
+}
+
+export const mockCourseInfo = {
+  courseInfo: {
+    name: "",
+    goalHours: 2,
+    goalMinutes: 30,
+    calories: 225, 
+    terrainMod: 1.2,
+    startTime: ""
+  }
 }
 
 export const CourseInfoContext = createContext(null);
@@ -14,12 +25,12 @@ export const useCourseInfoContext = () => useContext(CourseInfoContext);
 
 export const CourseInfoProvider = ({ children }) => {
 
-  const [name, setName] = useState("New Coursee");
-  const [goalHours, setGoalHours] = useState(2);
-  const [goalMinutes, setGoalMinutes] = useState(30);
-  const [startTime, setStartTime] = useState("06:00");
-  const [calories, setCalories] = useState(225);
-  const [terrainMod, setTerrainMod] = useState(1.2);
+  const [name, setName] = useState(INITIAL_STATE.name);
+  const [goalHours, setGoalHours] = useState(INITIAL_STATE.goalHours);
+  const [goalMinutes, setGoalMinutes] = useState(INITIAL_STATE.goalMinutes);
+  const [startTime, setStartTime] = useState(INITIAL_STATE.startTime);
+  const [calories, setCalories] = useState(INITIAL_STATE.calories);
+  const [terrainMod, setTerrainMod] = useState(INITIAL_STATE.terrainMod);
 
   function resetCourseInfo() {
     setName(INITIAL_STATE.name)

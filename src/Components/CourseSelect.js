@@ -19,16 +19,22 @@ const COURSE_LIST_QUERY = gql`
 `
 
 function CourseSelect({editCourse}) {
-    const {setCourseId} = useUserContext();
+    const {setCourseId, courseList, setCourseList} = useUserContext();
     const courseToken = JSON.parse(localStorage.course_planner).token;
 
     const { loading, error, data={courseNamesIds: []} } = useQuery(COURSE_LIST_QUERY, {
         variables: { courseToken }
         
         });
+        //need to check the array before we set it to state
+        if(data.courseNamesIds.length > 0) {
+            setCourseList(data.courseNamesIds)
+        }
 
     function setCourse(c) {
+        console.log(c._id)
         setCourseId(c._id)
+        console.log(c._id)
     }
     return (
         <FormControl style={{width: "75px", color: "white"}}>
@@ -42,7 +48,7 @@ function CourseSelect({editCourse}) {
                 >
                 {data.courseNamesIds.map(c => {
                     return (
-                    <MenuItem key={c.hash} onClick={() => setCourse(c)}>{c.details.name}</MenuItem>
+                        <MenuItem key={c.hash} onClick={() => setCourse(c)}>{c.details.name}</MenuItem>
                     )
                 })}
                 </Select>

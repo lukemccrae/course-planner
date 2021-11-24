@@ -31,10 +31,10 @@ function GainProfile({milePoints}) {
         if(milePoints.length > 0) {
             let percent = .01;
             for (let i = 1; i < 21; i++) {
-                if(milePoints[Math.floor(percent * milePoints.length)][2] > max) max = Math.round(milePoints[Math.floor(percent * milePoints.length)][2])
-                if(milePoints[Math.floor(percent * milePoints.length)][2] < min || i === 1) min = Math.round(milePoints[Math.floor(percent * milePoints.length)][2])
+                if(milePoints[Math.floor(percent * milePoints.length)].elev > max) max = Math.round(milePoints[Math.floor(percent * milePoints.length)].elev)
+                if(milePoints[Math.floor(percent * milePoints.length)].elev < min || i === 1) min = Math.round(milePoints[Math.floor(percent * milePoints.length)].elev)
 
-                result.push(Math.round(milePoints[Math.floor(percent * milePoints.length)][2]))
+                result.push(Math.round(milePoints[Math.floor(percent * milePoints.length)].elev))
                 percent += .05;
             }
         }
@@ -49,7 +49,6 @@ function GainProfile({milePoints}) {
         
 
         for (const point of milePoints) {
-            console.log(point)
             result.push(Math.round((point - min) / avgIncrement))
         }
         setProfile(result)

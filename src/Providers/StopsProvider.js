@@ -1,15 +1,36 @@
 import React, { useContext, createContext, useState } from 'react';
 
 const INITIAL_STATE = {
-    stops: [{miles: 5, comments: "", name: "Aid station 1", cals: 200}, {miles: 10, comments: "", name: "Aid station 2", cals: 400}]
+    stopsInfo: {
+      stops: [{
+        miles: 5, 
+        comments: "", 
+        name: "Aid station 1", 
+        cals: 200
+      }, 
+      {
+        miles: 10, 
+        comments: "", 
+        name: "Aid station 2", 
+        cals: 400
+      }]
+    }
 }
 
 export const mockStopsInfo = {
-  stops: {
-    name: "",
-    cals: 1,
-    miles: 1,
-    id: ""
+  stopsInfo: {
+    stops: [{
+      miles: 5, 
+      comments: "", 
+      name: "Aid station 1", 
+      cals: 200
+    }, 
+    {
+      miles: 10, 
+      comments: "", 
+      name: "Aid station 2", 
+      cals: 400
+    }]
   }
 }
 
@@ -17,7 +38,7 @@ export const StopsContext = createContext(null);
 export const useStopsContext = () => useContext(StopsContext);
 
 export const StopsProvider = ({ children }) => {
-    const [stops, setStops] = useState(INITIAL_STATE.stops);
+    const [stops, setStops] = useState(INITIAL_STATE.stopsInfo.stops);
 
     function setStopsInfo(arr) {
         setStops(arr)
@@ -36,9 +57,9 @@ export const StopsProvider = ({ children }) => {
     }
 
       updatedStops.push(newStop);
+      updatedStops.sort((a, b) => a.miles - b.miles)
       setStops([...updatedStops])
   }
-
 
   function delStop(index) {
     let updatedStops = stops;
