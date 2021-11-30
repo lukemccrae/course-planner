@@ -31,14 +31,12 @@ const override = css`
 
 
 function App(props) {
-  // const [username, setUsername] = useState('');
-
-  const {name, goalHours, goalMinutes, startTime, calories, terrainMod, setCourseInfo, resetCourseInfo} = useCourseInfoContext();
+  const {name, goalHours, goalMinutes, startTime, calories, terrainMod, resetCourseInfo} = useCourseInfoContext();
   const {vertMod, paceAdjust, mileTimes, setMileTimesInfo} = useMileTimesContext();
-  const {vertInfo,  setRouteInfo, resetRouteInfo} = useRouteContext();
-  const {stops, setStopsInfo} = useStopsContext();
-  const {courseId, setCourseId, username, setUsername, token, setToken} = useUserContext();
-  const [courseList, setCourseList] = useState([]);
+  const {vertInfo, resetRouteInfo} = useRouteContext();
+  const {stops} = useStopsContext();
+  const {courseId, username, setUsername, token, setToken, courseList, setCourseList} = useUserContext();
+  // const [courseList, setCourseList] = useState([]);
 
   const [loading, setIsLoading] = useState(true);
   const [saved, setSaved] = useState(true);
@@ -76,7 +74,7 @@ function App(props) {
 
   function loggedIn(args) {
     setUsername(args.email);
-    setCourseList(args.courseList);
+    // setCourseList(args.courseList);
     setIsLoading(false);
     resetCourseInfo();
     resetRouteInfo();
@@ -99,29 +97,6 @@ function App(props) {
 
   function closeEditNoLoginModal() {
     setEditNoLoginModalIsOpen(false)
-  }
-
-  function saveNewCourse() {
-    const token = JSON.parse(localStorage.course_planner).token;
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course`, {
-        // fetch(`http://localhost:3005/course`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'origin': 'https://group-timer.firebaseapp.com/'
-        },
-        body: JSON.stringify({
-          token: token,
-          hash: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8),
-          //server sets initial course values
-        })
-      }).then(res => res.json()).then(json => {
-        if (json.success) {
-          setCourseList(json.courseList)
-        } else {
-          console.log("Error: adding this course failed.")
-        }
-      });
   }
 
   function saveCourse() {
@@ -171,11 +146,8 @@ function App(props) {
     return (
       <EditCourseNoLogin 
           saved={saved}
-
           saveCourse={saveCourse}
           updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-          // editCourse={editCourse}
-
           id={courseId}
           setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
         >
@@ -185,9 +157,7 @@ function App(props) {
 
   function renderNavBar() {
     if(!loading && username) {
-      return (<Nav courseList={courseList} 
-        // editCourse={editCourse} 
-        saveNewCourse={saveNewCourse} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}loggedOut={loggedOut}></Nav>)
+      return (<Nav courseList={courseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}loggedOut={loggedOut}></Nav>)
     } else {
       return (
         <div></div>
@@ -203,7 +173,6 @@ function App(props) {
             saveCourse={saveCourse}
             saved={saved}
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-            // editCourse={editCourse}
             courseId={courseId}
             token={token}
           >

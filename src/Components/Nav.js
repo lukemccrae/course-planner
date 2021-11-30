@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import GithubIcon from '@material-ui/icons/GitHub';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import CourseSelect from "./CourseSelect";
+import NewCourse from "./NewCourse";
 import {HideUsernameMobileNav, HideCorsaMobileNav, HideLogoMobileNav} from './Grid';
 import { useUserContext } from '../Providers/UserProvider';
 
@@ -71,7 +71,7 @@ function Nav(props) {
             </HideLogoMobileNav>
             <HideCorsaMobileNav style={{padding: "15px 0 0 15px", color: "white", margin: "0 15px 0 0"}}>Corsa</HideCorsaMobileNav>
             <CourseSelect courseId={props.id} courseToken={props.token} editCourse={props.editCourse}></CourseSelect>
-          <Button style={{color: "white", borderColor: "white", margin: "0 5px 0 5px"}} onClick={() => props.saveNewCourse()} variant="outlined">New Course</Button>
+          <NewCourse></NewCourse>
           </div>
           <div>
           <HideUsernameMobileNav style={{fontSize: "12px"}}> {username}</HideUsernameMobileNav>
