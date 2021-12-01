@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import {Row, Col, Grid} from './Grid';
 import Profile from './Profile';
+import SaveCourse from './SaveCourse';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -37,8 +38,6 @@ const COURSE_INFO_QUERY = gql`
     }
   }
 `
-
-
 
 function EditCourse(props) {
   const {name, setName, goalHours, setGoalHours, goalMinutes, setGoalMinutes, startTime, setStartTime, calories, setCalories, terrainMod, setTerrainMod, setCourseInfo} = useCourseInfoContext();
@@ -72,7 +71,7 @@ function EditCourse(props) {
             {props.saved ? <div style={{display: "flex", justifyContent: "flex-start", margin: "10px 0 10px 0"}}>
               <Button variant="outlined" className="five-px-margin-right" onClick={props.updateDeleteModalIsOpen}>Delete</Button>
               <span style={{margin: "5px"}}></span>
-              <Button variant="outlined" className="five-px-margin-right" onClick={props.saveCourse}>Save</Button>
+              {/* <SaveCourse></SaveCourse> */}
             </div> : <div>Saving...</div>}
             
             <Category>Course Info</Category>

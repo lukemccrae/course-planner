@@ -21,7 +21,7 @@ export const DeleteModalContent = (props) => {
     const {courseId, setCourseId, courseList, setCourseList, token} = useUserContext();
 
     useEffect(() => {
-        console.log(courseList.length)
+        // console.log(courseList.length, "why am i not being called when course is deleted?")
     }, [courseList])
 
     const [deleteMutation, {data={deleteCourse: []}, loading, erorr}] = useMutation(DELETE_QUERY, {

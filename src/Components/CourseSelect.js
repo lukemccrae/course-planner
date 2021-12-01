@@ -23,7 +23,7 @@ function CourseSelect() {
     const courseToken = JSON.parse(localStorage.course_planner).token;
 
     useEffect(() => {
-        console.log(courseList)
+        // console.log(courseList)
     }, [courseList])
 
     const { loading, error, data = {courseNamesIds: []} } = useQuery(COURSE_LIST_QUERY, {
@@ -33,6 +33,7 @@ function CourseSelect() {
     if(data.courseNamesIds.length > 0) {
         setCourseList(data.courseNamesIds)
     }
+    console.log(data)
 
 
 
@@ -51,6 +52,7 @@ function CourseSelect() {
                 }}
                 >
                 {courseList.map(c => {
+                    console.log(c)
                     return (
                         <MenuItem key={c.hash} onClick={() => setCourse(c)}>{c.details.name}</MenuItem>
                     )

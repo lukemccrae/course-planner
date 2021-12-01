@@ -71,7 +71,7 @@ function Nav(props) {
             </HideLogoMobileNav>
             <HideCorsaMobileNav style={{padding: "15px 0 0 15px", color: "white", margin: "0 15px 0 0"}}>Corsa</HideCorsaMobileNav>
             <CourseSelect courseId={props.id} courseToken={props.token} editCourse={props.editCourse}></CourseSelect>
-          <NewCourse></NewCourse>
+          {/* <NewCourse></NewCourse> */}
           </div>
           <div>
           <HideUsernameMobileNav style={{fontSize: "12px"}}> {username}</HideUsernameMobileNav>
