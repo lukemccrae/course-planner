@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { css } from "@emotion/core";
 import BarLoader from "react-spinners/BarLoader";
 import Button from '@material-ui/core/Button';
+import { useUserContext } from '../Providers/UserProvider';
 
 const override = css`
   display: flex;
@@ -23,7 +24,10 @@ const Center = styled.div`
 `
 
 function Route(props) {
+  console.log(props)
+  const {courseId, setCourseId} = useUserContext();
   const [uploading, setUploading] = useState(false);
+
 
   function gpxToJson(gpx) {
     setUploading(true)
@@ -55,8 +59,8 @@ function Route(props) {
   }
 
   function saveNewRoute(geoJSON) {
-    // fetch(`http://localhost:3005/course/new?courseId=${props.id}`, {
-      fetch(`https://banana-crumble-42815.herokuapp.com/course/new?courseId=${props.id}`, {
+    // fetch(`http://localhost:3005/course/new?courseId=${courseId}`, {
+      fetch(`https://banana-crumble-42815.herokuapp.com/course/new?courseId=${courseId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -67,7 +71,7 @@ function Route(props) {
       })
     }).then(res => res.json()).then(json => {
       if (json.success) {
-        props.editCourse({id: json.course._id})
+        setCourseId({id: json.course._id})
         setUploading(false)
       } else {
         console.log("Error: adding this course failed.")

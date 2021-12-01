@@ -35,11 +35,8 @@ function App(props) {
   const {vertMod, paceAdjust, mileTimes, setMileTimesInfo} = useMileTimesContext();
   const {vertInfo, resetRouteInfo} = useRouteContext();
   const {stops} = useStopsContext();
-  const {courseId, username, setUsername, token, setToken, courseList, setCourseList} = useUserContext();
+  const {courseId, username, setUsername, token, setToken, courseList, setCourseList, loading, setIsLoading, saved, setSaved} = useUserContext();
   // const [courseList, setCourseList] = useState([]);
-
-  const [loading, setIsLoading] = useState(true);
-  const [saved, setSaved] = useState(true);
 
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);

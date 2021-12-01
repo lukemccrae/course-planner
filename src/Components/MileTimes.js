@@ -50,7 +50,7 @@ const MILE_TIMES_QUERY = gql`
 
 function MileTimes(props) {
     const {goalHours, goalMinutes, startTime, terrainMod, } = useCourseInfoContext();
-    const {milePoints, vertMod, setVertMod, paceAdjust, setMileTimes, setPaceAdjust, setMileTimesInfo} = useMileTimesContext();
+    const {milePoints, vertMod, setVertMod, paceAdjust, setMileTimes, setPaceAdjust, setMileTimesInfo, mileTimes} = useMileTimesContext();
     const {vertInfo} = useRouteContext();
     const {courseId, token} = useUserContext();
 

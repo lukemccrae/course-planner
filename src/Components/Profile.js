@@ -6,6 +6,7 @@ import { useStopsContext } from '../Providers/StopsProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { mockRouteInfo } from '../Providers/RouteProvider';
+import { useUserContext } from '../Providers/UserProvider';
 
 import { gql, useQuery } from '@apollo/client';
 
@@ -31,12 +32,13 @@ const ROUTE_QUERY = gql`
     }
 `
 
-function Profile({courseId, token}) {
+function Profile() {
     // console.log(stops, coordinates, mileTimes)
 
     const {stops} = useStopsContext();
     const {mileTimes} = useMileTimesContext();
     const {coordinates, setRouteInfo} = useRouteContext();
+    const {token, courseId} = useUserContext();
 
     const [labels, setLabels] = useState([]);
     const [dataset, setDataset] = useState([]);

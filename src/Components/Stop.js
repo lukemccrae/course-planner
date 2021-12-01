@@ -10,6 +10,7 @@ import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { useStopsContext } from '../Providers/StopsProvider';
+import { useUserContext } from '../Providers/UserProvider';
 
 import { gql, useQuery } from '@apollo/client';
 import { mockStopsInfo } from '../Providers/StopsProvider';
@@ -39,13 +40,14 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function Stop({courseId, token}) {
+function Stop() {
   const [countedStops, setCountedStops] = useState(0);
 
   const {calories} = useCourseInfoContext();
   const {paceAdjust, mileTimes} = useMileTimesContext();
   const {vertInfo} = useRouteContext();
   const {stops, setStops, addStop, delStop, setStopsInfo} = useStopsContext();
+  const {courseId, token} = useUserContext();
 
   //value of stop distance cant be a decimal
   const [stopTimeFormatError, setStopTimeFormatError] = useState(false);

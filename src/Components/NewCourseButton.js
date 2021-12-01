@@ -12,7 +12,7 @@ const ADD_QUERY = gql`
     }
 `
 
-function NewCourse() {
+function NewCourseButton() {
     const {token} = useUserContext();
     function addNewCourse() {
         addCourseMutation(token);
@@ -27,4 +27,4 @@ function NewCourse() {
     )
 }
 
-export default NewCourse;
+export default NewCourseButton;

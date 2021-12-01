@@ -33,9 +33,6 @@ function CourseSelect() {
     if(data.courseNamesIds.length > 0) {
         setCourseList(data.courseNamesIds)
     }
-    console.log(data)
-
-
 
     function setCourse(c) {
         setCourseId(c._id)
@@ -52,7 +49,6 @@ function CourseSelect() {
                 }}
                 >
                 {courseList.map(c => {
-                    console.log(c)
                     return (
                         <MenuItem key={c.hash} onClick={() => setCourse(c)}>{c.details.name}</MenuItem>
                     )
