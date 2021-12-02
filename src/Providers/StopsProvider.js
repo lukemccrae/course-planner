@@ -6,13 +6,15 @@ const INITIAL_STATE = {
         miles: 5, 
         comments: "", 
         name: "Aid station 1", 
-        cals: 200
+        cals: 200,
+        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
       }, 
       {
         miles: 10, 
         comments: "", 
         name: "Aid station 2", 
-        cals: 400
+        cals: 400,
+        id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
       }]
     }
 }
@@ -20,16 +22,18 @@ const INITIAL_STATE = {
 export const mockStopsInfo = {
   stopsInfo: {
     stops: [{
-      miles: 5, 
+      miles: 8, 
       comments: "", 
       name: "Aid station 1", 
-      cals: 200
+      cals: 200,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     }, 
     {
       miles: 10, 
       comments: "", 
       name: "Aid station 2", 
-      cals: 400
+      cals: 400,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
     }]
   }
 }
@@ -46,7 +50,7 @@ export const StopsProvider = ({ children }) => {
 
 
   function addStop() {
-    let updatedStops = stops;
+    let updatedStops = Object.assign([], stops);
     
     let newStop = {
       name: "New Stop",
@@ -56,9 +60,10 @@ export const StopsProvider = ({ children }) => {
       comments: ""
     }
 
-      updatedStops.push(newStop);
-      updatedStops.sort((a, b) => a.miles - b.miles)
-      setStops([...updatedStops])
+    
+    updatedStops.push(newStop);
+    updatedStops.sort((a, b) => a.miles - b.miles)
+    setStops([...updatedStops])
   }
 
   function delStop(index) {

@@ -6,7 +6,6 @@ import { gql, useQuery } from '@apollo/client';
 import { mockCourseInfo } from '../Providers/CourseInfoProvider';
 import { useUserContext } from '../Providers/UserProvider';
 
-
 const COURSE_INFO_QUERY = gql`
   query CourseInfo($token: String, $courseId: String) {
     courseInfo(token: $token, courseId: $courseId) {
@@ -28,11 +27,10 @@ function EditCourse(props) {
     variables: { courseId: props.courseId, token: props.token }
     });
 
-    //in use effect allows state updates to persist
-      //otherwise it would reset the courseInfo with initial course data
+    //setState when the data comes back from the query
     useEffect(() => {
       setCourseInfo(data.courseInfo)
-    }, [])
+    }, [data])
 
 
 

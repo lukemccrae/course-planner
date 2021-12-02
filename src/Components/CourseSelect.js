@@ -22,10 +22,6 @@ function CourseSelect() {
     const {setCourseId, courseList, setCourseList} = useUserContext();
     const courseToken = JSON.parse(localStorage.course_planner).token;
 
-    useEffect(() => {
-        // console.log(courseList)
-    }, [courseList])
-
     const { loading, error, data = {courseNamesIds: []} } = useQuery(COURSE_LIST_QUERY, {
         variables: { courseToken }
         

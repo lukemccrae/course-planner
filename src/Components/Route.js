@@ -24,10 +24,8 @@ const Center = styled.div`
 `
 
 function Route(props) {
-  console.log(props)
   const {courseId, setCourseId} = useUserContext();
   const [uploading, setUploading] = useState(false);
-
 
   function gpxToJson(gpx) {
     setUploading(true)

@@ -4,6 +4,7 @@ import { useUserContext } from '../Providers/UserProvider';
 import {useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useStopsContext } from '../Providers/StopsProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useEffect } from 'react';
 
 const SAVE_QUERY = gql`
     mutation Mutation($courseId: String!, $token: String!, $tempCourse: TempCourse!) {
@@ -13,17 +14,17 @@ const SAVE_QUERY = gql`
 
 function SaveCourse() {
     const {token, courseId} = useUserContext();
-    console.log(courseId)
     const { name, calories, goalHours, goalMinutes, startTime, terrainMod } = useCourseInfoContext();
     const { stops } = useStopsContext();
     const { paceAdjust, mileTimes, vertMod } = useMileTimesContext();
+    const { setSaved } = useUserContext();
 
     const tempCourse = {
         details: {
           name,
           calories,
-          goalHours,
-          goalMinutes,
+          goalHours: parseInt(goalHours),
+          goalMinutes: parseInt(goalMinutes),
           vertMod,
           terrainMod,
           mileTimes,
@@ -33,14 +34,18 @@ function SaveCourse() {
         paceAdjust: paceAdjust
       }
 
+      console.log(tempCourse)
     function saveCourse() {
-        saveCourseMutation(token, courseId, tempCourse);
+        setSaved(false);
+
+        //is this the right way??? seems funky
+        saveCourseMutation(token, courseId, tempCourse).then(() => {setSaved(true)})
     }
 
-    const [saveCourseMutation, {data, loading, erorr}] = useMutation(SAVE_QUERY, {
-        variables: { token, courseId, tempCourse}
+    //data, loading, error values not changing.... wtf
+    const [saveCourseMutation, {data, loading, error}] = useMutation(SAVE_QUERY, {
+        variables: { token, courseId, tempCourse }
     });
-    console.log(data)
 
     return (
         <Button variant="outlined" className="five-px-margin-right" onClick={saveCourse}>Save</Button>

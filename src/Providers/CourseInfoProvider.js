@@ -11,12 +11,12 @@ const INITIAL_STATE = {
 
 export const mockCourseInfo = {
   courseInfo: {
-    name: "",
+    name: "mock",
     goalHours: 2,
     goalMinutes: 30,
     calories: 225, 
     terrainMod: 1.2,
-    startTime: ""
+    startTime: "06:00"
   }
 }
 

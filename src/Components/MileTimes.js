@@ -57,7 +57,9 @@ function MileTimes(props) {
     const { loading, error, data=mockMileTimesInfo } = useQuery(MILE_TIMES_QUERY, {
       variables: { courseId, token }
       });
+    useEffect(() => {
       setMileTimesInfo(data.mileTimesInfo[0])
+    }, [data])
     
     const gain = vertInfo.cumulativeGain;
     const loss = vertInfo.cumulativeLoss;
@@ -142,7 +144,7 @@ function MileTimes(props) {
     }
 
     function plusTime(index) {
-      let tempPaceAdjust = paceAdjust;
+      let tempPaceAdjust = Object.assign([], paceAdjust);;
       tempPaceAdjust[index] += .111;
       setPaceAdjust(tempPaceAdjust)
       resetPaces()
