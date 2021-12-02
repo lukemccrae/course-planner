@@ -4,7 +4,6 @@ import { useUserContext } from '../Providers/UserProvider';
 import {useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useStopsContext } from '../Providers/StopsProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useEffect } from 'react';
 
 const SAVE_QUERY = gql`
     mutation Mutation($courseId: String!, $token: String!, $tempCourse: TempCourse!) {

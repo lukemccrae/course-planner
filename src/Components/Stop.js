@@ -54,13 +54,14 @@ function Stop() {
   const [stopTimeFormatError, setStopTimeFormatError] = useState(false);
 
   const { loading, error, data=mockStopsInfo } = useQuery(STOPS_QUERY, {
-    variables: { courseId, token }
+    variables: { courseId, token },
+    skip: !token
     });
 
-    useEffect(() => {
-      setStopsInfo(data.stopsInfo.stops)
-      console.log(data)
-    }, [data])
+  useEffect(() => {
+    setStopsInfo(data.stopsInfo.stops)
+    console.log(data)
+  }, [data])
 
   useEffect(() => {
     if(stops.length > 0) {

@@ -55,7 +55,8 @@ function MileTimes(props) {
     const {courseId, token} = useUserContext();
 
     const { loading, error, data=mockMileTimesInfo } = useQuery(MILE_TIMES_QUERY, {
-      variables: { courseId, token }
+      variables: { courseId, token },
+      skip: !token
       });
     useEffect(() => {
       setMileTimesInfo(data.mileTimesInfo[0])

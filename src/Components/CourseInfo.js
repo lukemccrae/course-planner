@@ -45,7 +45,7 @@ function CourseInfo(props) {
 
     return (
         <Grid>
-        <Row style={{display: coordinates.length > 0 ? "flex" : "none"}}>
+        <Row style={{display: coordinates.length > 0 ? "flex" : "flex"}}>
           <Col>
             {saved ? <div style={{display: "flex", justifyContent: "flex-start", margin: "10px 0 10px 0"}}>
               <Button variant="outlined" className="five-px-margin-right" onClick={props.updateDeleteModalIsOpen}>Delete</Button>

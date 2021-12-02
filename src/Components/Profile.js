@@ -44,7 +44,8 @@ function Profile() {
     const [dataset, setDataset] = useState([]);
 
     const { loading, error, data=mockRouteInfo } = useQuery(ROUTE_QUERY, {
-        variables: { courseId, token }
+        variables: { courseId, token },
+        skip: !token
         });
         setRouteInfo(data)
 

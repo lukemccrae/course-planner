@@ -17,9 +17,7 @@ import {demoRouteStyles, loginStyles, aboutStyles, deleteStyles} from './Compone
 import {DeleteModalContent} from './Components/helpers/DeleteModalContent';
 
 import { useCourseInfoContext } from './Providers/CourseInfoProvider';
-import { useMileTimesContext } from './Providers/MileTimesProvider';
 import { useRouteContext }  from './Providers/RouteProvider';
-import { useStopsContext } from './Providers/StopsProvider';
 import { useUserContext } from './Providers/UserProvider';
 
 const override = css`
@@ -31,11 +29,9 @@ const override = css`
 
 
 function App(props) {
-  const {name, goalHours, goalMinutes, startTime, calories, terrainMod, resetCourseInfo} = useCourseInfoContext();
-  const {vertMod, paceAdjust, mileTimes, setMileTimesInfo} = useMileTimesContext();
+  const {calories, terrainMod, resetCourseInfo} = useCourseInfoContext();
   const {vertInfo, resetRouteInfo} = useRouteContext();
-  const {stops} = useStopsContext();
-  const {courseId, username, setUsername, token, setToken, courseList, setCourseList, loading, setIsLoading, saved, setSaved} = useUserContext();
+  const {courseId, username, setUsername, token, setToken, courseList, setCourseList, loading, setIsLoading} = useUserContext();
   // const [courseList, setCourseList] = useState([]);
 
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -96,45 +92,6 @@ function App(props) {
     setEditNoLoginModalIsOpen(false)
   }
 
-  function saveCourse() {
-    setSaved(false)
-    let tempCourse = {
-      details: {
-        name,
-        calories,
-        goalHours,
-        goalMinutes,
-        vertMod,
-        terrainMod,
-        mileTimes,
-        startTime
-      },
-      stops: stops,
-      paceAdjust: paceAdjust
-    }
-    const token = JSON.parse(localStorage.course_planner).token;
-      fetch(`https://glacial-brushlands-65545.herokuapp.com/https://banana-crumble-42815.herokuapp.com/course?token=${token}&courseId=${courseId}`, {
-        // fetch(`http://localhost:3005/course?token=${token}&courseId=${courseId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'origin': 'https://corsa.run'
-        },
-        body: JSON.stringify({
-          details: tempCourse.details,
-          stops: tempCourse.stops,
-          paceAdjust: tempCourse.paceAdjust
-        })
-      }).then(res => res.json()).then(json => {
-        if (json.success) {
-          setSaved(true)
-          setCourseList(json.courseList)
-        } else {
-          console.log("Error: adding this course failed.")
-        }
-      });
-  }
-
   function updateDeleteModalIsOpen() {
     setDeleteModalIsOpen(!deleteModalIsOpen)
   }
@@ -142,8 +99,6 @@ function App(props) {
   function renderEditCourseNoLogin() {
     return (
       <EditCourseNoLogin 
-          saved={saved}
-          saveCourse={saveCourse}
           updateDeleteModalIsOpen={updateDeleteModalIsOpen}
           id={courseId}
           setCourseList={setCourseList} setLoginModalIsOpen={setLoginModalIsOpen} loggedIn={loggedIn}
@@ -167,8 +122,6 @@ function App(props) {
     if(username && terrainMod && calories) {
       return (
           <EditCourse 
-            saveCourse={saveCourse}
-            saved={saved}
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
             courseId={courseId}
             token={token}

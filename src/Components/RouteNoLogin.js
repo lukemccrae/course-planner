@@ -10,7 +10,6 @@ import double_dipsea from './Demo/double_dipsea.gpx';
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext }  from '../Providers/RouteProvider';
-import { useStopsContext } from '../Providers/StopsProvider';
 
 const override = css`
   display: flex;
