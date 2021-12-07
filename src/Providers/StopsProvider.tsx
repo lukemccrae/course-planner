@@ -1,5 +1,43 @@
 import React, { useContext, createContext, useState } from 'react';
 
+type StopProviderProps = {
+  children: React.ReactNode
+}
+
+type Stop = {
+  miles: number,
+  name: string,
+  comments: string,
+  cals: number,
+  id: string
+}
+
+type StopsInfo = {
+  stops: Stop[]
+}
+interface StopsInterface {
+  stopsInfo: StopsInfo
+}
+
+const stopsContext: StopsInterface = {
+  stopsInfo: {
+    stops: [{
+      miles: 8, 
+      comments: "", 
+      name: "Aid station 1", 
+      cals: 200,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+    }, 
+    {
+      miles: 10, 
+      comments: "", 
+      name: "Aid station 2", 
+      cals: 400,
+      id: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+    }]
+  }
+}
+
 const INITIAL_STATE = {
     stopsInfo: {
       stops: [{
@@ -41,10 +79,10 @@ export const mockStopsInfo = {
 export const StopsContext = createContext(null);
 export const useStopsContext = () => useContext(StopsContext);
 
-export const StopsProvider = ({ children }) => {
+export const StopsProvider = ({ children }: StopProviderProps) => {
     const [stops, setStops] = useState(INITIAL_STATE.stopsInfo.stops);
 
-    function setStopsInfo(arr) {
+    function setStopsInfo(arr: any) {
         setStops(arr)
     }
 
@@ -62,11 +100,11 @@ export const StopsProvider = ({ children }) => {
 
     
     updatedStops.push(newStop);
-    updatedStops.sort((a, b) => a.miles - b.miles)
+    updatedStops.sort((a: Stop, b: Stop) => a.miles - b.miles)
     setStops([...updatedStops])
   }
 
-  function delStop(index) {
+  function delStop(index: number) {
     let updatedStops = stops;
     updatedStops.splice(index, 1)
     setStops([...updatedStops])

@@ -15,7 +15,7 @@ import Select from '@material-ui/core/Select';
 
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useRouteContext } from '../Providers/RouteProvider';
-import { useUserContext } from '../Providers/UserProvider';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 
 const Category = styled.strong`
   font-weight: 500;

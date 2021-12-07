@@ -4,7 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { gql, useQuery } from '@apollo/client';
-import { useUserContext } from '../Providers/UserProvider';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 
 const COURSE_LIST_QUERY = gql`
     query Query($courseToken: String!) {
@@ -19,7 +19,7 @@ const COURSE_LIST_QUERY = gql`
 `
 
 function CourseSelect() {
-    const {setCourseId, courseList, setCourseList} = useUserContext();
+    const {setCourseId, courseId, courseList, setCourseList} = useUserContext();
     const courseToken = JSON.parse(localStorage.course_planner).token;
 
     const { loading, error, data = {courseNamesIds: []} } = useQuery(COURSE_LIST_QUERY, {

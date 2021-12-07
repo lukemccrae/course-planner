@@ -6,7 +6,7 @@ import {DateTime} from 'luxon';
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
-import { useUserContext } from '../Providers/UserProvider';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 
 import {MileBox, MileTableHead, SliderBox, TableData, Detail, ArrowRight, ArrowLeft} from './helpers/StyledComponents/MileTimeStyles';
 import { gql, useQuery } from '@apollo/client';
@@ -49,7 +49,6 @@ const MILE_TIMES_QUERY = gql`
 
 function MileTimes(props) {
     const {goalHours, goalMinutes, startTime, terrainMod, } = useCourseInfoContext();
-    console.log(startTime)
     const {milePoints, vertMod, setVertMod, paceAdjust, setMileTimes, setPaceAdjust, setMileTimesInfo, mileTimes} = useMileTimesContext();
     const {vertInfo} = useRouteContext();
     const {courseId, token} = useUserContext();
@@ -58,9 +57,10 @@ function MileTimes(props) {
       variables: { courseId, token },
       skip: !token
       });
+
     useEffect(() => {
       setMileTimesInfo(data.mileTimesInfo[0])
-    }, [data])
+    }, [data, courseId])
     
     const gain = vertInfo.cumulativeGain;
     const loss = vertInfo.cumulativeLoss;
@@ -73,7 +73,7 @@ function MileTimes(props) {
       
 
     useEffect(() => {
-      resetPaces()
+      if(startTime) resetPaces()
     }, [goalHours, goalMinutes, terrainMod, vertMod, milePoints, paceAdjust, startTime])
 
     function calculatePace(elev, distance) {
@@ -165,7 +165,7 @@ function MileTimes(props) {
     //fill up the timeThrough state array with timeObj objects corrosponding to minutes and seconds
     function resetTimeThrough() {
       console.log(startTime)
-      const [hours, minutes] = startTime.split(":");
+      const [hours, minutes] = startTime.split(":")
       let tempTimeThrough = [];
 
       //iterate through each mile - gain is just used to get the miles length

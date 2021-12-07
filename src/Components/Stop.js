@@ -10,7 +10,7 @@ import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { useStopsContext } from '../Providers/StopsProvider';
-import { useUserContext } from '../Providers/UserProvider';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 
 import { gql, useQuery } from '@apollo/client';
 import { mockStopsInfo } from '../Providers/StopsProvider';
@@ -60,7 +60,6 @@ function Stop() {
 
   useEffect(() => {
     setStopsInfo(data.stopsInfo.stops)
-    console.log(data)
   }, [data])
 
   useEffect(() => {

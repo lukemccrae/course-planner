@@ -29,7 +29,7 @@ const override = css`
 
 
 function App(props) {
-  const {calories, terrainMod, resetCourseInfo} = useCourseInfoContext();
+  const {calories, terrainMod} = useCourseInfoContext();
   const {vertInfo, resetRouteInfo} = useRouteContext();
   const {courseId, username, setUsername, token, setToken, courseList, setCourseList, loading, setIsLoading} = useUserContext();
   // const [courseList, setCourseList] = useState([]);
@@ -69,14 +69,14 @@ function App(props) {
     setUsername(args.email);
     // setCourseList(args.courseList);
     setIsLoading(false);
-    resetCourseInfo();
+    // resetCourseInfo();
     resetRouteInfo();
   }
 
   function loggedOut() {
     localStorage.clear();
     setUsername('')
-    resetCourseInfo();
+    // resetCourseInfo();
     resetRouteInfo();
   }
 
@@ -119,12 +119,10 @@ function App(props) {
   }
 
   function renderEditCourse() {
-    if(username && terrainMod && calories) {
+    if(token !== "") {
       return (
           <EditCourse 
             updateDeleteModalIsOpen={updateDeleteModalIsOpen}
-            courseId={courseId}
-            token={token}
           >
           </EditCourse>
         

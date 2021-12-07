@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import { gql, useMutation } from '@apollo/client';
-import { useUserContext } from '../Providers/UserProvider';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 import {useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useStopsContext } from '../Providers/StopsProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
@@ -32,8 +32,6 @@ function SaveCourse() {
         stops: stops,
         paceAdjust: paceAdjust
       }
-
-      console.log(tempCourse)
     function saveCourse() {
         setSaved(false);
 

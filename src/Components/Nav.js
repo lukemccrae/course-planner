@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CourseSelect from "./CourseSelect";
 import NewCourseButton from "./NewCourseButton";
 import {HideUsernameMobileNav, HideCorsaMobileNav, HideLogoMobileNav} from './Grid';
-import { useUserContext } from '../Providers/UserProvider';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 
 const Header = styled.header`
   height: 60px;

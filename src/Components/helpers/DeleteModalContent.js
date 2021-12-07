@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { useUserContext } from '../../Providers/UserProvider';
+import { useUserContext } from '../../Providers/UserProvider.tsx';
 
 import { gql, useQuery, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
