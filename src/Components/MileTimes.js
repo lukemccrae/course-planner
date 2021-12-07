@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import Slider from 'react-input-slider';
-import GainProfile from './GainProfile';
+import GainProfile from './GainProfile.tsx';
 import {DateTime} from 'luxon';
 
-import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { useUserContext } from '../Providers/UserProvider';
@@ -43,13 +43,13 @@ const MILE_TIMES_QUERY = gql`
           }
         }
       }
-      
     }
   }
 `
 
 function MileTimes(props) {
     const {goalHours, goalMinutes, startTime, terrainMod, } = useCourseInfoContext();
+    console.log(startTime)
     const {milePoints, vertMod, setVertMod, paceAdjust, setMileTimes, setPaceAdjust, setMileTimesInfo, mileTimes} = useMileTimesContext();
     const {vertInfo} = useRouteContext();
     const {courseId, token} = useUserContext();
@@ -164,6 +164,7 @@ function MileTimes(props) {
 
     //fill up the timeThrough state array with timeObj objects corrosponding to minutes and seconds
     function resetTimeThrough() {
+      console.log(startTime)
       const [hours, minutes] = startTime.split(":");
       let tempTimeThrough = [];
 

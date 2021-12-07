@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import { gql, useMutation } from '@apollo/client';
 import { useUserContext } from '../Providers/UserProvider';
-import {useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import {useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useStopsContext } from '../Providers/StopsProvider';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 

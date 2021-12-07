@@ -7,7 +7,7 @@ import {Row} from './Grid';
 import kendall_mtn from './Demo/kendall_mtn.gpx';
 import double_dipsea from './Demo/double_dipsea.gpx';
 
-import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext }  from '../Providers/RouteProvider';
 

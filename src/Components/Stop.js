@@ -6,7 +6,7 @@ import TimeCals from './TimeCals';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useMileTimesContext } from '../Providers/MileTimesProvider';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { useStopsContext } from '../Providers/StopsProvider';

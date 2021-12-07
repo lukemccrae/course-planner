@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { useRouteContext } from '../Providers/RouteProvider';
 import { useUserContext } from '../Providers/UserProvider';
 

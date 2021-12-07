@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-import CourseInfo from './CourseInfo';
+import CourseInfo from './CourseInfo.js';
 
-import { useCourseInfoContext } from '../Providers/CourseInfoProvider';
+import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
 import { gql, useQuery } from '@apollo/client';
-import { mockCourseInfo } from '../Providers/CourseInfoProvider';
+import { mockCourseInfo } from '../Providers/CourseInfoProvider.tsx';
 import { useUserContext } from '../Providers/UserProvider';
 
 const COURSE_INFO_QUERY = gql`

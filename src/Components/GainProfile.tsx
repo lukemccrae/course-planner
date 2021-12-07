@@ -1,7 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
-const Point = styled.div`
+type Props = {
+    vert: number;
+}
+
+interface milePoints {
+    milePoints: [{
+        lat: number;
+        long: number;
+        elev: number;
+    }];
+}
+
+const Point = styled.div<Props>`
     width: 1px;
     height: 1px;
     padding-bottom: ${(props) => props.vert + 'px'};
@@ -10,11 +22,11 @@ const Point = styled.div`
 `
 
 const ProfileBox = styled.div`
-    display: inline-flex;
+    display: inline-flexp
     align-items: baseline;
 `
 
-function GainProfile({milePoints}) {
+function GainProfile({milePoints}:milePoints) {
     // console.log(milePoints)
     //profile needs to be an array of 20 numbers representing the elevation data from the points for each mile
     const [profile, setProfile] = useState(new Array(20).fill(0));
@@ -25,7 +37,7 @@ function GainProfile({milePoints}) {
     }, [milePoints])
 
     function fillProfile() {
-        let result = []
+        let result: Array<number> = [];
         let max = 0;
         let min = 0;
         if(milePoints.length > 0) {
@@ -41,14 +53,14 @@ function GainProfile({milePoints}) {
         return equalizePercents(result, min, max)
     }
 
-    function equalizePercents(milePoints, min, max) {
+    function equalizePercents(elevPoints: number[], min: number, max: number) {
         //make each point relative to the min / max as a percentage
         //and display that percentage with a number from 1-20
         let result = [];
         let avgIncrement = (max - min) / 20
         
 
-        for (const point of milePoints) {
+        for (const point of elevPoints) {
             result.push(Math.round((point - min) / avgIncrement))
         }
         setProfile(result)
