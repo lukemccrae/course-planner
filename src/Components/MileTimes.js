@@ -4,13 +4,13 @@ import GainProfile from './GainProfile.tsx';
 import {DateTime} from 'luxon';
 
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
-import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useRouteContext } from '../Providers/RouteProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider.tsx';
+import { useRouteContext } from '../Providers/RouteProvider.tsx';
 import { useUserContext } from '../Providers/UserProvider.tsx';
 
 import {MileBox, MileTableHead, SliderBox, TableData, Detail, ArrowRight, ArrowLeft} from './helpers/StyledComponents/MileTimeStyles';
 import { gql, useQuery } from '@apollo/client';
-import { mockMileTimesInfo } from '../Providers/MileTimesProvider';
+import { mockMileTimesInfo } from '../Providers/MileTimesProvider.tsx';
 
 const MILE_TIMES_QUERY = gql`
   query MileTimesInfo($token: String, $courseId: String) {

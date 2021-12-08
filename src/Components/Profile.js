@@ -2,11 +2,11 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import {Line} from 'react-chartjs-2';
 import {colors} from './helpers/Colors';
-import { useStopsContext } from '../Providers/StopsProvider';
-import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useRouteContext } from '../Providers/RouteProvider';
-import { mockRouteInfo } from '../Providers/RouteProvider';
-import { useUserContext } from '../Providers/UserProvider';
+import { useStopsContext } from '../Providers/StopsProvider.tsx';
+import { useMileTimesContext } from '../Providers/MileTimesProvider.tsx';
+import { useRouteContext } from '../Providers/RouteProvider.tsx';
+import { mockRouteInfo } from '../Providers/RouteProvider.tsx';
+import { useUserContext } from '../Providers/UserProvider.tsx';
 
 import { gql, useQuery } from '@apollo/client';
 

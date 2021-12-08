@@ -8,8 +8,8 @@ import kendall_mtn from './Demo/kendall_mtn.gpx';
 import double_dipsea from './Demo/double_dipsea.gpx';
 
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
-import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useRouteContext }  from '../Providers/RouteProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider.tsx';
+import { useRouteContext }  from '../Providers/RouteProvider.tsx';
 
 const override = css`
   display: flex;

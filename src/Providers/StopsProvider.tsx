@@ -12,11 +12,12 @@ type Stop = {
   id: string
 }
 
-type StopsInfo = {
+type Stops = {
   stops: Stop[]
 }
+
 interface StopsInterface {
-  stopsInfo: StopsInfo
+  stopsInfo: Stops
 }
 
 const stopsContext: StopsInterface = {
@@ -76,21 +77,20 @@ export const mockStopsInfo = {
   }
 }
 
-export const StopsContext = createContext(null);
+export const StopsContext = createContext<StopsInterface>(stopsContext);
 export const useStopsContext = () => useContext(StopsContext);
 
 export const StopsProvider = ({ children }: StopProviderProps) => {
-    const [stops, setStops] = useState(INITIAL_STATE.stopsInfo.stops);
+    const [stops, setStops] = useState<Stops>();
 
     function setStopsInfo(arr: any) {
         setStops(arr)
     }
 
-
   function addStop() {
-    let updatedStops = Object.assign([], stops);
+    let updatedStops: Stops = Object.assign([], stops);
     
-    let newStop = {
+    let newStop: Stop = {
       name: "New Stop",
       cals: 200,
       miles: 0,

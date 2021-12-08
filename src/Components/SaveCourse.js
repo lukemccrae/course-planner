@@ -2,8 +2,8 @@ import Button from '@material-ui/core/Button';
 import { gql, useMutation } from '@apollo/client';
 import { useUserContext } from '../Providers/UserProvider.tsx';
 import {useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
-import { useStopsContext } from '../Providers/StopsProvider';
-import { useMileTimesContext } from '../Providers/MileTimesProvider';
+import { useStopsContext } from '../Providers/StopsProvider.tsx';
+import { useMileTimesContext } from '../Providers/MileTimesProvider.tsx';
 
 const SAVE_QUERY = gql`
     mutation Mutation($courseId: String!, $token: String!, $tempCourse: TempCourse!) {

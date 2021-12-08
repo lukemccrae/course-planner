@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import CourseInfo from './CourseInfo';
 
 import RouteNoLogin from './RouteNoLogin';
-import { useRouteContext } from '../Providers/RouteProvider';
+import { useRouteContext } from '../Providers/.tsx';
 
 function EditCourse(props) {
   const { coordinates } = useRouteContext();

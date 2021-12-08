@@ -1,11 +1,44 @@
 import React, { useContext, createContext, useState } from 'react';
 
-const INITIAL_STATE = {
-  coordinates: [],
-  vertInfo: {cumulativeGain: [], cumulativeLoss: []}
+type Coordinate = {
+  coordinates: {
+    lat: number;
+    long: number;
+    elev: number;
+  }
 }
 
-export const mockRouteInfo = {
+type Coordinates = {
+  coordinates: Coordinate[]
+}
+
+type VertInfo = {
+  cumulativeGain: number[],
+  cumulativeLoss: number[]
+}
+
+type Properties = {
+  vertInfo: VertInfo
+}
+
+type RouteInfo = {
+  geoJSON: GeoJSON,
+  properties: Properties
+}
+
+type GeoJSON = {
+  geometry: Geometry
+}
+
+type Geometry = {
+  coordinates: Coordinates
+}
+
+interface RouteInterface {
+  routeInfo: RouteInfo
+}
+
+export const routeContext: RouteInterface = {
   routeInfo: {
     geoJSON: {
       geometry: {
@@ -21,7 +54,16 @@ export const mockRouteInfo = {
   }
 }
 
-export const RouteContext = createContext(null);
+const INITIAL_STATE = {
+  coordinates: [],
+  vertInfo: {cumulativeGain: [], cumulativeLoss: []}
+}
+
+export const mockRouteInfo = {
+
+}
+
+export const RouteContext = createContext<RouteInterface>(routeContext);
 export const useRouteContext = () => useContext(RouteContext);
 
 export const RouteProvider = ({ children }) => {

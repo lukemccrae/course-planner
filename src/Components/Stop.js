@@ -7,13 +7,13 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useCourseInfoContext } from '../Providers/CourseInfoProvider.tsx';
-import { useMileTimesContext } from '../Providers/MileTimesProvider';
-import { useRouteContext } from '../Providers/RouteProvider';
-import { useStopsContext } from '../Providers/StopsProvider';
+import { useMileTimesContext } from '../Providers/MileTimesProvider.tsx';
+import { useRouteContext } from '../Providers/RouteProvider.tsx';
+import { useStopsContext } from '../Providers/StopsProvider.tsx';
 import { useUserContext } from '../Providers/UserProvider.tsx';
 
 import { gql, useQuery } from '@apollo/client';
-import { mockStopsInfo } from '../Providers/StopsProvider';
+import { mockStopsInfo } from '../Providers/StopsProvider.tsx';
 
 const STOPS_QUERY = gql`
   query StopsInfo($token: String, $courseId: String) {
